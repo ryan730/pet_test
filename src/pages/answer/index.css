@@ -29,7 +29,7 @@
 	box-sizing: border-box;
 }
 
-.answer .block-1 {
+.answer .content-container {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -304,16 +304,14 @@
 	display: flex;
 	margin-top: 30px;
 	padding: 0 70px;
-	/* justify-content: space-between; */
+	justify-content: space-between;
 }
 
 .answer .prev {
-	position: absolute;
 	left: 100px;
 }
 
 .answer .next {
-	position: absolute;
 	right: 100px;
 }
 
