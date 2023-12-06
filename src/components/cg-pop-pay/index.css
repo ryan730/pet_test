@@ -1,0 +1,211 @@
+.cg-pop {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  height: 800px;
+  font-family: PingFangSC-Medium;
+	/* position: absolute;
+	top: 0; */
+}
+.cg-pop .mask{
+	position: absolute;
+	width: 100%;
+	height: 866px;
+}
+
+.cg-pop .group {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding-top: 866px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: flex-start;
+  width: 100%;
+  border-radius: 0px;
+}
+.cg-pop .block {
+  background-color: rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: center;
+  width: 100%;
+  padding-top: 42px;
+  border-radius: 20px 20px 0 0;
+}
+.cg-pop .title {
+  color: rgba(0, 0, 0, 1);
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: 0.7446123243243236px;
+  line-height: 50px;
+  align-self: center;
+  margin-left: 1px;
+  max-width: 724px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.cg-pop .header {
+  display: flex;
+  flex-direction: column;
+  margin-top: 67px;
+  justify-content: flex-start;
+  align-self: center;
+  width: 658px;
+}
+.cg-pop .wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  width: 658px;
+}
+.cg-pop .buy {
+  color: rgba(132, 136, 142, 1);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0.6pxpx;
+  line-height: 42px;
+  align-self: center;
+  white-space: nowrap;
+}
+.cg-pop .title-1 {
+  color: rgba(0, 0, 0, 1);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0.6pxpx;
+  line-height: 42px;
+  margin-right: 1px;
+  align-self: center;
+  white-space: nowrap;
+}
+.cg-pop .price-wrapper {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+  align-self: center;
+  width: 658px;
+}
+.cg-pop .price-label {
+  color: rgba(132, 136, 142, 1);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0.6pxpx;
+  line-height: 42px;
+  align-self: center;
+  white-space: nowrap;
+}
+.cg-pop .price {
+  color: rgba(255, 55, 55, 1);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0.6pxpx;
+  line-height: 42px;
+  margin-right: 1px;
+  align-self: center;
+  white-space: nowrap;
+}
+.cg-pop .submain {
+  align-self: center;
+  width: 664px;
+  height: 1px;
+  margin: 70px 0 0 4px;
+  border-top: 1px solid rgba(207, 207, 207, 1);
+}
+.cg-pop .main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: center;
+  width: 726px;
+  padding: 75px 0 57px;
+}
+.cg-pop .wrapper-1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: center;
+  width: 674px;
+}
+.cg-pop .caption-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-self: center;
+  width: 660px;
+}
+.cg-pop .caption {
+  color: rgba(132, 136, 142, 1);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  line-height: 37px;
+  margin-left: 1px;
+  align-self: flex-start;
+  max-width: 658px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.cg-pop .group-1 {
+  display: flex;
+  margin-top: 36px;
+  justify-content: flex-start;
+  align-self: center;
+  width: 660px;
+}
+.cg-pop .view {
+  background-color: rgba(24, 173, 25, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: center;
+  position: relative;
+  width: 54px;
+  padding: 11px 8px 18px;
+  border-radius: 10px;
+}
+.cg-pop .icon-chat {
+  width: 28px;
+  height: 25px;
+  align-self: flex-start;
+}
+.cg-pop .icon-chat-1 {
+  width: 24px;
+  height: 21px;
+  position: absolute;
+  right: 6px;
+  bottom: 10px;
+}
+.cg-pop .caption-1 {
+  color: rgba(0, 0, 0, 1);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0.6pxpx;
+  line-height: 42px;
+  margin-left: 26px;
+  align-self: center;
+  white-space: nowrap;
+}
+.cg-pop .price-wrapper-1 {
+  background-color: rgba(255, 160, 1, 1);
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 670px;
+  margin: 77px 0 0 4px;
+  padding: 23px 12px;
+  border-radius: 44px;
+}
+.cg-pop .price-1 {
+  color: rgba(255, 255, 255, 1);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0.6pxpx;
+  line-height: 42px;
+  margin-right: 1px;
+  align-self: flex-start;
+  max-width: 644px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
