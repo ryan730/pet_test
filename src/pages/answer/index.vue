@@ -9,30 +9,12 @@
       </div>
       <div class="body">
         <div class="wrapper">
-          <div class="group">
-            <!-- <img class="icon-down" src="./images/img_0.png" /> -->
-            <span class="caption">答题时需要注意以下事项</span>
-          </div>
-          <div class="group-1">
-            <!-- <img class="icon-circle" src="./images/img_1.png" /> -->
-            <span class="caption-1">凭第一反应回答，不需要考虑太多</span>
-          </div>
+          <span class="caption-1">答题时需要注意以下事项</span>
+          <span v-if="true" class="caption-2">凭第一反应回答，不需要考虑太多</span>
+          <span class="caption-3">题目没有好与坏，对与错之分</span>
         </div>
-        <div class="wrapper-1">
-          <div class="group-2">
-            <!-- <img class="image" src="./images/img_2.png" /> -->
-          </div>
-          <!-- <img class="icon-text" src="./images/img_3.png" /> -->
-        </div>
-        <!-- <img class="icon-line-1" src="./images/img_4.png" />
-				<img class="dot" src="./images/img_5.png" />
-				<img class="dot-1" src="./images/img_6.png" />
-				<img class="dot-2" src="./images/img_7.png" /> -->
-      </div>
-      <div class="footer">
-        <div class="wrapper-2">
-          <!-- <img class="icon-circle-2" src="./images/img_8.png" /> -->
-          <span class="title">题目没有好与坏，对与错之分</span>
+        <div class="wrapper-chart">
+          <img :src="require('@/assets/images/f-char1.png')" />
         </div>
       </div>
     </div>
@@ -52,32 +34,35 @@
         <div
           v-for="(item, index) in topic?.content"
           class="btn-wrapper-item"
-          :style="getActive(item)"
-          @click="handleItem(item)"
+          :style="getActive(item, index)"
+          @click="handleItem(item, index)"
         >
           <span class="btn">{{ item.text }}</span>
         </div>
         <div class="btn-next-prev">
           <nut-cell>
-            <div v-show="appStore.getCurrTopicNumber > 1" class="prev" @click="handlePrev">上一题</div>
+            <div v-show="appStore.getCurrTopicProcess > 1" class="prev" @click="handlePrev">上一题</div>
           </nut-cell>
           <nut-cell>
-            <div v-show="appStore.getCurrTopicNumber <= total - 1" class="next" @click="handleNext">下一题</div>
+            <div v-show="appStore.getCurrTopicProcess < total" class="next" @click="handleNext">下一题</div>
           </nut-cell>
         </div>
         <div class="wrapper-6">
           <!-- <img class="item" src="./images/img_9.png" /> -->
+        </div>
+        <div class="body-bg">
+          <img ref="bgRef" class="bg" :style="{ top: bgTopRef }" :src="require('@/assets/images/bg.png')" />
         </div>
       </div>
     </div>
   </div>
   <div class="footer-container">
     <nut-cell>
-      <IconFont v-show="appStore.getCurrTopicNumber > 1" name="rect-left" size="24" @click="handlePrev"></IconFont>
+      <IconFont v-show="appStore.getCurrTopicProcess > 1" name="rect-left" size="24" @click="handlePrev"></IconFont>
     </nut-cell>
     <nut-cell>
       <IconFont
-        v-show="appStore.getCurrTopicNumber <= total - 1"
+        v-show="appStore.getCurrTopicProcess < total"
         name="rect-right"
         size="24"
         @click="handleNext"
@@ -88,22 +73,28 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive, computed, watch } from 'vue';
 import Taro, { getEnv, showToast, pxTransform } from '@tarojs/taro';
-import { Cell, CellGroup } from '@nutui/nutui-taro';
 import { IconFont } from '@nutui/icons-vue-taro';
-import { fetchTestTopic } from '@/service';
-import { useAppStore } from '@/store';
-import { debounce } from '@/utils';
+import { fetchTestTopic, fetchUserTopic, fetchProductInfo } from '@/service';
+import { useAppStore, useProductInfoStore } from '@/store';
+import { debounce, sleep } from '@/utils';
 import mock from './mock.js';
 
 const topics = ref([]);
-const number = ref(0);
 const total = ref(0);
 const topic = ref({});
-const currentNumb = ref(0);
+const answeRef = ref('');
+const bgTopRef = ref(0);
+const bgRef = ref(null);
+const bgHeight = ref(0);
+
+const number = computed(() => Number(appStore.getCurrTopicProcess));
+const currentAnswerNumb = ref(-1); // 当前答题选项,-1表示未选择
+
+const productInfoStore = useProductInfoStore();
+
+const info = computed(() => productInfoStore.getInfo);
 
 const appStore = useAppStore();
-
-const count = computed(() => appStore.getCurrTopicNumber);
 
 const isHeightOverFlow = ref(false);
 
@@ -121,93 +112,159 @@ const getStyle = computed(() => {
   return val;
 });
 
-const handlePrev = () => {
-  let currTopicNumber = appStore.getCurrTopicNumber;
-  // eslint-disable-next-line no-plusplus
-  currTopicNumber--;
-  if (currTopicNumber <= 1) {
-    currTopicNumber = 1;
+// 检查是否做第二套题
+const continueNextSection = async () => {
+  const result = await fetchProductInfo({
+    pid: 46
+  });
+  productInfoStore.setInfo(result.data);
+  const test_info = result.data?.test_info;
+  if (test_info) {
+    console.log('continueNextSection::', result.data);
+    Taro.showToast({
+      title: '开始第二段答题',
+      icon: 'none',
+      duration: 2000
+    });
+    const process = test_info?.process || 1;
+    appStore.setCurrTopicProcess(process); // 第二次的进度值
+    await init();
+  } else {
+    Taro.showToast({
+      title: '去往结果页',
+      icon: 'none',
+      duration: 2000
+    });
+    setTimeout(() => {
+      Taro.navigateTo({
+        url: '/pages/finally/index'
+      });
+    }, 2000);
   }
-  appStore.setCurrTopicNumber(currTopicNumber);
-  console.log('handlePrev:', currTopicNumber, appStore.getCurrTopicNumber);
+};
+
+const handlePrev = () => {
+  let currTopicProcess = appStore.getCurrTopicProcess;
+  // eslint-disable-next-line no-plusplus
+  currTopicProcess--;
+  if (currTopicProcess <= 1) {
+    currTopicProcess = 1;
+  }
+  appStore.setCurrTopicProcess(currTopicProcess);
+  console.log('handlePrev:', currTopicProcess, appStore.getCurrTopicProcess);
 };
 
 const handleNext = () => {
-  if (!(currentNumb.value > 0)) {
+  if (currentAnswerNumb.value === -1) {
     Taro.showToast({
-      title: '选择一个选项',
+      title: '必须选择一项！',
       icon: 'none',
       duration: 2000
     });
     return;
   }
-  let currTopicNumber = appStore.getCurrTopicNumber;
+  let currTopicProcess = appStore.getCurrTopicProcess;
   // eslint-disable-next-line no-plusplus
-  currTopicNumber++;
-  if (currTopicNumber > total.value) {
-    currTopicNumber = total.value;
-    Taro.showToast({
-      title: '已经是最后一题了',
-      icon: 'none',
-      duration: 2000
-    });
-    Taro.navigateTo({
-      url: '/pages/finally/index'
-    });
+  currTopicProcess++;
+  if (currTopicProcess > total.value) {
+    currTopicProcess = total.value;
+    continueNextSection();
   }
-  appStore.setCurrTopicNumber(currTopicNumber);
-  console.log('handleNext:', currTopicNumber, appStore.getCurrTopicNumber);
+  appStore.setCurrTopicProcess(currTopicProcess);
+  console.log('handleNext:', currTopicProcess, appStore.getCurrTopicProcess);
 };
 
-const getActive = (item: any) => {
-  if (item.value === currentNumb.value) {
+const getActive = (item: any, index: number) => {
+  if (currentAnswerNumb.value === index) {
     return {
       'background-color': 'rgba(249, 216, 110, 1)'
     };
   }
 };
 
-const handleItem = (item: any) => {
-  /// debounce(() => {
-  if (item.value == currentNumb.value) {
+const sendAnswer = async () => {
+  console.log('sendAnswer:::', currentAnswerNumb.value);
+  if (currentAnswerNumb.value === -1) {
+    console.log('没有选择项目');
     return;
   }
-  currentNumb.value = item.value;
-  setTimeout(() => {
-    handleNext();
-  }, 1500);
-  /// }, 1600)
-};
-
-const init = async () => {
-  let data = null;
+  let res = null;
+  console.log('当前题号:', appStore.getCurrTopicProcess, total.value);
   try {
-    data = await fetchTestTopic({
-      utid: '',
-      test_id: '',
-      cur: '46'
+    res = await fetchUserTopic({
+      utid: info.value?.test_info?.utid,
+      test_id: info.value?.test_info?.test_id,
+      number: appStore.getCurrTopicProcess,
+      answer: answeRef.value,
+      last: appStore.getCurrTopicProcess == Number(total.value) ? '1' : '0'
     });
   } catch (e) {
     console.log(e);
   }
-  topics.value = mock?.data?.topics;
-  total.value = 3; // mock?.data?.total;
-  // number.value = topics.value[0].number;
-  number.value = appStore.getCurrTopicNumber;
-  topic.value = topics.value[parseInt(Math.random() * 3)];
-  currentNumb.value = 0; // topics.value[0]?.number;
-  console.log('topics.value=======>>>', mock?.data, topics.value);
+  console.log('sendAnswer::', res);
+};
+
+const handleItem = async (item: any, index: number) => {
+  console.log('handleItem:', item, index, currentAnswerNumb.value);
+  /// debounce(() => {
+  if (index === currentAnswerNumb.value) {
+    return;
+  }
+  currentAnswerNumb.value = index;
+  answeRef.value = item.value;
+  const send = await sendAnswer();
+  if (send?.code != 1) {
+    await sleep(1500);
+    handleNext();
+  } else {
+    showToast({
+      title: '提交失败，请重试！',
+      icon: 'none',
+      duration: 2000
+    });
+    currentAnswerNumb.value = -1;
+  }
+};
+
+const init = async () => {
+  let res = null;
+  try {
+    res = await fetchTestTopic({
+      utid: info.value?.test_info?.utid,
+      test_id: info.value?.test_info?.test_id,
+      cur: appStore.getCurrTopicProcess // 如果是0,强制跳到1
+    });
+  } catch (e) {
+    console.log(e);
+  }
+  console.log('data=======>>>', res?.data);
+  topics.value = res?.data?.topics; // mock?.data?.topics;
+  total.value = res?.data?.total; // 3; // mock?.data?.total;
+  topic.value = topics.value[0]; // topics.value[parseInt(Math.random() * 3)];
+
+  const process = res?.data?.process; // 如果是0,强制跳到1
+  const content = topic?.value?.content;
+  const checkElm = content.find((item, index) => {
+    item.index = index;
+    return String(item.checked) === '1';
+  });
+  console.log('checkNumber:', checkElm);
+  currentAnswerNumb.value = checkElm ? checkElm.index : -1; // 默认没有任何选题; // topics.value[0]?.number;
+  appStore.setCurrTopicProcess(process); // 保存当前题号
+
+  /// /console.log('topics.value=======>>>', mock?.data, topics.value);
 };
 
 const resized = () => {
-  setTimeout(() => {
+  Taro.nextTick(() => {
     const query = Taro.createSelectorQuery();
+    let bodyHeight = 0;
     query
       .select('.body-1')
       .boundingClientRect(res => {
         const info = Taro.getSystemInfoSync();
         const content_height = res.height + (env.toLowerCase() == 'web' ? 200 : 200);
-        console.log('resized-:->:', env, info, res, res.height, content_height, info.windowHeight);
+        console.log('resized-:->:', bgRef, env, info, res, res.height, content_height, info.windowHeight);
 
         if (content_height + 150 > info.windowHeight) {
           isHeightOverFlow.value = true;
@@ -216,25 +273,43 @@ const resized = () => {
           isHeightOverFlow.value = true;
           contentHeight.value = content_height;
         }
+        bodyHeight = res.height;
+        bgTopRef.value = `${bodyHeight - bgHeight.value}px`;
       })
       .exec();
-  }, 200);
+  });
 };
 
 watch(
-  () => appStore.getCurrTopicNumber,
-  newVal => {
-    init();
+  () => appStore.getCurrTopicProcess,
+  async (newVal, oldVal) => {
+    if (newVal == oldVal || newVal == 0) {
+      return;
+    }
+    console.log('watch====', newVal, oldVal);
+    await init();
     resized();
-    console.log('watch:', newVal);
   }
 );
 
 onMounted(async () => {
-  init();
+  /// await init();
+  if (!isNaN(appStore.getCurrTopicProcess)) {
+    const frist = Number(appStore.getCurrTopicProcess) + 1;
+    // if (frist > total.value) {
+    //   frist = total.value;
+    // }
+    appStore.setCurrTopicProcess(frist);
+  }
+  Taro.createSelectorQuery()
+    .select('.bg')
+    .boundingClientRect(bg => {
+      bgHeight.value = bg.height;
+    })
+    .exec();
   resized();
 });
 </script>
 
-<style src="./index.css" />
+<style src="./index.scss" lang="scss" />
 ;

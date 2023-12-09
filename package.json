@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.23.2",
+    "@nutui/icons-vue-taro": "^0.0.9",
     "@nutui/nutui-taro": "^4.1.7",
     "@tarojs/cli": "3.6.17",
     "@tarojs/components": "3.6.17",

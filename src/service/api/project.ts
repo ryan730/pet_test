@@ -79,31 +79,35 @@ async function fetch(url: string, data: any) {
   }
 }
 
-export async function fetchTestTopic(data: TestTopicParams) {
-  // return request.post<any>(config.APIURL + "/test/topic", data, {
-  // 	useErrMsg: true,
-  // });
+// export async function fetchTestTopic(data: TestTopicParams) {
+//   // return request.post<any>(config.APIURL + "/test/topic", data, {
+//   // 	useErrMsg: true,
+//   // });
 
-  return await Taro.request({
-    url: `${config.APIURL}/test/topic`, // 仅为示例，并非真实的接口地址
-    data,
-    header: {
-      'content-type': 'application/json' // 默认值
-    }
-  });
-}
+//   return await Taro.request({
+//     url: `${config.APIURL}/test/topic`, // 仅为示例，并非真实的接口地址
+//     data,
+//     header: {
+//       'content-type': 'application/json' // 默认值
+//     }
+//   });
+// }
 
-export async function fetchUserTopic(data: UserTopicParams) {
-  return await Taro.request({
-    url: `${config.APIURL}/user//topic`, // 仅为示例，并非真实的接口地址
-    data,
-    header: {
-      'content-type': 'application/json' // 默认值
-    }
-  });
-}
+// export async function fetchUserTopic(data: UserTopicParams) {
+//   return await Taro.request({
+//     url: `${config.APIURL}/user//topic`, // 仅为示例，并非真实的接口地址
+//     data,
+//     header: {
+//       'content-type': 'application/json' // 默认值
+//     }
+//   });
+// }
 // 登陆
-export async function fetchUserLoginApp(data: any) {
+interface UserLoginParams {
+  code: string;
+}
+
+export async function fetchUserLoginApp(data: UserLoginParams) {
   const token = getToken();
   if (!token) {
     const result = await fetch(`${config.APIURL}/user/userLoginApp`, data);
@@ -117,8 +121,47 @@ export async function fetchUserLoginApp(data: any) {
   }
 }
 
+interface ProductInfoParams {
+  utid: string;
+  test_id: string;
+  cur: string;
+}
 /// test/productInfo
-export async function fetchProductInfo(data: any) {
+export async function fetchProductInfo(data: ProductInfoParams) {
   const result = await fetch(`${config.APIURL}/test/productInfo`, data);
+  return result;
+}
+
+interface TestTopicParams {
+  utid: string;
+  test_id: string;
+  cur: string;
+}
+/// test/topic
+export async function fetchTestTopic(data: TestTopicParams) {
+  const result = await fetch(`${config.APIURL}/test/topic`, data);
+  return result;
+}
+
+interface UserTopicParams {
+  utid: string;
+  test_id: string;
+  cur: string;
+  number: string;
+  answer?: number | string;
+  last?: string;
+}
+/// test/topic
+export async function fetchUserTopic(data: UserTopicParams) {
+  const result = await fetch(`${config.APIURL}/user/topic`, data);
+  return result;
+}
+
+interface SeriesReport {
+  reportid: Array<string>;
+}
+/// test/topic
+export async function fetchSeriesReport(data: SeriesReport) {
+  const result = await fetch(`${config.APIURL}/user/seriesReport`, data);
   return result;
 }

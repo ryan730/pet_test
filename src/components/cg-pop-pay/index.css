@@ -165,17 +165,10 @@
   border-radius: 10px;
 }
 .cg-pop .icon-chat {
-  width: 28px;
-  height: 25px;
-  align-self: flex-start;
+  width: 54px;
+  height: 54px;
 }
-.cg-pop .icon-chat-1 {
-  width: 24px;
-  height: 21px;
-  position: absolute;
-  right: 6px;
-  bottom: 10px;
-}
+
 .cg-pop .caption-1 {
   color: rgba(0, 0, 0, 1);
   font-size: 30px;

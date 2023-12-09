@@ -6,11 +6,11 @@
         <div class="header">
           <div class="wrapper">
             <span class="buy">购买</span>
-            <span class="title-1">广泛性焦虑障碍量表</span>
+            <span class="title-1">{{ props.info.name }}</span>
           </div>
           <div class="price-wrapper">
             <span class="price-label">合计</span>
-            <span class="price">¥6.9</span>
+            <span class="price">¥{{ props.info.price }}</span>
           </div>
         </div>
         <div class="submain" />
@@ -20,15 +20,16 @@
               <span class="caption">选择支付方式</span>
             </div>
             <div class="group-1">
-              <div class="view">
-                <img class="icon-chat" :src="require('@/assets/cg-images/img_0.png')" />
-                <img class="icon-chat-1" :src="require('@/assets/cg-images/img_1.png')" />
-              </div>
+              <img class="icon-chat" :src="require('@/assets/cg-images/wx.png')" />
+              <!-- <div class="view"> -->
+              <!-- <img class="icon-chat" :src="require('@/assets/cg-images/img_0.png')" /> -->
+              <!-- <img class="icon-chat-1" :src="require('@/assets/cg-images/img_1.png')" /> -->
+              <!-- </div> -->
               <span class="caption-1">微信支付</span>
             </div>
           </div>
           <div class="price-wrapper-1" @click="handleToPayment">
-            <span class="price-1">确认支付 ¥6.9</span>
+            <span class="price-1">确认支付 ¥{{ props.info.price }}</span>
           </div>
         </div>
       </div>
@@ -49,6 +50,7 @@ const emit = defineEmits(['onClickMask', 'onClickPass']);
 
 interface Props {
   isShow?: boolean;
+  info: any;
 }
 
 interface reqForPay {
@@ -65,7 +67,7 @@ const props = withDefaults(defineProps<Props>(), {
 const isShow = computed(() => props.isShow);
 
 const handleMask = () => {
-  console.log('handleMask', props.isShow);
+  console.log('handleMask', props);
   emit('onClickMask');
 };
 

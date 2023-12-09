@@ -9,53 +9,31 @@
       </div>
       <div v-if="true" class="body">
         <div class="wrapper">
-          <div class="group">
-            <img class="icon-down" src="./images/img_0.png" />
-            <span class="caption">答题时需要注意以下事项</span>
-          </div>
-          <div class="group-1">
-            <img class="icon-circle" src="./images/img_1.png" />
-            <span v-if="true" class="caption-1">凭第一反应回答，不需要考虑太多</span>
-          </div>
+          <span class="caption-1">答题时需要注意以下事项</span>
+          <span v-if="true" class="caption-2">凭第一反应回答，不需要考虑太多</span>
+          <span class="caption-3">题目没有好与坏，对与错之分</span>
         </div>
-        <div class="wrapper-1">
-          <div class="group-2">
-            <img class="picture" src="./images/img_2.png" />
-            <img class="icon-circle-1" src="./images/img_3.png" />
-            <img class="icon-line" src="./images/img_4.png" />
-          </div>
-        </div>
-        <img class="dot" src="./images/img_5.png" />
-      </div>
-      <div class="footer">
-        <div class="wrapper-2">
-          <img class="icon-circle-2" src="./images/img_6.png" />
-          <span class="title">题目没有好与坏，对与错之分</span>
+        <div class="wrapper-chart">
+          <img :src="require('@/assets/images/f-char1.png')" />
         </div>
       </div>
     </div>
     <div class="block-1">
       <div class="header-1">
         <div class="wrapper-5">
-          <div class="group-6"><span class="num">7</span></div>
+          <!-- <div class="group-6"><span class="num">7</span></div> -->
         </div>
       </div>
       <div class="body-1">
         <div class="wrapper-6">
-          <!-- <img class="icon-like" src="./images/img_7.png" />
-          <img class="icon-like-1" src="./images/img_8.png" />
-          <img class="icon-line-2" src="./images/img_9.png" />
-          <img class="icon-text-1" src="./images/img_10.png" />
-          <img class="icon-piece-2" src="./images/img_11.png" />
-          <img class="icon-1" src="./images/img_12.png" />
-          <img class="icon-play" src="./images/img_13.png" /> -->
+          <img :src="require('@/assets/images/f-char.png')" />
         </div>
         <span class="title-1">恭喜您完成测试</span>
         <div class="title-wrapper">
           <span class="title-2">查看我的测评结果</span>
         </div>
         <span class="caption-2">您今后可以在【我的测评】中找到您测试过的报告</span>
-        <div class="wrapper-7"><span class="logout">保存并退出</span></div>
+        <!-- <div class="wrapper-7"><span class="logout">保存并退出</span></div> -->
       </div>
     </div>
   </div>
@@ -63,7 +41,6 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive, computed, watch } from 'vue';
 import Taro, { getEnv, showToast, pxTransform } from '@tarojs/taro';
-import { Cell, CellGroup } from '@nutui/nutui-taro';
 import { IconFont } from '@nutui/icons-vue-taro';
 import { fetchTestTopic } from '@/service';
 import { useAppStore } from '@/store';
@@ -78,7 +55,7 @@ const currentNumb = ref(0);
 
 const appStore = useAppStore();
 
-const count = computed(() => appStore.getCurrTopicNumber);
+const count = computed(() => appStore.getCurrTopicProcess);
 
 const isHeightOverFlow = ref(false);
 
@@ -97,14 +74,14 @@ const getStyle = computed(() => {
 });
 
 const handlePrev = () => {
-  let currTopicNumber = appStore.getCurrTopicNumber;
+  let currTopicProcess = appStore.getCurrTopicProcess;
   // eslint-disable-next-line no-plusplus
-  currTopicNumber--;
-  if (currTopicNumber <= 1) {
-    currTopicNumber = 1;
+  currTopicProcess--;
+  if (currTopicProcess <= 1) {
+    currTopicProcess = 1;
   }
-  appStore.setCurrTopicNumber(currTopicNumber);
-  console.log('handlePrev:', currTopicNumber, appStore.getCurrTopicNumber);
+  appStore.setCurrTopicProcess(currTopicProcess);
+  console.log('handlePrev:', currTopicProcess, appStore.getCurrTopicProcess);
 };
 
 const handleNext = () => {
@@ -116,19 +93,19 @@ const handleNext = () => {
     });
     return;
   }
-  let currTopicNumber = appStore.getCurrTopicNumber;
+  let currTopicProcess = appStore.getCurrTopicProcess;
   // eslint-disable-next-line no-plusplus
-  currTopicNumber++;
-  if (currTopicNumber > total.value) {
-    currTopicNumber = total.value;
+  currTopicProcess++;
+  if (currTopicProcess > total.value) {
+    currTopicProcess = total.value;
     Taro.showToast({
       title: '已经是最后一题了',
       icon: 'none',
       duration: 2000
     });
   }
-  appStore.setCurrTopicNumber(currTopicNumber);
-  console.log('handleNext:', currTopicNumber, appStore.getCurrTopicNumber);
+  appStore.setCurrTopicProcess(currTopicProcess);
+  console.log('handleNext:', currTopicProcess, appStore.getCurrTopicProcess);
 };
 
 const getActive = (item: any) => {
@@ -165,7 +142,7 @@ const init = async () => {
   topics.value = mock?.data?.topics;
   total.value = 3; // mock?.data?.total;
   // number.value = topics.value[0].number;
-  number.value = appStore.getCurrTopicNumber;
+  number.value = appStore.getCurrTopicProcess;
   topic.value = topics.value[parseInt(Math.random() * 3)];
   currentNumb.value = 0; // topics.value[0]?.number;
   console.log('topics.value=======>>>', mock?.data, topics.value);
@@ -175,27 +152,17 @@ const resized = () => {
   setTimeout(() => {
     const query = Taro.createSelectorQuery();
     query
-      .select('.finally')
+      .select('.block')
       .boundingClientRect(res => {
         const info = Taro.getSystemInfoSync();
-        contentHeight.value = res.height;
-        // const content_height = res.height + (env.toLowerCase() == 'web' ? 200 : 200);
-        // console.log('resized-:->:', env, info, res, res.height, content_height, info.windowHeight);
-
-        // if (content_height + 150 > info.windowHeight) {
-        //   isHeightOverFlow.value = true;
-        //   contentHeight.value = content_height;
-        // } else {
-        //   isHeightOverFlow.value = true;
-        //   contentHeight.value = content_height;
-        // }
+        contentHeight.value = info.windowHeight - res.height - appStore.getNavHeight / 2; // res.height;
       })
       .exec();
   }, 200);
 };
 
 watch(
-  () => appStore.getCurrTopicNumber,
+  () => appStore.getCurrTopicProcess,
   newVal => {
     init();
     resized();
@@ -209,5 +176,5 @@ onMounted(async () => {
 });
 </script>
 
-<style src="./index.css" />
+<style src="./index.scss" lang="scss" />
 ;

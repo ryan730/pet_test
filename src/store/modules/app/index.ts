@@ -5,20 +5,20 @@ interface AuthState {
   /** 用户信息 */
   activeTab: string;
   navHeight: number;
-  currTopicNumber: number;
+  currTopicProcess: number;
 }
 
 export const useAppStore = defineStore('app-store', {
   state: (): AuthState => ({
     activeTab: useRoutePath(),
     navHeight: 0,
-    currTopicNumber: 1
+    currTopicProcess: 0
   }),
   getters: {
     /** 是否登录 */
     getActiveTab: state => state.activeTab,
     getNavHeight: state => state.navHeight,
-    getCurrTopicNumber: state => state.currTopicNumber
+    getCurrTopicProcess: state => state.currTopicProcess
   },
   actions: {
     setActiveTab(tab: string) {
@@ -27,8 +27,8 @@ export const useAppStore = defineStore('app-store', {
     setNavHeight(val: number) {
       this.navHeight = val;
     },
-    setCurrTopicNumber(val: number) {
-      this.currTopicNumber = val;
+    setCurrTopicProcess(val: number) {
+      this.currTopicProcess = val;
     },
     /** 重置app状态 */
     resetAuthStore() {

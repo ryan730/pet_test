@@ -107,10 +107,11 @@
 .cg-nav .wrapper {
   display: flex;
   /* margin-top: 26px; */
-  justify-content: center;
+  justify-content:space-between;
 	align-items: center;
   /* align-self: center; */
-  width: 694px;
+  /* width: 694px; */
+	width:100%;
 }
 .cg-nav .icon-close {
   width: 30px;
@@ -123,14 +124,13 @@
   font-size: 34px;
   font-weight: 500;
   line-height: 48px;
-  margin-left: 166px;
-  align-self: center;
+  /* margin-left: 166px; */
+  /* align-self: center; */
   white-space: nowrap;
 }
 .cg-nav .group-1 {
   display: flex;
-  margin-left: 164px;
-  justify-content: flex-start;
+  /* margin-left: 164px; */
   align-self: center;
   height: 30px;
 	width:30px;

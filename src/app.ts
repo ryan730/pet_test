@@ -1,11 +1,11 @@
-///import './api'; // !important 一定要先引入api 提前hotfix taro的bug
+// import './api'; // !important 一定要先引入api 提前hotfix taro的bug
 
 import { createApp } from 'vue';
+import Taro, { getSystemInfoSync } from '@tarojs/taro';
 import { setupStore } from './store';
 import { setupAssets } from './plugins';
-import Taro from '@tarojs/taro';
 
-console.log('App', Taro.getSystemInfoSync);
+console.log('App', getSystemInfoSync);
 
 const App = createApp({
   onShow() {
