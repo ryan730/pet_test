@@ -71,12 +71,21 @@
   font-size: 26px;
   font-weight: 500;
   white-space: nowrap;
+	text-align: center;
 }
 .finally .caption-3 {
   color: rgba(99, 103, 110, 1);
   font-size: 26px;
   font-weight: 500;
   white-space: nowrap;
+}
+.finally .desc {
+  color: rgba(99, 103, 110, 1);
+  font-size: 26px;
+  font-weight: 500;
+  white-space: nowrap;
+	text-align: center;
+	margin-top: 20px;
 }
 .finally .group-1 {
   display: flex;
@@ -282,7 +291,7 @@
 .finally .title-wrapper {
   background-color: rgba(255, 114, 55, 1);
   display: flex;
-  margin-top: 42px;
+  margin-top: 10px;
   justify-content: center;
   align-self: center;
   width: 326px;

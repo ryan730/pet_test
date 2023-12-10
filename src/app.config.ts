@@ -1,5 +1,11 @@
 export default defineAppConfig({
-  pages: ['pages/home/index', 'pages/profile/index', 'pages/answer/index', 'pages/finally/index'],
+  pages: [
+    'pages/home/index',
+    'pages/profile/index',
+    'pages/answer/index',
+    'pages/finally/index',
+    'pages/simply_report/index'
+  ],
   window: {
     backgroundColor: '#fff',
     backgroundTextStyle: 'light',

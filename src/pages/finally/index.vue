@@ -29,10 +29,10 @@
           <img :src="require('@/assets/images/f-char.png')" />
         </div>
         <span class="title-1">恭喜您完成测试</span>
-        <div class="title-wrapper">
+        <div class="title-wrapper" @click="handleClickToRepot">
           <span class="title-2">查看我的测评结果</span>
         </div>
-        <span class="caption-2">您今后可以在【我的测评】中找到您测试过的报告</span>
+        <span class="desc">您今后可以在【我的测评】中找到您测试过的报告</span>
         <!-- <div class="wrapper-7"><span class="logout">保存并退出</span></div> -->
       </div>
     </div>
@@ -73,81 +73,6 @@ const getStyle = computed(() => {
   return val;
 });
 
-const handlePrev = () => {
-  let currTopicProcess = appStore.getCurrTopicProcess;
-  // eslint-disable-next-line no-plusplus
-  currTopicProcess--;
-  if (currTopicProcess <= 1) {
-    currTopicProcess = 1;
-  }
-  appStore.setCurrTopicProcess(currTopicProcess);
-  console.log('handlePrev:', currTopicProcess, appStore.getCurrTopicProcess);
-};
-
-const handleNext = () => {
-  if (!(currentNumb.value > 0)) {
-    Taro.showToast({
-      title: '选择一个选项',
-      icon: 'none',
-      duration: 2000
-    });
-    return;
-  }
-  let currTopicProcess = appStore.getCurrTopicProcess;
-  // eslint-disable-next-line no-plusplus
-  currTopicProcess++;
-  if (currTopicProcess > total.value) {
-    currTopicProcess = total.value;
-    Taro.showToast({
-      title: '已经是最后一题了',
-      icon: 'none',
-      duration: 2000
-    });
-  }
-  appStore.setCurrTopicProcess(currTopicProcess);
-  console.log('handleNext:', currTopicProcess, appStore.getCurrTopicProcess);
-};
-
-const getActive = (item: any) => {
-  if (item.value === currentNumb.value) {
-    return {
-      'background-color': 'rgba(249, 216, 110, 1)'
-    };
-  }
-};
-
-const handleItem = (item: any) => {
-  /// debounce(() => {
-  if (item.value == currentNumb.value) {
-    return;
-  }
-  currentNumb.value = item.value;
-  setTimeout(() => {
-    handleNext();
-  }, 1500);
-  /// }, 1600)
-};
-
-const init = async () => {
-  let data = null;
-  try {
-    data = await fetchTestTopic({
-      utid: '',
-      test_id: '',
-      cur: '46'
-    });
-  } catch (e) {
-    console.log(e);
-  }
-  topics.value = mock?.data?.topics;
-  total.value = 3; // mock?.data?.total;
-  // number.value = topics.value[0].number;
-  number.value = appStore.getCurrTopicProcess;
-  topic.value = topics.value[parseInt(Math.random() * 3)];
-  currentNumb.value = 0; // topics.value[0]?.number;
-  console.log('topics.value=======>>>', mock?.data, topics.value);
-};
-
 const resized = () => {
   setTimeout(() => {
     const query = Taro.createSelectorQuery();
@@ -161,17 +86,13 @@ const resized = () => {
   }, 200);
 };
 
-watch(
-  () => appStore.getCurrTopicProcess,
-  newVal => {
-    init();
-    resized();
-    console.log('watch:', newVal);
-  }
-);
+const handleClickToRepot = () => {
+  Taro.navigateTo({
+    url: '/pages/simply_report/index'
+  });
+};
 
 onMounted(async () => {
-  init();
   resized();
 });
 </script>
