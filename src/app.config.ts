@@ -14,6 +14,9 @@ export default defineAppConfig({
     navigationBarTextStyle: 'black',
     navigationStyle: 'custom'
   },
+  usingComponents: {
+    'ec-canvas': './components/ec-canvas/ec-canvas' // 书写第三方组件的相对路径
+  },
   subPackages: [
     // {
     // 	root: "package",

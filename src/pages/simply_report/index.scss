@@ -5,14 +5,14 @@
 	display: flex;
 }
 .simply_report {
-  position: relative;
-  width: 750px;
-  // height: 100%;
-  // overflow: hidden;
-  padding-left: 0;
-  padding-right: 0;
-  padding-top: 0;
-  padding-bottom: 82px;
+	position: relative;
+	width: 750px;
+	// height: 100%;
+	// overflow: hidden;
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 0;
+	padding-bottom: 82px;
 
 	.group_1 {
 		background-color: rgba(255, 255, 255, 1);
@@ -302,17 +302,19 @@
 	}
 
 	.text-wrapper_1 {
-		margin: 0 196px 0 216px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.text_11 {
 		overflow-wrap: break-word;
 		color: rgba(0, 0, 0, 1);
 		font-size: 30px;
-		letter-spacing: 0.6205102801322937px;
 		font-family: PingFang-SC-Bold;
 		font-weight: normal;
-		text-align: left;
+		text-align: center;
 		white-space: nowrap;
 		line-height: 42px;
 	}
@@ -430,7 +432,7 @@
 
 	.group_9 {
 		height: 309px;
-		background:url(../../assets/images/su.png) 100% no-repeat;
+		background: url(../../assets/images/su.png) 100% no-repeat;
 		background-size: 100% 100%;
 		width: 325px;
 		position: absolute;
@@ -526,8 +528,7 @@
 	.section_3 {
 		position: relative;
 		width: 215px;
-		background: url(../../assets/images/su.png) -2px -2px
-			no-repeat;
+		background: url(../../assets/images/su.png) -2px -2px no-repeat;
 		background-size: 219px 197px;
 		padding: 0 15px 143px 77px;
 	}
@@ -600,7 +601,7 @@
 		);
 		border-radius: 44px;
 		padding: 21px;
-		width:700px;
+		width: 700px;
 	}
 
 	.text_26 {
@@ -614,19 +615,21 @@
 		line-height: 45px;
 	}
 
-	.taro_html{
-		color: #666;
-    font-family: PingFang-SC-Medium;
-    font-size: 28px;
-    font-weight: 400;
-    // height: 132rpx;
-    line-height: 44px;
-    margin-top: 9px;
-    overflow-wrap: break-word;
-    text-align: justify;
-    width: 620px;
+	.taro_html {
+		// color: #666;
+		// font-family: PingFang-SC-Medium;
+		// font-size: 28px;
+		// font-weight: 400;
+		// // height: 132rpx;
+		// line-height: 44px;
+		// margin-top: 9px;
+		// overflow-wrap: break-word;
+		// text-align: justify;
+		// width: 620px;
 	}
 
+	.bar-chart {
+		width: 500px;
+		height: 500px;
+	}
 }
-
-

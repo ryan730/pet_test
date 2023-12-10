@@ -1,0 +1,44 @@
+.flex-row{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.repo-title {
+
+}
+
+.repo-box{
+	width: 6px;
+	height: 28px;
+	background: url(../../assets/images/su.png) 100% no-repeat;
+	background-size: 100% 100%;
+	margin: 8px 10px 6px 0;
+}
+
+.repo-text {
+	overflow-wrap: break-word;
+	color: rgba(34, 34, 34, 1);
+	font-size: 30px;
+	font-family: PingFangSC-Medium;
+	font-weight: 500;
+	text-align: left;
+	white-space: nowrap;
+	line-height: 42px;
+}
+
+.repo-content{
+	display: flex;;
+	width: 620px;
+	/* height: 88px; */
+	overflow-wrap: break-word;
+	color: rgba(102, 102, 102, 1);
+	font-size: 28px;
+	font-family: PingFang-SC-Medium;
+	font-weight: normal;
+	text-align: justify;
+	/* line-height: 44px; */
+	margin-top: 9px;
+	margin-bottom: 20px;
+}

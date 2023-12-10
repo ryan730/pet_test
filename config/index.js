@@ -20,7 +20,7 @@ const NutUIResolver = () => {
 const config = {
   projectName: 'AMAOAGOU',
   date: '2023-12-3',
-	enableSourceMap:true,
+  enableSourceMap: true,
   designWidth(input) {
     // 配置 NutUI 375 尺寸
     if (input?.file?.replace(/\\+/g, '/').indexOf('@nutui') > -1) {
@@ -51,8 +51,8 @@ const config = {
     options: {}
   },
   framework: 'vue3',
-	cache: {
-    enable: false, // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
+  cache: {
+    enable: false // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
   },
   mini: {
     postcss: {

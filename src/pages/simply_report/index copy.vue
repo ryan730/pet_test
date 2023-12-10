@@ -10,7 +10,7 @@
         <img class="image_4" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-right.png')" />
       </div>
       <div class="section_2 flex-col">
-        <view class="taro_html" v-html="getRenderDataToHtml"></view>
+        <view class="taro_html" v-html="renderData[0].text"></view>
         <!-- <div class="group_4 flex-row justify-between">
           <div class="box_1 flex-col"></div>
           <span class="text_5">性格</span>
@@ -32,12 +32,12 @@
         </span> -->
       </div>
       <div class="chart_1 flex-col">
-        <div class="text-wrapper_1">
+        <div class="text-wrapper_1 flex-row">
           <span class="text_11">核心特质剖面图</span>
-          <view class="bar-chart">
-            <ec-canvas id="mychart-dom-line" canvas-id="mychart-line" :ec="ec" :force-use-old-canvas="true"></ec-canvas>
-          </view>
         </div>
+        <!-- <view class="bar-chart">
+          <e-chart ref="vueref0" canvas-id="bar-canvas" />
+        </view> -->
       </div>
     </div>
     <div class="group_10 flex-col">
@@ -51,17 +51,14 @@
 import { onMounted, ref, reactive, computed, watch } from 'vue';
 import Taro, { getEnv, showToast, pxTransform } from '@tarojs/taro';
 import { IconFont } from '@nutui/icons-vue-taro';
-import { EChart } from 'echarts-taro3-vue';
+// import { EChart } from 'echarts-taro3-vue';
 import { fetchSeriesReport } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
-import * as echarts from '@/components/ec-canvas/echarts';
 import mock from './mock.js';
 
-const renderData = ref('');
+const renderData = ref([]);
 const appStore = useAppStore();
 const productInfoStore = useProductInfoStore();
-
-const vueref0 = ref(null);
 
 const count = computed(() => appStore.getCurrTopicProcess);
 const info = computed(() => productInfoStore.getInfo);
@@ -71,10 +68,7 @@ const isHeightOverFlow = ref(false);
 const contentHeight = ref(0);
 
 const env = getEnv();
-
-const getRenderDataToHtml = computed(() => {
-  return renderData.value?.[0]?.text || '';
-});
+/// const info = Taro.getSystemInfoSync();
 
 const getStyle = computed(() => {
   const val = {
@@ -124,105 +118,7 @@ onMounted(async () => {
   getReport();
   resized();
 });
-
-function initChart(canvas, width, height) {
-  const chart = echarts.init(canvas, null, {
-    width,
-    height
-  });
-  canvas.setChart(chart);
-  const model = {
-    yCates: ['Saturday', 'Friday', 'Thursday', 'Wednesday', 'Tuesday', 'Monday', 'Sunday'],
-    xCates: ['1', '2', '3', '4', '5'],
-    data: [
-      // [yCateIndex, xCateIndex, value]
-      [0, 0, 5],
-      [0, 1, 7],
-      [0, 2, 3],
-      [0, 3, 5],
-      [0, 4, 2],
-      [1, 0, 1],
-      [1, 1, 2],
-      [1, 2, 4],
-      [1, 3, 8],
-      [1, 4, 2],
-      [2, 0, 2],
-      [2, 1, 3],
-      [2, 2, 8],
-      [2, 3, 6],
-      [2, 4, 7],
-      [3, 0, 3],
-      [3, 1, 7],
-      [3, 2, 5],
-      [3, 3, 1],
-      [3, 4, 6],
-      [4, 0, 3],
-      [4, 1, 2],
-      [4, 2, 7],
-      [4, 3, 8],
-      [4, 4, 9],
-      [5, 0, 2],
-      [5, 1, 2],
-      [5, 2, 3],
-      [5, 3, 4],
-      [5, 4, 7],
-      [6, 0, 6],
-      [6, 1, 5],
-      [6, 2, 3],
-      [6, 3, 1],
-      [6, 4, 2]
-    ]
-  };
-
-  const data = model.data.map(function (item) {
-    return [item[1], item[0], item[2] || '-'];
-  });
-
-  const option = {
-    title: {
-      text: 'Basic Radar Chart'
-    },
-    legend: {
-      data: ['Allocated Budget', 'Actual Spending']
-    },
-    radar: {
-      // shape: 'circle',
-      indicator: [
-        { name: 'Sales', max: 6500 },
-        { name: 'Administration', max: 16000 },
-        { name: 'Information Technology', max: 30000 },
-        { name: 'Customer Support', max: 38000 },
-        { name: 'Development', max: 52000 },
-        { name: 'Marketing', max: 25000 }
-      ]
-    },
-    series: [
-      {
-        name: 'Budget vs spending',
-        type: 'radar',
-        data: [
-          {
-            value: [4200, 3000, 20000, 35000, 50000, 18000],
-            name: 'Allocated Budget'
-          },
-          {
-            value: [5000, 14000, 28000, 26000, 42000, 21000],
-            name: 'Actual Spending'
-          }
-        ]
-      }
-    ]
-  };
-
-  chart.setOption(option);
-  return chart;
-}
-
-const ec = {
-  onInit: initChart
-};
 </script>
 
 <style src="./index.scss" lang="scss" />
-<style src="./echarts.scss" lang="scss" />
 <style src="./template.css" />

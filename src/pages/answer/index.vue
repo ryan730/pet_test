@@ -301,13 +301,23 @@ onMounted(async () => {
     // }
     appStore.setCurrTopicProcess(frist);
   }
+
   Taro.createSelectorQuery()
     .select('.bg')
     .boundingClientRect(bg => {
       bgHeight.value = bg.height;
     })
     .exec();
+
   resized();
+
+  /// /自动答题测试用
+  // setInterval(() => {
+  //   currentAnswerNumb.value = 0;
+  //   //
+  //   console.log('currentAnswerNumb.value:', currentAnswerNumb.value);
+  //   handleItem({ value: '1' }, 1);
+  // }, 2000);
 });
 </script>
 

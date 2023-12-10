@@ -49,6 +49,7 @@
     "@tarojs/taro": "3.6.17",
     "@tarojs/webpack5-runner": "3.6.17",
     "@vueuse/core": "^10.5.0",
+    "echarts-for-vue": "^1.4.1",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "qs": "^6.11.2",

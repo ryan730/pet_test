@@ -141,7 +141,7 @@ const getUserInfo = () => {
           pid: 46
         });
         console.log('result==', result);
-        result.data.status = 'showreport'; // 测试
+        /// result.data.status = 'showreport'; // 测试
         productInfoStore.setInfo(result.data);
         const process = Number(result.data?.test_info?.process);
         appStore.setCurrTopicProcess(process); // 第一次的进度值
