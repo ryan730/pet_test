@@ -97,7 +97,7 @@ const popupConfirm = ({ selectedValue, selectedOptions }) => {
 const handleEntryAnswer = () => {
   console.log('handleEntryAnswer===');
   Taro.navigateTo({
-    url: '/pages/answer/index'
+    url: '/package/answer/index'
   });
 };
 onMounted(() => {});

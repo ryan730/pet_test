@@ -7,7 +7,9 @@
   <div class="page" :style="getStyle">
     <div class="block">
       <div class="body">
-        <div class="bg-image" />
+        <div class="bg-image">
+          <img :src="require('@/assets/images/p1@2x.png')" />
+        </div>
       </div>
       <div class="submain">
         <div class="wrapper-2">
@@ -96,7 +98,7 @@ const state = reactive({
 const handleEntryToTest = () => {
   console.log('handleEntryToTest::');
   Taro.navigateTo({
-    url: '/pages/answer/index'
+    url: '/package/answer/index'
   });
 };
 
@@ -141,7 +143,7 @@ const getUserInfo = () => {
           pid: 46
         });
         console.log('result==', result);
-        /// result.data.status = 'showreport'; // 测试
+        /// result.data.status = 'showpay'; // 测试
         productInfoStore.setInfo(result.data);
         const process = Number(result.data?.test_info?.process);
         appStore.setCurrTopicProcess(process); // 第一次的进度值
@@ -152,7 +154,7 @@ const getUserInfo = () => {
         } else if (info.value.status === 'showreport') {
           // 评测作完，直接去评测结果页
           Taro.navigateTo({
-            url: '/pages/finally/index'
+            url: '/package/finally/index'
             // url: '/pages/simply_report/index'
           });
         } else if (info.value.status === 'notdone') {

@@ -137,7 +137,7 @@ const continueNextSection = async () => {
     });
     setTimeout(() => {
       Taro.navigateTo({
-        url: '/pages/finally/index'
+        url: '/package/finally/index'
       });
     }, 2000);
   }

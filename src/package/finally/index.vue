@@ -88,7 +88,7 @@ const resized = () => {
 
 const handleClickToRepot = () => {
   Taro.navigateTo({
-    url: '/pages/simply_report/index'
+    url: '/package/simply_report/index'
   });
 };
 

@@ -55,7 +55,6 @@
   font-family: SFProText-Semibold;
   font-size: 30px;
   font-weight: 600;
-  letter-spacing: -0.6000000238418579px;
   line-height: 42px;
   margin-left: 39px;
   align-self: center;
@@ -89,14 +88,14 @@
   box-sizing: border-box;
   padding: 4px;
   border: 2px solid rgba(0, 0, 0, 0.35);
-  border-radius: 5.333333492279052px;
+  border-radius: 5.3px;
 }
 .cg-nav .overlayer {
   background-color: rgba(0, 0, 0, 1);
   align-self: center;
   width: 36px;
   height: 15px;
-  border-radius: 2.666666746139526px;
+  border-radius: 2.6px;
 }
 .cg-nav .dot {
   width: 3px;

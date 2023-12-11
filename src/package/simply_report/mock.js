@@ -25,7 +25,7 @@ export default {
       },
       AA: {
         name: '对动物的攻击',
-        score: 19.67
+        score: 69.67
       }
     }
   ]

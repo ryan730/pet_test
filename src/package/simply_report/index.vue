@@ -76,6 +76,10 @@ const getRenderDataToHtml = computed(() => {
   return renderData.value?.[0]?.text || '';
 });
 
+const getRenderDataToScore = computed(() => {
+  return renderData.value?.[1] || [];
+});
+
 const getStyle = computed(() => {
   const val = {
     marginTop: `${pxTransform(appStore.getNavHeight)}`
@@ -100,12 +104,12 @@ const resized = () => {
 
 const getReport = async () => {
   const report_id = info.value.report_id;
-  let res = await fetchSeriesReport({
+  const res = await fetchSeriesReport({
     reportid: report_id
   });
   // const content = res.data?.[0]?.tab?.[0];
   // renderData.value = content?.content?.[0]?.data;
-  res = mock; // 测试
+  // res = mock; // 测试
 
   if (res.code != 1) {
     showToast({
@@ -131,84 +135,75 @@ function initChart(canvas, width, height) {
     height
   });
   canvas.setChart(chart);
-  const model = {
-    yCates: ['Saturday', 'Friday', 'Thursday', 'Wednesday', 'Tuesday', 'Monday', 'Sunday'],
-    xCates: ['1', '2', '3', '4', '5'],
-    data: [
-      // [yCateIndex, xCateIndex, value]
-      [0, 0, 5],
-      [0, 1, 7],
-      [0, 2, 3],
-      [0, 3, 5],
-      [0, 4, 2],
-      [1, 0, 1],
-      [1, 1, 2],
-      [1, 2, 4],
-      [1, 3, 8],
-      [1, 4, 2],
-      [2, 0, 2],
-      [2, 1, 3],
-      [2, 2, 8],
-      [2, 3, 6],
-      [2, 4, 7],
-      [3, 0, 3],
-      [3, 1, 7],
-      [3, 2, 5],
-      [3, 3, 1],
-      [3, 4, 6],
-      [4, 0, 3],
-      [4, 1, 2],
-      [4, 2, 7],
-      [4, 3, 8],
-      [4, 4, 9],
-      [5, 0, 2],
-      [5, 1, 2],
-      [5, 2, 3],
-      [5, 3, 4],
-      [5, 4, 7],
-      [6, 0, 6],
-      [6, 1, 5],
-      [6, 2, 3],
-      [6, 3, 1],
-      [6, 4, 2]
-    ]
-  };
 
-  const data = model.data.map(function (item) {
-    return [item[1], item[0], item[2] || '-'];
-  });
+  console.log('item====1==:::', getRenderDataToScore.value);
+
+  const dataData = [];
+
+  const indicator = getRenderDataToScore.value
+    ? Object.keys(getRenderDataToScore.value).map((item: any, index: number) => {
+        const ind = getRenderDataToScore.value[item];
+        dataData.push(ind.score);
+        const val = { name: ind.name, max: 80 };
+        if (index === 0) {
+          val.axisLabel = { show: true };
+        }
+        return val;
+      })
+    : [];
 
   const option = {
     title: {
-      text: 'Basic Radar Chart'
+      text: ''
     },
     legend: {
-      data: ['Allocated Budget', 'Actual Spending']
+      // data: ['Allocated Budget', 'Actual Spending']
+      data: []
     },
     radar: {
       // shape: 'circle',
-      indicator: [
-        { name: 'Sales', max: 6500 },
-        { name: 'Administration', max: 16000 },
-        { name: 'Information Technology', max: 30000 },
-        { name: 'Customer Support', max: 38000 },
-        { name: 'Development', max: 52000 },
-        { name: 'Marketing', max: 25000 }
-      ]
+      // formatter: text => {
+      //   const _text = text.replace(/\s(3]/g, match => {
+      //     console.log(match);
+      //     return `${match}\n`;
+      //   });
+      //   return _text;
+      // },
+      name: {
+        textStyle: {
+          padding: [-10, -12] // 控制文字padding
+        }
+      },
+      center: ['50%', '35%'], // 位置
+      radius: 85, // 缩放
+      indicator
     },
     series: [
       {
-        name: 'Budget vs spending',
+        name: 'all',
         type: 'radar',
+        itemStyle: {
+          // 此属性的颜色和下面areaStyle属性的颜色都设置成相同色即可实现
+          color: '#cc0000'
+          // borderColor: '#cc0000'
+        },
         data: [
           {
-            value: [4200, 3000, 20000, 35000, 50000, 18000],
-            name: 'Allocated Budget'
-          },
-          {
-            value: [5000, 14000, 28000, 26000, 42000, 21000],
-            name: 'Actual Spending'
+            value: dataData,
+            name: 'a',
+            label: {
+              normal: {
+                show: true,
+                formatter(params) {
+                  return params.value;
+                }
+              }
+            }
           }
+          // {
+          //   value: [5000, 14000, 28000, 26000, 42000, 21000],
+          //   name: 'Actual Spending'
+          // }
         ]
       }
     ]

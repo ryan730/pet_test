@@ -10,11 +10,11 @@
 }
 
 .profile .group {
-	background-color: rgba(255, 255, 255, 1);
+	/* background-color: rgba(255, 255, 255, 1);
 	background-image: url(@/assets/profile-images/img_8.png);
 	background-repeat: no-repeat;
 	background-position: 72px 125px;
-	background-size: 28px 28px;
+	background-size: 28px 28px; */
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -25,14 +25,14 @@
 }
 
 .profile .group-1 {
-	background-color: rgba(255, 255, 255, 1);
+	/* background-color: rgba(255, 255, 255, 1);
 	background-image: url(@/assets/profile-images/img_9.png),
 		url(@/assets/profile-images/img_10.png),
 		url(@/assets/profile-images/img_11.png),
 		url(@/assets/profile-images/img_12.png);
 	background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
 	background-position: 628px 217px, 637px 261px, 574px 261px, 34px 143px;
-	background-size: 6px 5px, 20px 10px, 100px 18px, 21px 24px;
+	background-size: 6px 5px, 20px 10px, 100px 18px, 21px 24px; */
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -164,7 +164,6 @@
 	color: rgba(99, 103, 110, 1);
 	font-size: 26px;
 	font-weight: 500;
-	letter-spacing: 0.537775567567567px;
 	line-height: 42px;
 	align-self: center;
 	white-space: nowrap;
