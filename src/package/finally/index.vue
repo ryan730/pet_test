@@ -14,7 +14,7 @@
           <span class="caption-3">题目没有好与坏，对与错之分</span>
         </div>
         <div class="wrapper-chart">
-          <img :src="require('@/assets/images/f-char1.png')" />
+          <img :src="`${getPic.char}`" />
         </div>
       </div>
     </div>
@@ -26,10 +26,10 @@
       </div>
       <div class="body-1">
         <div class="wrapper-6">
-          <img :src="require('@/assets/images/f-char.png')" />
+          <img :src="`${getPic.fchar}`" />
         </div>
         <span class="title-1">恭喜您完成测试</span>
-        <div class="title-wrapper" @click="handleClickToRepot">
+        <div class="title-wrapper" :style="{ backgroundColor: theme.color }" @click="handleClickToRepot">
           <span class="title-2">查看我的测评结果</span>
         </div>
         <span class="desc">您今后可以在【我的测评】中找到您测试过的报告</span>
@@ -45,6 +45,7 @@ import { IconFont } from '@nutui/icons-vue-taro';
 import { fetchTestTopic } from '@/service';
 import { useAppStore } from '@/store';
 import { debounce } from '@/utils';
+import { getAnimaoType, getAnimaoPic } from '@/utils/common';
 import mock from './mock.js';
 
 const topics = ref([]);
@@ -63,6 +64,17 @@ const contentHeight = ref(0);
 
 const env = getEnv();
 /// const info = Taro.getSystemInfoSync();
+
+const launchInfo = Taro.getLaunchOptionsSync();
+const getPic = computed(() => {
+  return getAnimaoPic(launchInfo?.query?.pid);
+});
+const theme = computed(() => {
+  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  return {
+    color: isDog ? '#ff7237' : '#ffa000'
+  };
+});
 
 const getStyle = computed(() => {
   const val = {
@@ -88,7 +100,7 @@ const resized = () => {
 
 const handleClickToRepot = () => {
   Taro.navigateTo({
-    url: '/package/simply_report/index'
+    url: '/package/simple_report/index'
   });
 };
 

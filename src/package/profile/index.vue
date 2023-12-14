@@ -60,7 +60,9 @@
         </div>
       </div>
       <div class="body-2">
-        <div class="title-wrapper" @click="handleEntryAnswer"><span class="title-4">开始答题</span></div>
+        <div class="title-wrapper" :style="{ backgroundColor: theme.color }" @click="handleEntryAnswer">
+          <span class="title-4">开始答题</span>
+        </div>
       </div>
     </div>
     <!-- <div class="footer-container">
@@ -75,9 +77,19 @@
 import { onMounted, ref, reactive, computed } from 'vue';
 import Taro, { pxTransform } from '@tarojs/taro';
 import { useAppStore } from '@/store';
+import { getAnimaoType } from '@/utils/common';
 
 const appStore = useAppStore();
 const navHeight = computed(() => appStore.getNavHeight);
+
+const launchInfo = Taro.getLaunchOptionsSync();
+const theme = computed(() => {
+  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  return {
+    color: isDog ? '#ff7237' : '#ffa000'
+  };
+});
+
 const getStyle = computed(() => {
   return {
     marginTop: `${pxTransform(appStore.getNavHeight)}`,

@@ -14,7 +14,7 @@
           <span class="caption-3">题目没有好与坏，对与错之分</span>
         </div>
         <div class="wrapper-chart">
-          <img :src="require('@/assets/images/f-char1.png')" />
+          <img :src="`${getPic.char}`" />
         </div>
       </div>
     </div>
@@ -77,6 +77,7 @@ import { IconFont } from '@nutui/icons-vue-taro';
 import { fetchTestTopic, fetchUserTopic, fetchProductInfo } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { debounce, sleep } from '@/utils';
+import { getAnimaoType, getAnimaoPic } from '@/utils/common';
 import mock from './mock.js';
 
 const topics = ref([]);
@@ -91,6 +92,17 @@ const number = computed(() => Number(appStore.getCurrTopicProcess));
 const currentAnswerNumb = ref(-1); // 当前答题选项,-1表示未选择
 
 const productInfoStore = useProductInfoStore();
+
+const launchInfo = Taro.getLaunchOptionsSync();
+const getPic = computed(() => {
+  return getAnimaoPic(launchInfo?.query?.pid);
+});
+const theme = computed(() => {
+  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  return {
+    color: isDog ? '#ff7237' : '#ffa000'
+  };
+});
 
 const info = computed(() => productInfoStore.getInfo);
 
@@ -177,7 +189,8 @@ const handleNext = () => {
 const getActive = (item: any, index: number) => {
   if (currentAnswerNumb.value === index) {
     return {
-      'background-color': 'rgba(249, 216, 110, 1)'
+      // 'background-color': 'rgba(249, 216, 110, 1)'
+      'background-color': theme.value.color
     };
   }
 };

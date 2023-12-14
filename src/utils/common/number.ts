@@ -65,3 +65,16 @@ export function debounce(fn: Function, wait: number) {
 export const sleep = (delaytime = 1000) => {
   return new Promise(resolve => setTimeout(resolve, delaytime));
 };
+
+export const getAnimaoType = (num: number) => {
+  return num == 46 ? 'dog' : 'cat';
+};
+
+export const getAnimaoPic = (num: number) => {
+  return {
+    bg: num == 46 ? require('@/assets/images/p2@2x.png') : require('@/assets/images/p1@2x.png'),
+    foot: num == 46 ? require('@/assets/images/p2@foot.png') : require('@/assets/images/p1@foot.png'),
+    char: num == 46 ? require('@/assets/images/p2-char@2x.png') : require('@/assets/images/p1-char@2x.png'),
+    fchar: num == 46 ? require('@/assets/images/p2-f-char.png') : require('@/assets/images/p1-f-char.png')
+  };
+};

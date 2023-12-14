@@ -1,6 +1,6 @@
 <template>
   <cg-navbar title="测评报告" />
-  <div class="simply_report flex-col" :style="getStyle">
+  <div class="simple_report flex-col" :style="getStyle">
     <div class="group_3 flex-col">
       <span class="text_3">核心类型：</span>
       <div class="single-avatar_1 flex-col"></div>
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="group_10 flex-col">
-      <button class="button_1 flex-col" @click="onClick_1">
+      <button class="button_1 flex-col" @click="onClickGoDetail">
         <span class="text_26">查看完整解读报告</span>
       </button>
     </div>
@@ -89,18 +89,13 @@ const getStyle = computed(() => {
   return val;
 });
 
-const resized = () => {
-  // setTimeout(() => {
-  //   const query = Taro.createSelectorQuery();
-  //   query
-  //     .select('.block')
-  //     .boundingClientRect(res => {
-  //       const info = Taro.getSystemInfoSync();
-  //       contentHeight.value = info.windowHeight - res.height - appStore.getNavHeight / 2; // res.height;
-  //     })
-  //     .exec();
-  // }, 200);
+const onClickGoDetail = () => {
+  Taro.navigateTo({
+    url: '/package/detail_report/index'
+  });
 };
+
+const resized = () => {};
 
 const getReport = async () => {
   const report_id = info.value.report_id;
@@ -144,7 +139,7 @@ function initChart(canvas, width, height) {
     ? Object.keys(getRenderDataToScore.value).map((item: any, index: number) => {
         const ind = getRenderDataToScore.value[item];
         dataData.push(ind.score);
-        const val = { name: ind.name, max: 80 };
+        const val = { name: ind.name, max: 35, min: 5 };
         if (index === 0) {
           val.axisLabel = { show: true };
         }

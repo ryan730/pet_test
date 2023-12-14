@@ -5,7 +5,7 @@ import Taro, { getSystemInfoSync } from '@tarojs/taro';
 import { setupStore } from './store';
 import { setupAssets } from './plugins';
 
-console.log('App', getSystemInfoSync);
+/// console.log('App', getSystemInfoSync());
 
 const App = createApp({
   onShow() {

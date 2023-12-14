@@ -28,7 +28,7 @@
               <span class="caption-1">微信支付</span>
             </div>
           </div>
-          <div class="price-wrapper-1" @click="handleToPayment">
+          <div class="price-wrapper-1" :style="{ backgroundColor: props.theme.color }" @click="handleToPayment">
             <span class="price-1">确认支付 ¥{{ props.info.price }}</span>
           </div>
         </div>
@@ -51,6 +51,7 @@ const emit = defineEmits(['onClickMask', 'onClickPass']);
 interface Props {
   isShow?: boolean;
   info: any;
+  theme: any;
 }
 
 interface reqForPay {

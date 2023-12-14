@@ -8,7 +8,7 @@
     <div class="block">
       <div class="body">
         <div class="bg-image">
-          <img :src="require('@/assets/images/p1@2x.png')" />
+          <img :src="`${getPic.bg}`" />
         </div>
       </div>
       <div class="submain">
@@ -55,24 +55,47 @@
           <span class="title-3">难以还原，请回忆或试想一下，当时的TA会怎么做吧~</span>
         </div>
         <div v-if="info?.status == 'notdone'" class="wrapper-5" @click="handleEntryToTest">
-          <div class="title-wrapper"><span class="title-4">立即测试</span></div>
-          <img class="picture" :src="require('@/assets/images/img_26.png')" />
+          <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
+            <span class="title-4">立即测试</span>
+          </div>
+          <img class="picture" :src="`${getPic.foot}`" />
         </div>
         <div v-if="info?.status == 'showpay'" class="wrapper-5" @click="handlePurchaseToTest">
-          <div class="title-wrapper"><span class="title-4">立即购买</span></div>
-          <img class="picture" :src="require('@/assets/images/img_26.png')" />
+          <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
+            <span class="title-4">立即购买</span>
+          </div>
+          <img class="picture" :src="`${getPic.foot}`" />
         </div>
       </div>
     </div>
   </div>
-  <cg-pop-pay :is-show="state.isPopShow" :info="info" @onClickMask="handleMask" @onClickPass="handlePass" />
+  <cg-pop-pay
+    :is-show="state.isPopShow"
+    :info="info"
+    :theme="theme"
+    @onClickMask="handleMask"
+    @onClickPass="handlePass"
+  />
 </template>
 <script setup lang="ts">
 import { onMounted, ref, reactive, computed } from 'vue';
-import Taro, { getEnv, navigateBack, getWindowInfo, pxTransform, getSystemInfoSync } from '@tarojs/taro';
+import Taro, {
+  getEnv,
+  navigateBack,
+  getWindowInfo,
+  pxTransform,
+  getSystemInfoSync,
+  getCurrentInstance
+} from '@tarojs/taro';
 import { Button, Text } from '@tarojs/components';
 import { fetchUserLoginApp, fetchProductInfo, getToken } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
+import { getAnimaoPic, getAnimaoType } from '@/utils/common';
+
+const instance = getCurrentInstance();
+const launchInfo = Taro.getLaunchOptionsSync();
+// 输出当前页面的 URL 参数对象
+console.log('instance.router.params:', launchInfo, instance.router);
 
 /** 设置页面属性 */
 definePageConfig({
@@ -83,6 +106,17 @@ const appStore = useAppStore();
 const productInfoStore = useProductInfoStore();
 
 const info = computed(() => productInfoStore.getInfo);
+
+const theme = computed(() => {
+  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  return {
+    color: isDog ? '#ff7237' : '#ffa000'
+  };
+});
+
+const getPic = computed(() => {
+  return getAnimaoPic(launchInfo?.query?.pid);
+});
 
 const getStyle = computed(() => {
   return {
@@ -110,7 +144,7 @@ const handlePurchaseToTest = () => {
 const handlePass = () => {
   // Taro.switchTab({
   Taro.navigateTo({
-    url: '/pages/profile/index'
+    url: '/package/profile/index'
   });
 };
 
@@ -140,7 +174,7 @@ const getUserInfo = () => {
           code: res.code
         });
         const result = await fetchProductInfo({
-          pid: 46
+          pid: launchInfo?.query?.pid || 46
         });
         console.log('result==', result);
         /// result.data.status = 'showpay'; // 测试
@@ -155,7 +189,7 @@ const getUserInfo = () => {
           // 评测作完，直接去评测结果页
           Taro.navigateTo({
             url: '/package/finally/index'
-            // url: '/pages/simply_report/index'
+            // url: '/pages/simple_report/index'
           });
         } else if (info.value.status === 'notdone') {
           // 未完成，直接去测试页

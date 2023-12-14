@@ -159,6 +159,7 @@ export async function fetchUserTopic(data: UserTopicParams) {
 
 interface SeriesReport {
   reportid: Array<string>;
+  detail?: string | number;
 }
 /// test/topic
 export async function fetchSeriesReport(data: SeriesReport) {

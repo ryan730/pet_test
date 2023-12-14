@@ -1,0 +1,558 @@
+.page {
+  position: relative;
+  width: 750px;
+  height: 4348px;
+  overflow: hidden;
+}
+
+.box_1 {
+  height: 4348px;
+  background: url(https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng1ad57f44eac6e625c9c46d2da67ef86e1794e70f8c61a937b3d1bef937214367)
+    100% no-repeat;
+  background-size: 100% 100%;
+}
+
+.box_2 {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 27px 28px 39px 40px;
+}
+
+.box_3 {
+}
+
+.text_1 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 30px;
+  letter-spacing: -0.6000000238418579px;
+  font-family: SFProText-Semibold;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 36px;
+}
+
+.label_1 {
+  width: 34px;
+  height: 21px;
+  margin: 8px 0 7px 440px;
+}
+
+.label_2 {
+  width: 31px;
+  height: 22px;
+  margin: 8px 0 6px 10px;
+}
+
+.image_1 {
+  width: 50px;
+  height: 24px;
+  margin: 7px 0 5px 9px;
+}
+
+.box_4 {
+  margin: 51px 19px 0 9px;
+}
+
+.image_2 {
+  width: 51px;
+  height: 30px;
+  margin: 9px 0 9px 0;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 34px;
+  letter-spacing: 1.806249976158142px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 48px;
+  margin-left: 203px;
+}
+
+.image_3 {
+  width: 35px;
+  height: 7px;
+  margin: 21px 0 20px 221px;
+}
+
+.box_5 {
+  padding-bottom: 43px;
+}
+
+.box_6 {
+  background-color: rgba(255, 255, 255, 1);
+  padding-top: 29px;
+}
+
+.text-wrapper_1 {
+  margin: 0 65px 0 75px;
+}
+
+.text_3 {
+  overflow-wrap: break-word;
+  color: rgba(241, 101, 43, 1);
+  font-size: 30px;
+  letter-spacing: 0.6205102801322937px;
+  font-family: PingFang-SC-Bold;
+  font-weight: normal;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 42px;
+}
+
+.text_4 {
+  overflow-wrap: break-word;
+  color: rgba(99, 103, 110, 1);
+  font-size: 30px;
+  letter-spacing: 0.6205102801322937px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 42px;
+  margin-left: 116px;
+}
+
+.text_5 {
+  overflow-wrap: break-word;
+  color: rgba(99, 103, 110, 1);
+  font-size: 30px;
+  letter-spacing: 0.6205102801322937px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 42px;
+  margin-left: 125px;
+}
+
+.group_1 {
+  background-color: rgba(241, 101, 43, 1);
+  border-radius: 3px 3px 0px 0px;
+  width: 42px;
+  height: 5px;
+  margin: 23px 592px 0 116px;
+}
+
+.group_2 {
+  background-color: rgba(230, 230, 230, 1);
+  width: 750px;
+  height: 1px;
+}
+
+.box_7 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 40px;
+  width: 180px;
+  height: 180px;
+  align-self: center;
+  margin-top: 60px;
+}
+
+.box_8 {
+  width: 256px;
+  align-self: center;
+  margin-top: 26px;
+}
+
+.image_4 {
+  width: 37px;
+  height: 4px;
+  margin: 25px 0 27px 0;
+}
+
+.text_6 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 40px;
+  letter-spacing: 0.8273470401763916px;
+  font-family: PingFang-SC-Bold;
+  font-weight: normal;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 56px;
+  margin-left: 17px;
+}
+
+.image_5 {
+  width: 37px;
+  height: 4px;
+  margin: 25px 0 27px 1px;
+}
+
+.repo-box {
+  box-shadow: 0px 8px 14px 0px rgba(234, 236, 239, 0.7);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  width: 700px;
+  align-self: center;
+  margin-top: -1px;
+  padding: 36px 38px 28px 39px;
+}
+
+.block_1 {
+  width: 322px;
+  margin-right: 301px;
+}
+
+.repo-text-wrapper {
+  background: url(https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng08c9bc4866746dcaeeb318a16ee5ccf67032ad5db2cc6fd262e6fe2b2f4eedf8)
+    100% no-repeat;
+  background-size: 100% 100%;
+  padding: 6px 11px 5px 22px;
+}
+
+.repo-text-title {
+  overflow-wrap: break-word;
+  color: rgba(255, 255, 255, 1);
+  font-size: 26px;
+  letter-spacing: 0.5377755761146545px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 37px;
+}
+
+.repo-title {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 30px;
+  letter-spacing: 0.6205102801322937px;
+  font-family: PingFang-SC-Bold;
+  font-weight: normal;
+  text-align: right;
+  white-space: nowrap;
+  line-height: 42px;
+  margin-top: 3px;
+}
+
+.repo-content {
+  width: 623px;
+  height: 288px;
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 28px;
+  letter-spacing: 0.27914300560951233px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 19px;
+}
+
+.repo-text-info {
+  padding: 47px 212px 28px 213px;
+}
+
+.repo-text-1 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 30px;
+  letter-spacing: 0.6205102801322937px;
+  font-family: PingFang-SC-Bold;
+  font-weight: normal;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 42px;
+}
+
+.repo-text-info-con {
+  background-color: rgba(255, 247, 246, 1);
+  border-radius: 16px;
+  width: 700px;
+  border: 2px solid rgba(241, 207, 193, 1);
+  align-self: center;
+  margin-top: -1px;
+  padding: 20px 36px 34px 37px;
+}
+
+.repo-text-2 {
+  width: 623px;
+  height: 144px;
+  overflow-wrap: break-word;
+  color: rgba(241, 101, 43, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+}
+
+.repo-text-3 {
+  width: 623px;
+  height: 192px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 17px;
+}
+
+.repo-text-4 {
+  width: 623px;
+  height: 240px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 27px;
+}
+
+.repo-text-5 {
+  width: 623px;
+  height: 192px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 27px;
+}
+
+.repo-text-6 {
+  width: 623px;
+  height: 240px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 27px;
+}
+
+.text-wrapper_5 {
+  padding: 43px 181px 28px 182px;
+}
+
+.text_16 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 30px;
+  letter-spacing: 0.6205102801322937px;
+  font-family: PingFang-SC-Bold;
+  font-weight: normal;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 42px;
+}
+
+.text-wrapper_6 {
+  background-color: rgba(255, 247, 246, 1);
+  border-radius: 16px;
+  width: 686px;
+  border: 2px solid rgba(241, 207, 193, 1);
+  align-self: center;
+  margin-top: -1px;
+  padding: 20px 29px 35px 30px;
+}
+
+.text_17 {
+  width: 623px;
+  height: 96px;
+  overflow-wrap: break-word;
+  color: rgba(241, 101, 43, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+}
+
+.text_18 {
+  width: 623px;
+  height: 192px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 27px;
+}
+
+.text_19 {
+  width: 623px;
+  height: 192px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 27px;
+}
+
+.text_20 {
+  width: 623px;
+  height: 192px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 27px;
+}
+
+.text_21 {
+  width: 623px;
+  height: 192px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 27px;
+}
+
+.text_22 {
+  width: 623px;
+  height: 240px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  letter-spacing: 0.26917359232902527px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 48px;
+  margin-top: 27px;
+}
+
+.repo-text-end {
+  padding: 28px 49px 50px 49px;
+}
+
+.repo-text_1 {
+  width: 652px;
+  height: 282px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 47px;
+}
+
+.repo-text_2 {
+  width: 652px;
+  height: 188px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 27px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 47px;
+  margin-top: 27px;
+}
+
+
+
+body * {
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+body {
+  font-family: PingFangSC-Regular, Roboto, Helvetica Neue, Helvetica, Tahoma,
+    Arial, PingFang SC-Light, Microsoft YaHei;
+}
+input {
+  background-color: transparent;
+  border: 0;
+}
+button {
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  outline: none;
+  background-color: transparent;
+}
+
+button:active {
+  opacity: 0.6;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.justify-start {
+  display: flex;
+  justify-content: flex-start;
+}
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+.justify-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.justify-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+.justify-around {
+  display: flex;
+  justify-content: space-around;
+}
+.justify-between {
+  display: flex;
+  justify-content: space-between;
+}
+.align-start {
+  display: flex;
+  align-items: flex-start;
+}
+.align-center {
+  display: flex;
+  align-items: center;
+}
+.align-end {
+  display: flex;
+  align-items: flex-end;
+}
+
+.repo-text-container{
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	width: 322px;
+	margin-right: 301px;
+}

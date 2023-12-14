@@ -16,7 +16,7 @@ export default defineAppConfig({
     {
       root: 'package',
       // pages: ['package-a/index', 'package-b/index', 'package-c/index', 'icon/index']
-      pages: ['profile/index', 'answer/index', 'finally/index', 'simply_report/index']
+      pages: ['profile/index', 'answer/index', 'finally/index', 'simple_report/index', 'detail_report/index']
     }
   ]
   // tabBar: {
