@@ -556,3 +556,70 @@ button:active {
 	width: 322px;
 	margin-right: 301px;
 }
+
+/* 特质分析 */
+
+.spec_group {
+  box-shadow: 0px 8px 14px 0px rgba(234, 236, 239, 0.7);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  width: 700px;
+  align-self: center;
+  margin-top: 28px;
+  padding: 34px 35px 63px 35px;
+}
+
+
+.repo-title {
+
+}
+
+.spec-box{
+	width: 6px;
+	height: 28px;
+	background: url(../../assets/images/su.png) 100% no-repeat;
+	background-size: 100% 100%;
+	margin: 8px 10px 6px 0;
+}
+
+.spec-text {
+	overflow-wrap: break-word;
+	color: rgba(34, 34, 34, 1);
+	font-size: 30px;
+	font-family: PingFangSC-Medium;
+	font-weight: 500;
+	text-align: left;
+	white-space: nowrap;
+	line-height: 42px;
+}
+
+.spec-desc-warper {
+  background-color: rgba(255, 247, 246, 1);
+  border-radius: 16px;
+  margin-top: 22px;
+  padding: 22px 35px 26px 29px;
+}
+
+.spec-desc-text {
+  overflow-wrap: break-word;
+  color: rgba(241, 101, 43, 1);
+  font-size: 28px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  white-space: nowrap;
+  line-height: 48px;
+}
+
+.spec-desc-content {
+  width: 630px;
+  overflow-wrap: break-word;
+  color: rgba(34, 34, 34, 1);
+  font-size: 28px;
+  font-family: PingFang-SC-Medium;
+  font-weight: normal;
+  text-align: justify;
+  line-height: 47px;
+  margin-top: 16px;
+}
+

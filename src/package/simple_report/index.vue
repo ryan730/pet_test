@@ -6,36 +6,23 @@
       <div class="single-avatar_1 flex-col"></div>
       <div class="section_1 flex-row">
         <img class="image_3" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-left.png')" />
-        <span class="text_4">助手类型</span>
+        <span class="text_4">{{ getRenderDataToTitle }}</span>
         <img class="image_4" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-right.png')" />
       </div>
       <div class="section_2 flex-col">
         <view class="taro_html" v-html="getRenderDataToHtml"></view>
-        <!-- <div class="group_4 flex-row justify-between">
-          <div class="box_1 flex-col"></div>
-          <span class="text_5">性格</span>
-        </div>
-        <span class="text_6">这类狗通常具有较强的执行能力，并愿意执行指示、支持其他人以完成共同的目标。</span>
-        <div class="group_5 flex-row justify-between">
-          <div class="group_6 flex-col"></div>
-          <span class="text_7">相处之道</span>
-        </div>
-        <span class="text_8">
-          与这类狗相处，您需要给予它们明确的任务和指示，并提供积极的支持和反馈。同时，与这类狗一起工作时，应尝试与他们建立积极合作的关系。
-        </span>
-        <div class="group_7 flex-row justify-between">
-          <div class="block_1 flex-col"></div>
-          <span class="text_9">训练方法</span>
-        </div>
-        <span class="text_10">
-          注重强化这类狗的执行能力和合作意识。使用正向激励和有效的任务分配，帮助他们更好地实现任务。
-        </span> -->
       </div>
       <div class="chart_1 flex-col">
         <div class="text-wrapper_1">
           <span class="text_11">核心特质剖面图</span>
           <view class="bar-chart">
-            <ec-canvas id="mychart-dom-line" canvas-id="mychart-line" :ec="ec" :force-use-old-canvas="true"></ec-canvas>
+            <ec-canvas
+              v-if="ecRef"
+              id="mychart-dom-line"
+              canvas-id="mychart-line"
+              :ec="ec"
+              :force-use-old-canvas="true"
+            ></ec-canvas>
           </view>
         </div>
       </div>
@@ -60,6 +47,7 @@ import mock from './mock.js';
 const renderData = ref('');
 const appStore = useAppStore();
 const productInfoStore = useProductInfoStore();
+const ecRef = ref(false);
 
 const vueref0 = ref(null);
 
@@ -74,6 +62,10 @@ const env = getEnv();
 
 const getRenderDataToHtml = computed(() => {
   return renderData.value?.[0]?.text || '';
+});
+
+const getRenderDataToTitle = computed(() => {
+  return renderData.value?.[0]?.title || '';
 });
 
 const getRenderDataToScore = computed(() => {
@@ -114,6 +106,7 @@ const getReport = async () => {
     return;
   }
   renderData.value = res.data;
+  ecRef.value = true;
 
   console.log('getReport-mock:::', mock);
   console.log('getReport:::', info, res, renderData);
@@ -131,8 +124,6 @@ function initChart(canvas, width, height) {
   });
   canvas.setChart(chart);
 
-  console.log('item====1==:::', getRenderDataToScore.value);
-
   const dataData = [];
 
   const indicator = getRenderDataToScore.value
@@ -146,6 +137,8 @@ function initChart(canvas, width, height) {
         return val;
       })
     : [];
+
+  console.log('item===:::', indicator, getRenderDataToScore.value);
 
   const option = {
     title: {
