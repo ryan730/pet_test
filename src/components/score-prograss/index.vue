@@ -6,26 +6,8 @@ import { log } from 'console'; import { onMounted } from 'vue';
       <div class="prograss">
         <div class="rect-container">
           <div class="rect-bg"></div>
-          <div class="rect-unit">
-            <div class="rect-unit-text">10</div>
-          </div>
-          <div class="rect-unit">
-            <div class="rect-unit-text">20</div>
-          </div>
-          <div class="rect-unit">
-            <div class="rect-unit-text">30</div>
-          </div>
-          <div class="rect-unit">
-            <div class="rect-unit-text">40</div>
-          </div>
-          <div class="rect-unit">
-            <div class="rect-unit-text">50</div>
-          </div>
-          <div class="rect-unit">
-            <div class="rect-unit-text">60</div>
-          </div>
-          <div class="rect-unit">
-            <div class="rect-unit-text">70</div>
+          <div v-for="(item, index) in progressArr" class="rect-unit">
+            <div class="rect-unit-text">{{ item }}</div>
           </div>
         </div>
         <div class="score-red" :progressTotal="progressTotal" :style="{ width: width + 'px' }">
@@ -46,16 +28,23 @@ import Taro from '@tarojs/taro';
 
 interface Props {
   percent: number;
+  max: number;
+  min: number;
+  step: number;
 }
 
 const progressTotal = ref(1);
+const progressArr = ref([]);
 
 const props = withDefaults(defineProps<Props>(), {
-  percent: 50
+  percent: 50,
+  min: 5,
+  max: 35,
+  step: 5
 });
 
 const width = computed(() => {
-  return (props.percent / 100) * progressTotal.value * 0.7;
+  return (props.percent / parseInt(props.max + props.min)) * progressTotal.value;
 });
 
 const currentPercent = computed(() => {
@@ -73,6 +62,15 @@ onMounted(() => {
       })
       .exec();
   });
+
+  /// progressArr.value = parseInt((props.max - props.min) / props.step);
+  let i = props.min;
+  const arr = [i];
+  while (i < props.max) {
+    i += props.step;
+    arr.push(i);
+  }
+  progressArr.value = arr;
 });
 </script>
 <style lang="scss">
@@ -98,6 +96,8 @@ onMounted(() => {
 
     .prograss {
       display: flex;
+      width: 100%;
+      height: 80px;
 
       .score-red-text {
         box-sizing: border-box;

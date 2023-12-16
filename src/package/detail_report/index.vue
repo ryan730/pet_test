@@ -1,6 +1,6 @@
 <template>
   <cg-navbar title="完整报告" />
-  <div class="detail_report" :style="getStyle">
+  <view class="detail_report" :style="getStyle" :catch-move="forbidden">
     <div>
       <nut-tabs v-model="tabValueRef" swipeable @change="handleChange">
         <nut-tab-pane title="核心类型" pane-key="0">
@@ -63,7 +63,7 @@
         <!-- <nut-tab-pane title="基本信息" pane-key="2">Tab 3</nut-tab-pane> -->
       </nut-tabs>
     </div>
-  </div>
+  </view>
 </template>
 <script setup lang="ts">
 import { it } from 'node:test';
@@ -89,6 +89,8 @@ const info = computed(() => productInfoStore.getInfo);
 
 const ecRef = ref(false);
 
+const forbidden = ref(false);
+
 const getItemSelectStyle = (item: any, index: number) => {
   /// /console.log('item:::', item, index, selectIndex.value);
   return {
@@ -102,6 +104,18 @@ const getStyle = computed(() => {
     overflow: tabIndex.value == 0 ? 'hidden' : 'unset',
     marginTop: `${pxTransform(appStore.getNavHeight)}`,
     height: containerHeight.value > 0 ? `${containerHeight.value}px` : 'auto'
+    // maxHeight: '3000px'
+  };
+  return val;
+});
+
+const getStyle2 = computed(() => {
+  return {};
+  const val = {
+    // overflow: renderData.value && tabIndex.value == 0 ? 'hidden' : 'unset',
+    // marginTop: `${pxTransform(appStore.getNavHeight)}`,
+    height: containerHeight.value > 0 && tabIndex.value == 0 ? `${containerHeight.value}px` : 'auto'
+    // maxHeight: '3000px'
   };
   return val;
 });
@@ -119,13 +133,17 @@ const getRenderDataToTezhi = computed(() => {
 });
 
 const getReport = async () => {
+  forbidden.value = true;
   const report_id = info.value.report_id;
-  const res = await fetchSeriesReport({
-    reportid: report_id,
-    detail: '1'
-  });
-
-  // const res = mock; // 测试
+  let res = {};
+  if (getEnv() == 'WEB') {
+    res = mock; // 测试
+  } else {
+    res = await fetchSeriesReport({
+      reportid: report_id,
+      detail: '1'
+    });
+  }
 
   console.log('detail-getReport-res:::', res);
 
@@ -143,9 +161,12 @@ const getReport = async () => {
   selectIndex.value = arr[0];
   selectSelectItem.value = contents.value[selectIndex.value];
 
-  handleChange({
-    paneKey: 0
-  });
+  setTimeout(() => {
+    handleChange({
+      paneKey: 0
+    });
+    forbidden.value = false;
+  }, 1000);
 
   /// console.log('getReport-mock:::', mock);
   console.log('selectSelectItem::', selectSelectItem);
@@ -166,6 +187,9 @@ const HandleSelectTezhi = (item: any, index: number) => {
 const handleChange = (arg: any) => {
   console.log('handleChange:::', arg, `tab${arg.paneKey}`);
   tabIndex.value = arg.paneKey;
+  // if (arg.paneKey == 1) {
+  //   tabOnce.value = true;
+  // }
   Taro.nextTick(() => {
     const query = Taro.createSelectorQuery();
     query
@@ -221,8 +245,9 @@ function initChart(canvas, width, height) {
     },
     yAxis: {
       type: 'value',
-      min: '0',
-      max: '100'
+      min: '5',
+      max: '35',
+      offset: -10
     },
     series: [
       {
