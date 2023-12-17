@@ -152,18 +152,20 @@ const handleMask = () => {
   state.isPopShow = false;
 };
 
-//     // 	Taro.showModal({
-//     // 		title: '警告',
-//     // 		content: '您点击了拒绝授权，将无法进入小程序，请授权之后再进入!!!',
-//     // 		showCancel: false,
-//     // 		confirmText: '返回授权',
-//     // 		success: function (res) {
-//     // 			if (res.confirm) {
-//     // 				console.log('用户点击了“返回授权”');
-//     // 			}
-//     // 		}
-//     // 	});
-//   }
+const alertMsg = (msg: string) => {
+  console.log('alertMsg=-=', msg);
+  Taro.showModal({
+    title: '警告',
+    content: msg,
+    showCancel: false,
+    confirmText: '确定',
+    success(res) {
+      if (res.confirm) {
+        console.log('用户点击了“返回授权”');
+      }
+    }
+  });
+};
 
 const getUserInfo = () => {
   Taro.login({
@@ -176,11 +178,13 @@ const getUserInfo = () => {
         const result = await fetchProductInfo({
           pid: launchInfo?.query?.pid || 46
         });
-        console.log('result==', result);
+        console.log('result=-=', result);
         /// result.data.status = 'showpay'; // 测试
         productInfoStore.setInfo(result.data);
         const process = Number(result.data?.test_info?.process);
         appStore.setCurrTopicProcess(process); // 第一次的进度值
+
+        alertMsg(info.value.status);
 
         if (info.value.status === 'showpay') {
           // 支付环节
