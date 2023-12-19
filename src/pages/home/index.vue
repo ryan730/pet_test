@@ -14,7 +14,7 @@
       <div class="submain">
         <div class="wrapper-2">
           <span class="title">{{ info.name }}</span>
-          <span class="title-1">帮助领养人选择性格契合的猫咪</span>
+          <span class="title-1">{{ getPetInfo().title }}</span>
           <div class="group-3">
             <div class="view-1">
               <img class="icon-text" :src="require('@/assets/images/img_23.png')" />
@@ -43,16 +43,7 @@
             <img class="icon-user-group" :src="require('@/assets/images/img_25.png')" />
             <span class="caption-1">测评简介</span>
           </div>
-          <span class="summary">
-            今天咱们也找到了一份猫咪的性格测试问卷，来自ASPCA的Feline-ality™计划，最终将猫咪划分
-          </span>
-          <span class="caption-2">成了9种性格，一起来测试一下吧~</span>
-          <span class="caption-3">该测试本身为领养时使用，帮助领养人选择性格</span>
-          <div class="caption-wrapper">
-            <span class="caption-4">契合的猫咪。</span>
-          </div>
-          <span class="title-2">如果猫咪已经与你生活一段时间，有些初见场景</span>
-          <span class="title-3">难以还原，请回忆或试想一下，当时的TA会怎么做吧~</span>
+          <view class="summary" v-html="getConterInfo()" />
         </div>
         <div v-if="info?.status == 'notdone'" class="wrapper-5" @click="handleEntryToTest">
           <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
@@ -74,7 +65,7 @@
     :info="info"
     :theme="theme"
     @onClickMask="handleMask"
-    @onClickPass="handlePass"
+    @onClickPass="entrance"
   />
 </template>
 <script setup lang="ts">
@@ -94,6 +85,7 @@ import { getAnimaoPic, getAnimaoType } from '@/utils/common';
 
 const instance = getCurrentInstance();
 const launchInfo = Taro.getLaunchOptionsSync();
+console.log('入口参数1', launchInfo, launchInfo?.query?.pid);
 // 输出当前页面的 URL 参数对象
 console.log('instance.router.params:', launchInfo, instance.router);
 
@@ -113,6 +105,21 @@ const theme = computed(() => {
     color: isDog ? '#ff7237' : '#ffa000'
   };
 });
+
+const getPetInfo = () => {
+  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  return {
+    title: isDog ? '尾巴卷得多紧,可能就表明狗狗有多焦虑' : '帮助领养人选择性格契合的猫咪',
+    content: !isDog
+      ? `<span class="text_cont_1" >人有人格，狗有狗格。无论是什么品种的狗狗，即使同一个品种的狗狗，也有自己的个性。</span > <span class="text_cont_2" >狗格测试，采用专业的汪星人性格模型，帮助发现你的狗狗独特之处。</span > <span class="text_cont_3" >这是全网最系统的狗狗测评工具了，赶快测起来，分享你的发现。</span >`
+      : `<span class="caption-2">今天咱们也找到了一份猫咪的性格测试问卷，来自ASPCA的Feline-ality™计划，最终将猫咪划分成了成了9种性格，一起来测试一下吧~</span> <span class="caption-3">该测试本身为领养时使用，帮助领养人选择性格契合的猫咪。</span><span class="title-2">如果猫咪已经与你生活一段时间，有些初见场景难以还原，请回忆或试想一下，当时的TA会怎么做吧~</span>`
+  };
+};
+
+// getPetInfo().content
+const getConterInfo = () => {
+  return getPetInfo().content;
+};
 
 const getPic = computed(() => {
   return getAnimaoPic(launchInfo?.query?.pid);
@@ -143,7 +150,7 @@ const handlePurchaseToTest = () => {
 
 const handlePass = () => {
   // Taro.switchTab({
-  Taro.navigateTo({
+  Taro.redirectTo({
     url: '/package/profile/index'
   });
 };
@@ -154,58 +161,69 @@ const handleMask = () => {
 
 const alertMsg = (msg: string) => {
   console.log('alertMsg=-=', msg);
-  Taro.showModal({
-    title: '警告',
-    content: msg,
-    showCancel: false,
-    confirmText: '确定',
-    success(res) {
-      if (res.confirm) {
-        console.log('用户点击了“返回授权”');
+  return new Promise((resolve, reject) => {
+    Taro.showModal({
+      title: 'debug',
+      content: msg,
+      showCancel: false,
+      confirmText: '确定',
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定');
+          resolve(true);
+        } else if (res.cancel) {
+          console.log('用户点击取消');
+          resolve(false);
+        }
       }
-    }
+    });
   });
 };
 
 const getUserInfo = () => {
   Taro.login({
     success: async res => {
+      console.log('login', res.code);
       if (res.code) {
-        console.log('login', res.code);
         await fetchUserLoginApp({
           code: res.code
         });
-        const result = await fetchProductInfo({
-          pid: launchInfo?.query?.pid || 46
-        });
-        console.log('result=-=', result);
-        /// result.data.status = 'showpay'; // 测试
-        productInfoStore.setInfo(result.data);
-        const process = Number(result.data?.test_info?.process);
-        appStore.setCurrTopicProcess(process); // 第一次的进度值
-
-        alertMsg(info.value.status);
-
-        if (info.value.status === 'showpay') {
-          // 支付环节
-          state.isPopShow = true;
-        } else if (info.value.status === 'showreport') {
-          // 评测作完，直接去评测结果页
-          Taro.navigateTo({
-            url: '/package/finally/index'
-            // url: '/pages/simple_report/index'
-          });
-        } else if (info.value.status === 'notdone') {
-          // 未完成，直接去测试页
-          const report_id = result.data?.report_id;
-          if (report_id?.length === 1) {
-            // 查看做题进度，哪一段做题未做完
-            console.log('哪一段做题未做完', report_id);
-          }
-        }
+        await entrance();
       }
     }
   });
+};
+
+const entrance = async (isPay: boolean = false) => {
+  const result = await fetchProductInfo({
+    pid: launchInfo?.query?.pid || 46
+  });
+  console.log('result==>', result, result.data.status);
+  /// ///result.data.status = 'showreport'; // 测试
+  productInfoStore.setInfo(result.data);
+  const process = Number(result.data?.test_info?.process);
+  appStore.setCurrTopicProcess(process); // 第一次的进度值
+
+  const alert = true; // await alertMsg(info.value.status);
+  if (alert) {
+    if (info.value.status === 'showpay') {
+      // 支付环节
+      state.isPopShow = true;
+    } else if (info.value.status === 'showreport') {
+      // 评测作完，直接去评测结果页
+      Taro.redirectTo({
+        url: '/package/finally/index'
+      });
+    } else if (info.value.status === 'notdone') {
+      // 未完成，直接去测试页
+      const report_id = result.data?.report_id;
+      if (report_id?.length === 1) {
+        // 查看做题进度，哪一段做题未做完
+        console.log('当前report', report_id);
+      }
+      isPay && handlePass();
+    }
+  }
 };
 
 const showAuthModal = () => {
@@ -253,6 +271,8 @@ const getUserProfile = () => {
 };
 
 onMounted(() => {
+  const launchInfo1 = Taro.getLaunchOptionsSync();
+  console.log('入口参数2', launchInfo1, launchInfo1?.query?.pid);
   console.log('onMounted');
   Taro.getSetting({
     success: res => {

@@ -40,7 +40,7 @@
             <span class="summary-1">基本信息很重要，测评结果的统计和计算与这些信息有关，请认真填写。</span>
           </div>
           <div class="wrapper-8">
-            <span class="title-3">猫咪性别</span>
+            <span class="title-3">{{ getText.category }}性别</span>
             <nut-cell>
               <nut-radio-group v-model="form.gender" direction="horizontal">
                 <nut-radio label="1">男</nut-radio>
@@ -49,7 +49,7 @@
             </nut-cell>
           </div>
           <div class="wrapper-9" @click="timeShow = true">
-            <span class="caption-4">猫咪多大了</span>
+            <span class="caption-4">{{ getText.category }}多大了</span>
             <nut-cell>
               <div class="game-wrapper">
                 <span class="game">{{ form.popupDesc }}</span>
@@ -89,6 +89,12 @@ const theme = computed(() => {
     color: isDog ? '#ff7237' : '#ffa000'
   };
 });
+const getText = computed(() => {
+  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  return {
+    category: isDog ? '狗狗' : '猫咪'
+  };
+});
 
 const getStyle = computed(() => {
   return {
@@ -108,7 +114,7 @@ const popupConfirm = ({ selectedValue, selectedOptions }) => {
 };
 const handleEntryAnswer = () => {
   console.log('handleEntryAnswer===');
-  Taro.navigateTo({
+  Taro.redirectTo({
     url: '/package/answer/index'
   });
 };

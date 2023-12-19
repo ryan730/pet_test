@@ -218,7 +218,7 @@
   line-height: 37px;
 }
 
-.repo-title {
+/* .repo-title {
   overflow-wrap: break-word;
   color: rgba(0, 0, 0, 1);
   font-size: 30px;
@@ -229,7 +229,7 @@
   white-space: nowrap;
   line-height: 42px;
   margin-top: 3px;
-}
+} */
 
 .repo-content {
   width: 623px;
@@ -549,13 +549,11 @@ button:active {
   align-items: flex-end;
 }
 
-.repo-text-container{
-	display: flex;
-	justify-content: space-between;
+/* .repo-text-container{
 	flex-direction: row;
 	width: 322px;
 	margin-right: 301px;
-}
+} */
 
 /* 特质分析 */
 
@@ -571,7 +569,6 @@ button:active {
 
 
 .repo-title {
-
 }
 
 .spec-box{

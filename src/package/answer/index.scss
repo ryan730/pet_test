@@ -292,7 +292,8 @@
 	width: 670px;
 	/* padding: 27px 12px 26px; */
 	border-radius: 16px 16px 0 0;
-	padding: 16px 0;
+	padding: 26px 36px;
+	box-sizing: border-box;
 }
 
 .answer .btn-next-prev {
@@ -316,9 +317,8 @@
 	color: rgba(78, 33, 22, 1);
 	font-family: PingFang-SC-Bold;
 	font-size: 30px;
-	letter-spacing: 0.6205102702702696px;
+	font-weight: bold;
 	line-height: 42px;
-	margin-left: 24px;
 	max-width: 598px;
 	overflow: hidden;
 	/* white-space: nowrap; */
@@ -339,7 +339,8 @@
 	align-self: center;
 	/* padding: 20px 12px 19px; */
 	border-radius: 38px;
-	z-index:10;
+	z-index:1;
+	padding:0 20px;
 }
 
 .answer .btn {
@@ -350,8 +351,10 @@
 	line-height: 37px;
 	max-width: 526px;
 	overflow: hidden;
-	white-space: nowrap;
+	// white-space: nowrap;
 	text-overflow: ellipsis;
+	// word-break: break-all;
+	overflow-wrap:break-word
 }
 
 .answer .btn-wrapper-item-1 {
@@ -370,7 +373,6 @@
 	color: rgba(255, 255, 255, 1);
 	font-size: 26px;
 	font-weight: 500;
-	letter-spacing: 0.537775567567567px;
 	line-height: 37px;
 	margin-right: 1px;
 	align-self: flex-start;
@@ -459,7 +461,8 @@
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
-	background-color: #fff
+	background-color: #fff;
+	z-index: 99;
 }
 
 

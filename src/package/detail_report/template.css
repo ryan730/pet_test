@@ -45,6 +45,7 @@
   white-space: nowrap;
   line-height: 42px;
   margin-top: 3px;
+	margin-left: 10px;
 }
 
 .repo-content {
@@ -63,7 +64,7 @@
 
 .repo-text-container{
 	display: flex;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	flex-direction: row;
 	width: 322px;
 }

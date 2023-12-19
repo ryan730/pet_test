@@ -45,6 +45,12 @@ async function fetch(url: string, data: any) {
     header.Authorization = token;
   }
   console.log('fetch-req:', url, data, header);
+  for (const item in data) {
+    if (data[item] == undefined) {
+      console.warn(`参数${item}is undefined`);
+      return Promise.reject({});
+    }
+  }
   try {
     const res = await Taro.request({
       url,
@@ -58,19 +64,19 @@ async function fetch(url: string, data: any) {
         title: '返回异常',
         icon: 'none'
       });
-      console.log('fetch-res:', res);
-      return Promise.reject(res);
+      console.log('fetch-res-1:', res);
+      return Promise.resolve(res.data);
     } else if (res?.data?.code != 1) {
       showToast({
         title: res?.data?.msg || '返回异常',
         icon: 'none'
       });
-      console.log('fetch-res:', res, res?.data?.msg);
-      return Promise.reject(res);
+      console.log('fetch-res-2:', res, res?.data?.msg);
+      return Promise.resolve(res.data);
     }
     return Promise.resolve(res.data);
   } catch (e) {
-    console.log('e:', e);
+    console.log('fetch-res-3:', e);
     showToast({
       title: '返回异常',
       icon: 'none'
@@ -79,29 +85,6 @@ async function fetch(url: string, data: any) {
   }
 }
 
-// export async function fetchTestTopic(data: TestTopicParams) {
-//   // return request.post<any>(config.APIURL + "/test/topic", data, {
-//   // 	useErrMsg: true,
-//   // });
-
-//   return await Taro.request({
-//     url: `${config.APIURL}/test/topic`, // 仅为示例，并非真实的接口地址
-//     data,
-//     header: {
-//       'content-type': 'application/json' // 默认值
-//     }
-//   });
-// }
-
-// export async function fetchUserTopic(data: UserTopicParams) {
-//   return await Taro.request({
-//     url: `${config.APIURL}/user//topic`, // 仅为示例，并非真实的接口地址
-//     data,
-//     header: {
-//       'content-type': 'application/json' // 默认值
-//     }
-//   });
-// }
 // 登陆
 interface UserLoginParams {
   code: string;
@@ -109,14 +92,15 @@ interface UserLoginParams {
 
 export async function fetchUserLoginApp(data: UserLoginParams) {
   const token = getToken();
+  let result = null;
   if (!token) {
-    const result = await fetch(`${config.APIURL}/user/userLoginApp`, data);
+    result = await fetch(`${config.APIURL}/user/userLoginApp`, data);
     setLocalStorage(result?.data);
   }
   const curTime = new Date().getTime();
   const time = Taro.getStorageSync('time');
   if (curTime - time >= config.OVERTIME) {
-    const result = await fetch(`${config.APIURL}/user/userLoginApp`, data);
+    result = await fetch(`${config.APIURL}/user/userLoginApp`, data);
     setLocalStorage(result?.data);
   }
 }
@@ -162,7 +146,24 @@ interface SeriesReport {
   detail?: string | number;
 }
 /// test/topic
+
 export async function fetchSeriesReport(data: SeriesReport) {
   const result = await fetch(`${config.APIURL}/user/seriesReport`, data);
+  return result;
+}
+
+interface UserXorder {
+  product_id: number;
+}
+export async function fetchUserXorder(data: UserXorder) {
+  const result = await fetch(`${config.APIURL}/user/xorder`, data);
+  return result;
+}
+
+interface Checkpay {
+  order_id: number;
+}
+export async function fetchCheckpay(data: Checkpay) {
+  const result = await fetch(`${config.APIURL}/user/checkpay`, data);
   return result;
 }

@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="body-1">
-        <div class="title-wrapper">
+        <div class="title-wrapper" :style="{ backgroundColor: '#FFE9A4' }">
           <span class="title-1">{{ topic?.title }}</span>
         </div>
         <div
@@ -50,9 +50,9 @@
         <div class="wrapper-6">
           <!-- <img class="item" src="./images/img_9.png" /> -->
         </div>
-        <div class="body-bg">
+        <!-- <div class="body-bg">
           <img ref="bgRef" class="bg" :style="{ top: bgTopRef }" :src="require('@/assets/images/bg.png')" />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -127,31 +127,32 @@ const getStyle = computed(() => {
 // 检查是否做第二套题
 const continueNextSection = async () => {
   const result = await fetchProductInfo({
-    pid: 46
+    pid: launchInfo?.query?.pid || 46
   });
   productInfoStore.setInfo(result.data);
   const test_info = result.data?.test_info;
-  if (test_info) {
+  const status = result.data?.status;
+  if (status == 'notdone' && test_info) {
     console.log('continueNextSection::', result.data);
     Taro.showToast({
       title: '开始第二段答题',
       icon: 'none',
       duration: 2000
     });
-    const process = test_info?.process || 1;
+    const process = test_info?.process == 0 ? 1 : Number(test_info?.process); // 第一次的进度0转成1
     appStore.setCurrTopicProcess(process); // 第二次的进度值
     await init();
-  } else {
+  } else if (status == 'showreport' || !test_info || test_info?.length == 0) {
     Taro.showToast({
-      title: '去往结果页',
+      title: '答题完成,正在去往结果页...',
       icon: 'none',
-      duration: 2000
+      duration: 1000
     });
     setTimeout(() => {
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: '/package/finally/index'
       });
-    }, 2000);
+    }, 1000);
   }
 };
 
@@ -196,7 +197,7 @@ const getActive = (item: any, index: number) => {
 };
 
 const sendAnswer = async () => {
-  console.log('sendAnswer:::', currentAnswerNumb.value);
+  console.log('sendAnswer-req:::', currentAnswerNumb.value);
   if (currentAnswerNumb.value === -1) {
     console.log('没有选择项目');
     return;
@@ -214,10 +215,11 @@ const sendAnswer = async () => {
   } catch (e) {
     console.log(e);
   }
-  console.log('sendAnswer::', res);
+  console.log('sendAnswer-res::', res);
+  return res;
 };
 
-const handleItem = async (item: any, index: number) => {
+const handleItem = debounce(async (item: any, index: number) => {
   console.log('handleItem:', item, index, currentAnswerNumb.value);
   /// debounce(() => {
   if (index === currentAnswerNumb.value) {
@@ -225,19 +227,26 @@ const handleItem = async (item: any, index: number) => {
   }
   currentAnswerNumb.value = index;
   answeRef.value = item.value;
-  const send = await sendAnswer();
-  if (send?.code != 1) {
-    await sleep(1500);
-    handleNext();
-  } else {
+  let send = null;
+  try {
+    send = await sendAnswer();
+    console.log('sendAnswer--1----::', send, send?.code);
+  } catch (e) {
+    console.log('sendAnswer--2----::', e);
     showToast({
       title: '提交失败，请重试！',
       icon: 'none',
       duration: 2000
     });
+  }
+
+  if (send?.code == 1) {
+    await sleep(1500);
+    handleNext();
+  } else {
     currentAnswerNumb.value = -1;
   }
-};
+}, 500);
 
 const init = async () => {
   let res = null;
@@ -308,19 +317,23 @@ watch(
 onMounted(async () => {
   /// await init();
   if (!isNaN(appStore.getCurrTopicProcess)) {
-    const frist = Number(appStore.getCurrTopicProcess) + 1;
-    // if (frist > total.value) {
-    //   frist = total.value;
-    // }
+    let frist = Number(appStore.getCurrTopicProcess) + 1;
+    const total = info.value?.test_info?.total;
+    console.log('初始化的请求', frist, total);
+    if (frist >= total) {
+      frist = total;
+      await init();
+      return;
+    }
     appStore.setCurrTopicProcess(frist);
   }
 
-  Taro.createSelectorQuery()
-    .select('.bg')
-    .boundingClientRect(bg => {
-      bgHeight.value = bg.height;
-    })
-    .exec();
+  // Taro.createSelectorQuery()
+  //   .select('.bg')
+  //   .boundingClientRect(bg => {
+  //     bgHeight.value = bg.height;
+  //   })
+  //   .exec();
 
   resized();
 

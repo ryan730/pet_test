@@ -1,6 +1,11 @@
 <template>
   <cg-navbar title="完整报告" />
   <view class="detail_report" :style="getStyle" :catch-move="forbidden">
+    <nut-overlay v-model:visible="forbidden">
+      <div class="overlay-body">
+        <div class="overlay-content">Loading...</div>
+      </div>
+    </nut-overlay>
     <div>
       <nut-tabs v-model="tabValueRef" swipeable @change="handleChange">
         <nut-tab-pane title="核心类型" pane-key="0">
@@ -156,17 +161,17 @@ const getReport = async () => {
   }
   renderData.value = res.data;
   ecRef.value = true;
-  contents.value = renderData.value?.[1]?.content;
+  contents.value = renderData.value?.[1]?.content || [];
   const arr = Object.keys(contents.value);
   selectIndex.value = arr[0];
   selectSelectItem.value = contents.value[selectIndex.value];
 
+  handleChange({
+    paneKey: 0
+  });
   setTimeout(() => {
-    handleChange({
-      paneKey: 0
-    });
     forbidden.value = false;
-  }, 1000);
+  }, 2000);
 
   /// console.log('getReport-mock:::', mock);
   console.log('selectSelectItem::', selectSelectItem);

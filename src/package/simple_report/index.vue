@@ -124,12 +124,12 @@ function initChart(canvas, width, height) {
   });
   canvas.setChart(chart);
 
-  const dataData = [];
+  const dataData: Array<any> = [];
 
   const indicator = getRenderDataToScore.value
     ? Object.keys(getRenderDataToScore.value).map((item: any, index: number) => {
         const ind = getRenderDataToScore.value[item];
-        dataData.push(ind.score);
+        ind?.score && dataData.push(ind?.score);
         const val = { name: ind.name, max: 35, min: 5 };
         if (index === 0) {
           val.axisLabel = { show: true };

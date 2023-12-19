@@ -599,7 +599,7 @@
 			rgba(255, 66, 23, 1) 100%
 		);
 		border-radius: 44px;
-		padding: 21px;
+		// padding: 21px;
 		width: 700px;
 	}
 
@@ -612,6 +612,7 @@
 		text-align: center;
 		white-space: nowrap;
 		line-height: 45px;
+		padding: 20px;
 	}
 
 	.taro_html {
@@ -629,7 +630,7 @@
 
 	.bar-chart {
 		width: 700px;
-		height: 700px;
+		height: 600px;
 		margin-top: 30px;
 	}
 }
