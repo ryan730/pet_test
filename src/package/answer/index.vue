@@ -9,9 +9,12 @@
       </div>
       <div class="body">
         <div class="wrapper">
-          <span class="caption-1">答题时需要注意以下事项</span>
-          <span v-if="true" class="caption-2">凭第一反应回答，不需要考虑太多</span>
-          <span class="caption-3">题目没有好与坏，对与错之分</span>
+          <span class="caption-1">
+            <img class="light" :src="require('../../assets/images/light.png')" />
+            答题时需要注意以下事项
+          </span>
+          <span v-if="true" class="caption-2">&nbsp▪ 凭第一反应回答，不需要考虑太多</span>
+          <span class="caption-3">&nbsp▪ 题目没有好与坏，对与错之分</span>
         </div>
         <div class="wrapper-chart">
           <img :src="`${getPic.char}`" />
@@ -23,7 +26,7 @@
         <div class="wrapper-4" />
         <div class="wrapper-5">
           <div class="button-wrapper">
-            <span class="button">{{ number }}/{{ total }}</span>
+            <span class="button">{{ number }}</span>
           </div>
         </div>
       </div>
@@ -77,7 +80,7 @@ import { IconFont } from '@nutui/icons-vue-taro';
 import { fetchTestTopic, fetchUserTopic, fetchProductInfo } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { debounce, sleep } from '@/utils';
-import { getAnimaoType, getAnimaoPic } from '@/utils/common';
+import { getAnimaoType, getAnimaoPic, getURLParamsPID } from '@/utils/common';
 import mock from './mock.js';
 
 const topics = ref([]);
@@ -87,18 +90,27 @@ const answeRef = ref('');
 const bgTopRef = ref(0);
 const bgRef = ref(null);
 const bgHeight = ref(0);
-
-const number = computed(() => Number(appStore.getCurrTopicProcess));
-const currentAnswerNumb = ref(-1); // 当前答题选项,-1表示未选择
-
 const productInfoStore = useProductInfoStore();
 
-const launchInfo = Taro.getLaunchOptionsSync();
+/// const number = computed(() => Number(appStore.getCurrTopicProcess));
+const number = computed(() => {
+  const sbase = productInfoStore?.getInfo?.sbase;
+  const stotal = productInfoStore?.getInfo?.stotal;
+  // return info?.sbase;
+  console.log('sbase:::', sbase);
+  console.log('stotal:::', stotal);
+  console.log('process:::', appStore.getCurrTopicProcess);
+  console.log('total:::', total.value);
+  return `${Number(appStore.getCurrTopicProcess) + Number(sbase)}/${Number(stotal)}`;
+});
+const currentAnswerNumb = ref(-1); // 当前答题选项,-1表示未选择
 const getPic = computed(() => {
-  return getAnimaoPic(launchInfo?.query?.pid);
+  const pid = getURLParamsPID();
+  return getAnimaoPic(pid);
 });
 const theme = computed(() => {
-  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  const pid = getURLParamsPID();
+  const isDog = getAnimaoType(pid) == 'dog';
   return {
     color: isDog ? '#ff7237' : '#ffa000'
   };
@@ -126,8 +138,9 @@ const getStyle = computed(() => {
 
 // 检查是否做第二套题
 const continueNextSection = async () => {
+  const pid = getURLParamsPID();
   const result = await fetchProductInfo({
-    pid: launchInfo?.query?.pid || 46
+    pid
   });
   productInfoStore.setInfo(result.data);
   const test_info = result.data?.test_info;

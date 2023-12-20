@@ -45,7 +45,7 @@ import { IconFont } from '@nutui/icons-vue-taro';
 import { fetchTestTopic } from '@/service';
 import { useAppStore } from '@/store';
 import { debounce } from '@/utils';
-import { getAnimaoType, getAnimaoPic } from '@/utils/common';
+import { getAnimaoType, getAnimaoPic, getURLParamsPID } from '@/utils/common';
 import mock from './mock.js';
 
 const topics = ref([]);
@@ -67,10 +67,12 @@ const env = getEnv();
 
 const launchInfo = Taro.getLaunchOptionsSync();
 const getPic = computed(() => {
-  return getAnimaoPic(launchInfo?.query?.pid);
+  const pid = getURLParamsPID();
+  return getAnimaoPic(pid);
 });
 const theme = computed(() => {
-  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  const pid = getURLParamsPID();
+  const isDog = getAnimaoType(pid) == 'dog';
   return {
     color: isDog ? '#ff7237' : '#ffa000'
   };

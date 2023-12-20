@@ -3,7 +3,7 @@
   <view class="detail_report" :style="getStyle" :catch-move="forbidden">
     <nut-overlay v-model:visible="forbidden">
       <div class="overlay-body">
-        <div class="overlay-content">Loading...</div>
+        <div class="overlay-content">加载中...</div>
       </div>
     </nut-overlay>
     <div>

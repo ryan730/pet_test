@@ -471,6 +471,8 @@
   font-size: 26px;
   font-weight: 500;
   white-space: nowrap;
+	display: flex;
+	align-items: center;
 }
 .answer .caption-2 {
   color: rgba(99, 103, 110, 1);
@@ -508,4 +510,11 @@
 		height:100%;
 		position: absolute;
 	}
+}
+
+.answer .light {
+  width: 30px;
+  height: 32px;
+  margin: 5px 0 5px 0;
+	margin-right: 10px;
 }

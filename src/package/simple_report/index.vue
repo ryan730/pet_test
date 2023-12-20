@@ -3,7 +3,9 @@
   <div class="simple_report flex-col" :style="getStyle">
     <div class="group_3 flex-col">
       <span class="text_3">核心类型：</span>
-      <div class="single-avatar_1 flex-col"></div>
+      <div class="single-avatar_1 flex-col">
+        <img class="image_1" :src="getRenderDataToPic" />
+      </div>
       <div class="section_1 flex-row">
         <img class="image_3" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-left.png')" />
         <span class="text_4">{{ getRenderDataToTitle }}</span>
@@ -70,6 +72,10 @@ const getRenderDataToTitle = computed(() => {
 
 const getRenderDataToScore = computed(() => {
   return renderData.value?.[1] || [];
+});
+
+const getRenderDataToPic = computed(() => {
+  return renderData.value?.[0]?.image || '';
 });
 
 const getStyle = computed(() => {

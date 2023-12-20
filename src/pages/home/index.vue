@@ -81,13 +81,12 @@ import Taro, {
 import { Button, Text } from '@tarojs/components';
 import { fetchUserLoginApp, fetchProductInfo, getToken } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
-import { getAnimaoPic, getAnimaoType } from '@/utils/common';
+import { getAnimaoPic, getAnimaoType, getURLParamsPID } from '@/utils/common';
 
 const instance = getCurrentInstance();
 const launchInfo = Taro.getLaunchOptionsSync();
-console.log('入口参数1', launchInfo, launchInfo?.query?.pid);
 // 输出当前页面的 URL 参数对象
-console.log('instance.router.params:', launchInfo, instance.router);
+console.log('instance.router.params:', launchInfo, launchInfo?.query?.pid, instance.router);
 
 /** 设置页面属性 */
 definePageConfig({
@@ -100,17 +99,19 @@ const productInfoStore = useProductInfoStore();
 const info = computed(() => productInfoStore.getInfo);
 
 const theme = computed(() => {
-  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  const pid = getURLParamsPID();
+  const isDog = getAnimaoType(pid) == 'dog';
   return {
     color: isDog ? '#ff7237' : '#ffa000'
   };
 });
 
 const getPetInfo = () => {
-  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  const pid = getURLParamsPID();
+  const isDog = getAnimaoType(pid) == 'dog';
   return {
     title: isDog ? '尾巴卷得多紧,可能就表明狗狗有多焦虑' : '帮助领养人选择性格契合的猫咪',
-    content: !isDog
+    content: isDog
       ? `<span class="text_cont_1" >人有人格，狗有狗格。无论是什么品种的狗狗，即使同一个品种的狗狗，也有自己的个性。</span > <span class="text_cont_2" >狗格测试，采用专业的汪星人性格模型，帮助发现你的狗狗独特之处。</span > <span class="text_cont_3" >这是全网最系统的狗狗测评工具了，赶快测起来，分享你的发现。</span >`
       : `<span class="caption-2">今天咱们也找到了一份猫咪的性格测试问卷，来自ASPCA的Feline-ality™计划，最终将猫咪划分成了成了9种性格，一起来测试一下吧~</span> <span class="caption-3">该测试本身为领养时使用，帮助领养人选择性格契合的猫咪。</span><span class="title-2">如果猫咪已经与你生活一段时间，有些初见场景难以还原，请回忆或试想一下，当时的TA会怎么做吧~</span>`
   };
@@ -122,7 +123,8 @@ const getConterInfo = () => {
 };
 
 const getPic = computed(() => {
-  return getAnimaoPic(launchInfo?.query?.pid);
+  const pid = getURLParamsPID();
+  return getAnimaoPic(pid);
 });
 
 const getStyle = computed(() => {
@@ -195,11 +197,12 @@ const getUserInfo = () => {
 };
 
 const entrance = async (isPay: boolean = false) => {
+  const pid = getURLParamsPID();
   const result = await fetchProductInfo({
-    pid: launchInfo?.query?.pid || 46
+    pid
   });
   console.log('result==>', result, result.data.status);
-  /// ///result.data.status = 'showreport'; // 测试
+  /// result.data.status = 'showpay'; // 测试
   productInfoStore.setInfo(result.data);
   const process = Number(result.data?.test_info?.process);
   appStore.setCurrTopicProcess(process); // 第一次的进度值
@@ -271,8 +274,6 @@ const getUserProfile = () => {
 };
 
 onMounted(() => {
-  const launchInfo1 = Taro.getLaunchOptionsSync();
-  console.log('入口参数2', launchInfo1, launchInfo1?.query?.pid);
   console.log('onMounted');
   Taro.getSetting({
     success: res => {

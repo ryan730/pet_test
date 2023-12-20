@@ -77,20 +77,22 @@
 import { onMounted, ref, reactive, computed } from 'vue';
 import Taro, { pxTransform } from '@tarojs/taro';
 import { useAppStore } from '@/store';
-import { getAnimaoType } from '@/utils/common';
+import { getAnimaoType, getURLParamsPID } from '@/utils/common';
 
 const appStore = useAppStore();
 const navHeight = computed(() => appStore.getNavHeight);
 
 const launchInfo = Taro.getLaunchOptionsSync();
 const theme = computed(() => {
-  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  const pid = getURLParamsPID();
+  const isDog = getAnimaoType(pid) == 'dog';
   return {
     color: isDog ? '#ff7237' : '#ffa000'
   };
 });
 const getText = computed(() => {
-  const isDog = getAnimaoType(launchInfo?.query?.pid) == 'dog';
+  const pid = getURLParamsPID();
+  const isDog = getAnimaoType(pid) == 'dog';
   return {
     category: isDog ? '狗狗' : '猫咪'
   };

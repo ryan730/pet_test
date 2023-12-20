@@ -54,6 +54,7 @@ import { computed, defineEmits, ref } from 'vue';
 import Taro from '@tarojs/taro';
 import { fetchUserXorder, fetchCheckpay } from '@/service';
 import { sleep } from '@/utils';
+import { getURLParamsPID } from '@/utils/common';
 
 const emit = defineEmits(['onClickMask', 'onClickPass']);
 
@@ -108,8 +109,9 @@ const judgePayResult = async (order_id: number) => {
 
 const launchInfo = Taro.getLaunchOptionsSync();
 const handleToPayment = async (req: any) => {
+  const pid = getURLParamsPID();
   const res = await fetchUserXorder({
-    product_id: launchInfo?.query?.pid || 46
+    product_id: pid
   });
   const js_params = res?.data?.js_params;
   const order_id = res?.data?.order_id;
