@@ -60,10 +60,12 @@
   margin-top: 5px;
 }
 .finally .caption-1 {
-  color: rgba(253, 92, 96, 1);
+	color: rgba(253, 92, 96, 1);
   font-size: 26px;
   font-weight: 500;
   white-space: nowrap;
+	display: flex;
+	align-items: center;
 }
 .finally .caption-2 {
   color: rgba(99, 103, 110, 1);
@@ -341,4 +343,10 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.finally .light {
+  width: 30px;
+  height: 32px;
+  margin: 5px 0 5px 0;
+	margin-right: 10px;
 }

@@ -13,8 +13,8 @@
             <img class="light" :src="require('../../assets/images/light.png')" />
             答题时需要注意以下事项
           </span>
-          <span v-if="true" class="caption-2">&nbsp▪ 凭第一反应回答，不需要考虑太多</span>
-          <span class="caption-3">&nbsp▪ 题目没有好与坏，对与错之分</span>
+          <span class="caption-2">&nbsp▪ 凭第一反应回答，不需要考虑太多 </span>
+          <span class="caption-3">&nbsp▪ 题目没有好与坏，对与错之分 </span>
         </div>
         <div class="wrapper-chart">
           <img :src="`${getPic.char}`" />

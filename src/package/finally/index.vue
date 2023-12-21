@@ -7,11 +7,14 @@
           根据过去两周的状况，请您回答是否存在下列描述的状况及频率，请看清楚问题后选择符合您情况的选项。
         </span>
       </div>
-      <div v-if="true" class="body">
+      <div class="body">
         <div class="wrapper">
-          <span class="caption-1">答题时需要注意以下事项</span>
-          <span v-if="true" class="caption-2">凭第一反应回答，不需要考虑太多</span>
-          <span class="caption-3">题目没有好与坏，对与错之分</span>
+          <span class="caption-1">
+            <img class="light" :src="require('../../assets/images/light.png')" />
+            答题时需要注意以下事项
+          </span>
+          <span class="caption-2">&nbsp▪ 凭第一反应回答，不需要考虑太多</span>
+          <span class="caption-3">&nbsp▪ 题目没有好与坏，对与错之分</span>
         </div>
         <div class="wrapper-chart">
           <img :src="`${getPic.char}`" />
