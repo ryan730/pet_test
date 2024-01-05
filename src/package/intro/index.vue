@@ -1,23 +1,72 @@
 <template>
-  <cg-navbar :title="宠物性格测试" />
-  <div class="home" :style="getStyle">
-    <div class="bg">
-      <img :src="require('@/assets/images/home_bg.png')" />
-    </div>
-    <div class="pet-personality">
-      <img :src="require('@/assets/images/pet-personality.png')" />
-    </div>
-    <div class="home-select">
-      <img :src="require('@/assets/images/home-select.png')" />
-    </div>
-    <div class="go-cat" @click="onClickGoCat"></div>
-    <div class="go-dog" @click="onClickGoDog"></div>
-    <div class="group_10 flex-col">
-      <button class="button_1 flex-col" @click="onClickGoDetail">
-        <span class="text_26">查看完整解读报告</span>
-      </button>
+  <cg-navbar :title="info.name" />
+  <!-- <Button size="default"  type="warn" open-type="getPhoneNumber" @getphonenumber="getTel">
+		<Text class="get-phone-text">微信一键登录</Text>
+	</Button> -->
+
+  <div class="page" :style="getStyle">
+    <div class="block">
+      <div class="body">
+        <div class="bg-image">
+          <img :src="`${getPic.bg}`" />
+        </div>
+      </div>
+      <div class="submain">
+        <div class="wrapper-2">
+          <span class="title">{{ info.name }}</span>
+          <span class="title-1">{{ getPetInfo().title }}</span>
+          <div class="group-3">
+            <div class="view-1">
+              <img class="icon-text" :src="require('@/assets/images/img_23.png')" />
+              <span class="label">共88题</span>
+            </div>
+            <div class="view-2">
+              <img class="icon-time" :src="require('@/assets/images/img_24.png')" />
+              <span class="tag">约需25分钟</span>
+            </div>
+          </div>
+        </div>
+        <div class="wrapper-3">
+          <div class="empty" />
+          <div class="price-wrapper">
+            <span class="price">¥{{ info.price }}</span>
+            <div class="price-wrapper-1">
+              <span class="price-1">¥{{ info.price_show }}</span>
+              <div class="empty-1" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="wrapper-4">
+          <div class="group-4">
+            <img class="icon-user-group" :src="require('@/assets/images/img_25.png')" />
+            <span class="caption-1">测评简介</span>
+          </div>
+          <view class="summary" v-html="getConterInfo()" />
+        </div>
+        <div v-if="info?.status == 'notdone'" class="wrapper-5" @click="handleEntryToTest">
+          <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
+            <span class="title-4">立即测试</span>
+          </div>
+          <img class="picture" :src="`${getPic.foot}`" />
+        </div>
+        <div v-if="info?.status == 'showpay'" class="wrapper-5" @click="handlePurchaseToTest">
+          <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
+            <span class="title-4">立即购买</span>
+          </div>
+          <img class="picture" :src="`${getPic.foot}`" />
+        </div>
+      </div>
     </div>
   </div>
+  <cg-pop-pay
+    :is-show="state.isPopShow"
+    :info="info"
+    :theme="theme"
+    @onClickMask="handleMask"
+    @onClickPass="entrance"
+  />
 </template>
 <script setup lang="ts">
 import { onMounted, ref, reactive, computed } from 'vue';
@@ -66,23 +115,6 @@ const getPetInfo = () => {
       ? `<span class="text_cont_1" >人有人格，狗有狗格。无论是什么品种的狗狗，即使同一个品种的狗狗，也有自己的个性。</span > <span class="text_cont_2" >狗格测试，采用专业的汪星人性格模型，帮助发现你的狗狗独特之处。</span > <span class="text_cont_3" >这是全网最系统的狗狗测评工具了，赶快测起来，分享你的发现。</span >`
       : `<span class="caption-2">今天咱们也找到了一份猫咪的性格测试问卷，来自ASPCA的Feline-ality™计划，最终将猫咪划分成了成了9种性格，一起来测试一下吧~</span> <span class="caption-3">该测试本身为领养时使用，帮助领养人选择性格契合的猫咪。</span><span class="title-2">如果猫咪已经与你生活一段时间，有些初见场景难以还原，请回忆或试想一下，当时的TA会怎么做吧~</span>`
   };
-};
-
-const onClickGoCat = () => {
-  Taro.navigateTo({
-    url: '/package/intro/index?pid=47'
-  });
-};
-const onClickGoDog = () => {
-  Taro.navigateTo({
-    url: '/package/intro/index?pid=46'
-  });
-};
-
-const onClickGoDetail = () => {
-  Taro.navigateTo({
-    url: '/package/list_report/index'
-  });
 };
 
 // getPetInfo().content
@@ -169,7 +201,7 @@ const entrance = async (isPay: boolean = false) => {
   const result = await fetchProductInfo({
     pid
   });
-  console.log('result==>', result, result.data.status);
+  console.log('intro-result==>', result, result.data.status);
   /// result.data.status = 'showpay'; // 测试
   productInfoStore.setInfo(result.data);
   const process = Number(result.data?.test_info?.process);
@@ -242,19 +274,19 @@ const getUserProfile = () => {
 };
 
 onMounted(() => {
-  // console.log('onMounted');
-  // Taro.getSetting({
-  //   success: res => {
-  //     console.log('onMounted----', res);
-  //     if (res.authSetting['scope.userInfo']) {
-  //       // 用户已经授权过，可以直接获取用户信息
-  //       getUserInfo();
-  //     } else {
-  //       // 用户未授权，需要弹出授权窗口
-  //       showAuthModal();
-  //     }
-  //   }
-  // });
+  console.log('onMounted');
+  Taro.getSetting({
+    success: res => {
+      console.log('onMounted----', res);
+      if (res.authSetting['scope.userInfo']) {
+        // 用户已经授权过，可以直接获取用户信息
+        getUserInfo();
+      } else {
+        // 用户未授权，需要弹出授权窗口
+        showAuthModal();
+      }
+    }
+  });
 });
 </script>
 

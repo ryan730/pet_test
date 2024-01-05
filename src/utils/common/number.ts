@@ -86,7 +86,7 @@ export const getURLParamsPID = () => {
     console.log('入口参数2', cachePid);
     return cachePid;
   }
-  const launchInfo = Taro.getLaunchOptionsSync();
+  const launchInfo = {}; // Taro.getLaunchOptionsSync();
   const instance = Taro.getCurrentInstance();
   const pid = launchInfo?.query?.pid || instance?.router?.params?.pid;
   cachePid = pid || 46;
