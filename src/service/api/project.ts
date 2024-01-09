@@ -167,3 +167,8 @@ export async function fetchCheckpay(data: Checkpay) {
   const result = await fetch(`${config.APIURL}/user/checkpay`, data);
   return result;
 }
+
+export async function fetchReportList(data: Checkpay) {
+  const result = await fetch(`${config.APIURL}/user/reportList`, data);
+  return result;
+}

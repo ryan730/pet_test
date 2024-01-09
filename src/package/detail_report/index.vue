@@ -90,7 +90,7 @@ const containerHeight = ref(0);
 const contents = ref([]);
 const tabIndex = ref(0);
 
-const info = computed(() => productInfoStore.getInfo);
+const info = computed(() => productInfoStore.reportIds);
 
 const ecRef = ref(false);
 
@@ -140,6 +140,7 @@ const getRenderDataToTezhi = computed(() => {
 const getReport = async () => {
   forbidden.value = true;
   const report_id = info.value.report_id;
+  console.log('productInfoStore.reportIds=111==', productInfoStore.reportIds);
   let res = {};
   if (getEnv() == 'WEB') {
     res = mock; // 测试

@@ -1,5 +1,6 @@
 <template>
-  <cg-navbar :title="info.name" />
+  <cg-navbar2 :title="info.name" />
+  <!-- <cg-navbar :title="info.name" /> -->
   <!-- <Button size="default"  type="warn" open-type="getPhoneNumber" @getphonenumber="getTel">
 		<Text class="get-phone-text">微信一键登录</Text>
 	</Button> -->
@@ -275,18 +276,19 @@ const getUserProfile = () => {
 
 onMounted(() => {
   console.log('onMounted');
-  Taro.getSetting({
-    success: res => {
-      console.log('onMounted----', res);
-      if (res.authSetting['scope.userInfo']) {
-        // 用户已经授权过，可以直接获取用户信息
-        getUserInfo();
-      } else {
-        // 用户未授权，需要弹出授权窗口
-        showAuthModal();
-      }
-    }
-  });
+  entrance();
+  // Taro.getSetting({
+  //   success: res => {
+  //     console.log('onMounted----', res);
+  //     if (res.authSetting['scope.userInfo']) {
+  //       // 用户已经授权过，可以直接获取用户信息
+  //       getUserInfo();
+  //     } else {
+  //       // 用户未授权，需要弹出授权窗口
+  //       showAuthModal();
+  //     }
+  //   }
+  // });
 });
 </script>
 

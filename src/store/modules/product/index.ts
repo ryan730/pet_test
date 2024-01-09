@@ -13,6 +13,8 @@ interface Info {
 
 interface State {
   info: Info;
+  reportList: any;
+  reportIds: any;
 }
 
 interface TestInfo {
@@ -40,15 +42,25 @@ export const useProductInfoStore = defineStore('product-info-store', {
         updated_at: '',
         utid: ''
       }
-    }
+    },
+    reportList: [],
+    reportIds: {}
   }),
   getters: {
-    getInfo: state => state.info
+    getInfo: state => state.info,
+    getReportList: state => state.reportList,
+    getReportIds: state => state.reportIds
   },
   actions: {
     /** 设置系统主题 */
     setInfo(values: State) {
       this.info = values;
+    },
+    setReportList(values: State) {
+      this.reportList = values;
+    },
+    setReportIds(values: State) {
+      this.reportIds = values;
     }
   }
 });

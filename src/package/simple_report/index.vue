@@ -54,7 +54,7 @@ const ecRef = ref(false);
 const vueref0 = ref(null);
 
 const count = computed(() => appStore.getCurrTopicProcess);
-const info = computed(() => productInfoStore.getInfo);
+const info = computed(() => productInfoStore.reportIds);
 
 const isHeightOverFlow = ref(false);
 

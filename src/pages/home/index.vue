@@ -12,7 +12,7 @@
     </div>
     <div class="go-cat" @click="onClickGoCat"></div>
     <div class="go-dog" @click="onClickGoDog"></div>
-    <div class="group_10 flex-col">
+    <div v-if="reportListRef.length" class="group_10 flex-col">
       <button class="button_1 flex-col" @click="onClickGoDetail">
         <span class="text_26">查看完整解读报告</span>
       </button>
@@ -27,10 +27,11 @@ import Taro, {
   getWindowInfo,
   pxTransform,
   getSystemInfoSync,
-  getCurrentInstance
+  getCurrentInstance,
+  showToast
 } from '@tarojs/taro';
 import { Button, Text } from '@tarojs/components';
-import { fetchUserLoginApp, fetchProductInfo, getToken } from '@/service';
+import { fetchUserLoginApp, fetchProductInfo, fetchReportList, getToken } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { getAnimaoPic, getAnimaoType, getURLParamsPID } from '@/utils/common';
 
@@ -43,6 +44,8 @@ console.log('instance.router.params:', launchInfo, launchInfo?.query?.pid, insta
 definePageConfig({
   navigationBarTitleText: '首页'
 });
+
+const reportListRef = ref([]);
 
 const appStore = useAppStore();
 const productInfoStore = useProductInfoStore();
@@ -150,6 +153,20 @@ const alertMsg = (msg: string) => {
   });
 };
 
+const getReportList = async () => {
+  const res = await fetchReportList();
+  console.log('fetchReportList--', res);
+  if (res?.code == 1) {
+    reportListRef.value = res.data;
+    productInfoStore.setReportList(res.data);
+  } else {
+    showToast({
+      title: res.msg || '获取报告失败',
+      icon: 'none'
+    });
+  }
+};
+
 const getUserInfo = () => {
   Taro.login({
     success: async res => {
@@ -158,44 +175,45 @@ const getUserInfo = () => {
         await fetchUserLoginApp({
           code: res.code
         });
-        await entrance();
+        getReportList();
+        /// await entrance();
       }
     }
   });
 };
 
-const entrance = async (isPay: boolean = false) => {
-  const pid = getURLParamsPID();
-  const result = await fetchProductInfo({
-    pid
-  });
-  console.log('result==>', result, result.data.status);
-  /// result.data.status = 'showpay'; // 测试
-  productInfoStore.setInfo(result.data);
-  const process = Number(result.data?.test_info?.process);
-  appStore.setCurrTopicProcess(process); // 第一次的进度值
+// const entrance = async (isPay: boolean = false) => {
+//   const pid = getURLParamsPID();
+//   const result = await fetchProductInfo({
+//     pid
+//   });
+//   console.log('result==>', result, result.data.status);
+//   /// result.data.status = 'showpay'; // 测试
+//   productInfoStore.setInfo(result.data);
+//   const process = Number(result.data?.test_info?.process);
+//   appStore.setCurrTopicProcess(process); // 第一次的进度值
 
-  const alert = true; // await alertMsg(info.value.status);
-  if (alert) {
-    if (info.value.status === 'showpay') {
-      // 支付环节
-      state.isPopShow = true;
-    } else if (info.value.status === 'showreport') {
-      // 评测作完，直接去评测结果页
-      Taro.redirectTo({
-        url: '/package/finally/index'
-      });
-    } else if (info.value.status === 'notdone') {
-      // 未完成，直接去测试页
-      const report_id = result.data?.report_id;
-      if (report_id?.length === 1) {
-        // 查看做题进度，哪一段做题未做完
-        console.log('当前report', report_id);
-      }
-      isPay && handlePass();
-    }
-  }
-};
+//   const alert = true; // await alertMsg(info.value.status);
+//   if (alert) {
+//     if (info.value.status === 'showpay') {
+//       // 支付环节
+//       state.isPopShow = true;
+//     } else if (info.value.status === 'showreport') {
+//       // 评测作完，直接去评测结果页
+//       Taro.redirectTo({
+//         url: '/package/finally/index'
+//       });
+//     } else if (info.value.status === 'notdone') {
+//       // 未完成，直接去测试页
+//       const report_id = result.data?.report_id;
+//       if (report_id?.length === 1) {
+//         // 查看做题进度，哪一段做题未做完
+//         console.log('当前report', report_id);
+//       }
+//       isPay && handlePass();
+//     }
+//   }
+// };
 
 const showAuthModal = () => {
   Taro.showModal({
@@ -242,19 +260,19 @@ const getUserProfile = () => {
 };
 
 onMounted(() => {
-  // console.log('onMounted');
-  // Taro.getSetting({
-  //   success: res => {
-  //     console.log('onMounted----', res);
-  //     if (res.authSetting['scope.userInfo']) {
-  //       // 用户已经授权过，可以直接获取用户信息
-  //       getUserInfo();
-  //     } else {
-  //       // 用户未授权，需要弹出授权窗口
-  //       showAuthModal();
-  //     }
-  //   }
-  // });
+  console.log('onMounted');
+  Taro.getSetting({
+    success: res => {
+      console.log('onMounted----', res);
+      if (res.authSetting['scope.userInfo']) {
+        // 用户已经授权过，可以直接获取用户信息
+        getUserInfo();
+      } else {
+        // 用户未授权，需要弹出授权窗口
+        showAuthModal();
+      }
+    }
+  });
 });
 </script>
 

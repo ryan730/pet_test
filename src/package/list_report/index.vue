@@ -1,31 +1,31 @@
 <template>
-  <cg-navbar2 :title="宠物性格测试" />
+  <cg-navbar2 :title="titleRef" />
   <div class="list-report" :style="getStyle">
-    <nut-tabs v-model="value">
-      <nut-tab-pane v-for="(item, index) in ['宠物报告', '未完成的测试']" :title="item" :pane-key="index1">
-        <nut-cell>
-          <nut-list :height="201" :list-data="state.count" @scroll-bottom="handleScroll">
-            <template #default="{ item, index }">
-              <div class="left-pic">
-                <img src="" />
+    <!-- <nut-tabs v-model="value"> -->
+    <!-- <nut-tab-pane v-for="(item, index) in ['宠物报告']" :title="item" :pane-key="index1"> -->
+    <nut-cell>
+      <nut-list :height="201" :list-data="state.reportList" @scroll-bottom="handleScroll">
+        <template #default="{ item, index }">
+          <div class="left-pic">
+            <img src="" />
+          </div>
+          <div class="right">
+            <div class="content-left">
+              <div class="time">时间：{{ item?.submittime }}</div>
+              <div class="name">宠物名：{{ item?.name }}</div>
+              <div class="age">年龄：{{ item?.age }}</div>
+            </div>
+            <div class="content-right">
+              <div class="but" @click="handleGoDatil(item)">
+                <div class="text">查看报告</div>
               </div>
-              <div class="right">
-                <div class="content-left">
-                  <div class="time">时间：2023.12.12</div>
-                  <div class="name">猫猫名字：铁饭碗</div>
-                  <div class="age">年龄：3岁</div>
-                </div>
-                <div class="content-right">
-                  <div class="but" @click="handleGoDatil">
-                    <div class="text">查看报告</div>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </nut-list>
-        </nut-cell>
-      </nut-tab-pane>
-    </nut-tabs>
+            </div>
+          </div>
+        </template>
+      </nut-list>
+    </nut-cell>
+    <!-- </nut-tab-pane> -->
+    <!-- </nut-tabs> -->
   </div>
   "
 </template>
@@ -37,11 +37,15 @@ import Taro, {
   getWindowInfo,
   pxTransform,
   getSystemInfoSync,
-  getCurrentInstance
+  getCurrentInstance,
+  showToast
 } from '@tarojs/taro';
 import { useAppStore, useProductInfoStore } from '@/store';
 
+const productInfoStore = useProductInfoStore();
+
 const value = ref('0');
+const titleRef = ref('宠物报告');
 
 const appStore = useAppStore();
 
@@ -53,25 +57,34 @@ const getStyle = computed(() => {
 });
 
 const state = reactive({
-  count: new Array(100).fill(0)
+  reportList: new Array(100).fill(0).map(() => {
+    return {
+      type: '46',
+      submittime: '2023-12-12',
+      name: 'XXX',
+      gender: '1',
+      reportids: ['600', '601'],
+      age: 5
+    };
+  })
 });
 
 const handleScroll = () => {
   const arr = new Array(100).fill(0);
-  const len = state.count.length;
-  state.count = state.count.concat(arr.map((item, index) => len + index + 1));
+  const len = state.reportList.length;
+  // state.reportList = state.reportList.concat(arr.map((item, index) => len + index + 1));
 };
 
-onMounted(() => {
-  state.count = state.count.map((item, index) => index + 1);
+onMounted(async () => {
+  // state.reportList = state.reportList.map((item, index) => index + 1);
 });
 
-const handleGoDatil = () => {
+const handleGoDatil = item => {
   // ["600","601"]
-  const productInfoStore = useProductInfoStore();
-  productInfoStore.setInfo({
-    report_id: ['600', '601']
+  productInfoStore.setReportIds({
+    report_id: item.reportids // ['600', '601']
   });
+  console.log('productInfoStore.reportIds===', productInfoStore.reportIds);
   Taro.navigateTo({
     url: '/package/simple_report/index'
   });

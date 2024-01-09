@@ -13,8 +13,8 @@
             <img class="light" :src="require('../../assets/images/light.png')" />
             答题时需要注意以下事项
           </span>
-          <span class="caption-2">&nbsp▪ 凭第一反应回答，不需要考虑太多 </span>
-          <span class="caption-3">&nbsp▪ 题目没有好与坏，对与错之分 </span>
+          <span class="caption-2">&nbsp▪ 凭第一反应回答，不需要考虑太多</span>
+          <span class="caption-3">&nbsp▪ 题目没有好与坏，对与错之分</span>
         </div>
         <div class="wrapper-chart">
           <img :src="`${getPic.char}`" />
@@ -30,7 +30,27 @@
           </div>
         </div>
       </div>
-      <div class="body-1">
+      <div v-if="sectionRef == 1" class="group_4 flex-row justify-between lista">
+        <div class="box_6 flex-col">
+          <span class="text_7">{{ topic?.title }}</span>
+          <!-- <img
+            class="image_4"
+            referrerpolicy="no-referrer"
+            src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng42da64e2f3e857de32980efc554abba363fc6a0d054bae5978f5b1f749f29b5a"
+          /> -->
+        </div>
+        <div class="box_7 flex-col">
+          <div
+            v-for="(item, index) in topic?.content"
+            class="text-wrapper_1 flex-col"
+            :style="getActive(item, index)"
+            @click="handleItem(item, index)"
+          >
+            <span class="text_8">{{ item?.text }}</span>
+          </div>
+        </div>
+      </div>
+      <div v-if="sectionRef == 0" class="body-1 lista">
         <div class="title-wrapper" :style="{ backgroundColor: '#FFE9A4' }">
           <span class="title-1">{{ topic?.title }}</span>
         </div>
@@ -42,20 +62,20 @@
         >
           <span class="btn">{{ item.text }}</span>
         </div>
-        <div class="btn-next-prev">
-          <nut-cell>
-            <div v-show="appStore.getCurrTopicProcess > 1" class="prev" @click="handlePrev">上一题</div>
-          </nut-cell>
-          <nut-cell>
-            <div v-show="appStore.getCurrTopicProcess < total" class="next" @click="handleNext">下一题</div>
-          </nut-cell>
-        </div>
         <div class="wrapper-6">
           <!-- <img class="item" src="./images/img_9.png" /> -->
         </div>
         <!-- <div class="body-bg">
           <img ref="bgRef" class="bg" :style="{ top: bgTopRef }" :src="require('@/assets/images/bg.png')" />
         </div> -->
+      </div>
+      <div class="btn-next-prev">
+        <nut-cell>
+          <div v-show="appStore.getCurrTopicProcess > 1" class="prev" @click="handlePrev">上一题</div>
+        </nut-cell>
+        <nut-cell>
+          <div v-show="appStore.getCurrTopicProcess < total" class="next" @click="handleNext">下一题</div>
+        </nut-cell>
       </div>
     </div>
   </div>
@@ -91,16 +111,25 @@ const bgTopRef = ref(0);
 const bgRef = ref(null);
 const bgHeight = ref(0);
 const productInfoStore = useProductInfoStore();
+const sectionRef = ref(0); // 第几段 0/1
 
 /// const number = computed(() => Number(appStore.getCurrTopicProcess));
 const number = computed(() => {
   const sbase = productInfoStore?.getInfo?.sbase;
   const stotal = productInfoStore?.getInfo?.stotal;
+  const answerId = productInfoStore?.getInfo?.test_info?.test_id;
   // return info?.sbase;
   console.log('sbase:::', sbase);
   console.log('stotal:::', stotal);
-  console.log('process:::', appStore.getCurrTopicProcess);
+  console.log('process:::', answerId, appStore.getCurrTopicProcess);
   console.log('total:::', total.value);
+
+  if (answerId == 47) {
+    sectionRef.value = 1;
+  } else {
+    sectionRef.value = 0;
+  }
+
   return `${Number(appStore.getCurrTopicProcess) + Number(sbase)}/${Number(stotal)}`;
 });
 const currentAnswerNumb = ref(-1); // 当前答题选项,-1表示未选择
@@ -152,6 +181,7 @@ const continueNextSection = async () => {
       icon: 'none',
       duration: 2000
     });
+    ///sectionRef.value = 1;
     const process = test_info?.process == 0 ? 1 : Number(test_info?.process); // 第一次的进度0转成1
     appStore.setCurrTopicProcess(process); // 第二次的进度值
     await init();
@@ -272,6 +302,7 @@ const init = async () => {
   } catch (e) {
     console.log(e);
   }
+  /// res = mock;
   console.log('data=======>>>', res?.data);
   topics.value = res?.data?.topics; // mock?.data?.topics;
   total.value = res?.data?.total; // 3; // mock?.data?.total;
@@ -295,7 +326,7 @@ const resized = () => {
     const query = Taro.createSelectorQuery();
     let bodyHeight = 0;
     query
-      .select('.body-1')
+      .select('.lista')
       .boundingClientRect(res => {
         const info = Taro.getSystemInfoSync();
         const content_height = res.height + (env.toLowerCase() == 'web' ? 200 : 200);
