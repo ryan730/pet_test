@@ -1,5 +1,5 @@
 <template>
-  <cg-navbar :title="宠物性格测试" />
+  <cg-navbar :title="titleRef" />
   <div class="home" :style="getStyle">
     <div class="bg">
       <img :src="require('@/assets/images/home_bg.png')" />
@@ -46,6 +46,7 @@ definePageConfig({
 });
 
 const reportListRef = ref([]);
+const titleRef = ref('宠物性格测试');
 
 const appStore = useAppStore();
 const productInfoStore = useProductInfoStore();

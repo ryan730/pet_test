@@ -14,7 +14,7 @@ interface Info {
 interface State {
   info: Info;
   reportList: any;
-  reportIds: any;
+  report: any;
 }
 
 interface TestInfo {
@@ -44,12 +44,12 @@ export const useProductInfoStore = defineStore('product-info-store', {
       }
     },
     reportList: [],
-    reportIds: {}
+    report: {}
   }),
   getters: {
     getInfo: state => state.info,
     getReportList: state => state.reportList,
-    getReportIds: state => state.reportIds
+    getReport: state => state.report
   },
   actions: {
     /** 设置系统主题 */
@@ -59,8 +59,8 @@ export const useProductInfoStore = defineStore('product-info-store', {
     setReportList(values: State) {
       this.reportList = values;
     },
-    setReportIds(values: State) {
-      this.reportIds = values;
+    setReport(values: State) {
+      this.report = values;
     }
   }
 });

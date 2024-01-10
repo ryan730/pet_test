@@ -226,6 +226,10 @@ const entrance = async (isPay: boolean = false) => {
         console.log('当前report', report_id);
       }
       isPay && handlePass();
+    } else if (info.value.status === 'petinfo') {
+      Taro.redirectTo({
+        url: '/package/profile/index'
+      });
     }
   }
 };

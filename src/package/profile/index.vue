@@ -52,7 +52,7 @@
             <span class="caption-4">{{ getText.category }}多大了</span>
             <nut-cell>
               <div class="game-wrapper">
-                <span class="game">{{ form.popupDesc }}</span>
+                <span class="game">{{ form.age }}</span>
                 <img class="icon-right" :src="require('@/assets/profile-images/img_6.png')" />
               </div>
             </nut-cell>
@@ -70,12 +70,14 @@
 		</div> -->
   </div>
   <nut-popup v-model:visible="timeShow" position="bottom">
-    <nut-date-picker v-model="currentDate" :is-show-chinese="true" @confirm="popupConfirm"></nut-date-picker>
+    <!-- <nut-date-picker v-model="currentDate" :is-show-chinese="true" @confirm="popupConfirm"></nut-date-picker> -->
+    <nut-picker :columns="currentDate" :is-show-chinese="true" @confirm="popupConfirm"></nut-picker>
   </nut-popup>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, reactive, computed } from 'vue';
 import Taro, { pxTransform } from '@tarojs/taro';
+import { fetchSetBasic } from '@/service';
 import { useAppStore } from '@/store';
 import { getAnimaoType, getURLParamsPID } from '@/utils/common';
 
@@ -107,18 +109,46 @@ const getStyle = computed(() => {
 const timeShow = ref(false);
 const form = reactive({
   gender: '1',
-  popupDesc: ''
+  age: ''
 });
-const currentDate = new Date();
+const currentDate = new Array(36).fill({}).map((it, index) => {
+  return {
+    text: index ? `${index}岁` : '小于1岁',
+    value: index
+  };
+}); // new Date();
 const popupConfirm = ({ selectedValue, selectedOptions }) => {
-  form.popupDesc = selectedOptions.map(val => val.text).join('');
+  form.age = selectedOptions.map(val => val.value).join('');
   timeShow.value = false;
 };
-const handleEntryAnswer = () => {
-  console.log('handleEntryAnswer===');
-  Taro.redirectTo({
-    url: '/package/answer/index'
+
+// http://192.168.3.200:10086/#/package/profile/index
+const handleEntryAnswer = async () => {
+  const isAllEmpty = Object.values(form).some(item => item == '');
+  console.log('profile-form========', form, isAllEmpty);
+  if (isAllEmpty) {
+    Taro.showToast({
+      title: '请完善信息',
+      icon: 'none'
+    });
+    return;
+  }
+  const res = await fetchSetBasic({
+    info: JSON.stringify({
+      gender: form.gender,
+      age: form.age
+    })
   });
+  if (res?.code == 1) {
+    Taro.redirectTo({
+      url: '/package/answer/index'
+    });
+  } else {
+    Taro.showToast({
+      title: res?.msg,
+      icon: 'none'
+    });
+  }
 };
 onMounted(() => {});
 </script>

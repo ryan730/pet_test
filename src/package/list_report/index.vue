@@ -7,12 +7,15 @@
       <nut-list :height="201" :list-data="state.reportList" @scroll-bottom="handleScroll">
         <template #default="{ item, index }">
           <div class="left-pic">
-            <img src="" />
+            <img
+              class="pic-img"
+              :src="item?.type == '46' ? require('@/assets/images/dogp.png') : require('@/assets/images/catp.png')"
+            />
           </div>
           <div class="right">
             <div class="content-left">
-              <div class="time">时间：{{ item?.submittime }}</div>
-              <div class="name">宠物名：{{ item?.name }}</div>
+              <!-- <div class="time">时间：{{ item?.submittime }}</div>-->
+              <div class="name">性别：{{ item?.gender }}</div>
               <div class="age">年龄：{{ item?.age }}</div>
             </div>
             <div class="content-right">
@@ -56,17 +59,20 @@ const getStyle = computed(() => {
   };
 });
 
+console.log('getEnv===', productInfoStore.reportList);
+
 const state = reactive({
-  reportList: new Array(100).fill(0).map(() => {
-    return {
-      type: '46',
-      submittime: '2023-12-12',
-      name: 'XXX',
-      gender: '1',
-      reportids: ['600', '601'],
-      age: 5
-    };
-  })
+  reportList: productInfoStore.reportList
+  // reportList: new Array(100).fill(0).map(() => {
+  //   return {
+  //     type: '46',
+  //     submittime: '2023-12-12',
+  //     name: 'XXX',
+  //     gender: '1',
+  //     reportids: ['600', '601'],
+  //     age: 5
+  //   };
+  // })
 });
 
 const handleScroll = () => {
@@ -81,10 +87,11 @@ onMounted(async () => {
 
 const handleGoDatil = item => {
   // ["600","601"]
-  productInfoStore.setReportIds({
-    report_id: item.reportids // ['600', '601']
+  productInfoStore.setReport({
+    report_id: item.reportids, // ['600', '601']
+    score: item.score
   });
-  console.log('productInfoStore.reportIds===', productInfoStore.reportIds);
+  console.log('productInfoStore.reportIds===', productInfoStore.report);
   Taro.navigateTo({
     url: '/package/simple_report/index'
   });
@@ -137,7 +144,11 @@ const handleGoDatil = item => {
     .left-pic {
       width: 164px;
       height: 164px;
-      background-color: #f5f;
+      background-color: rgb(255, 255, 255);
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
 
     .right {

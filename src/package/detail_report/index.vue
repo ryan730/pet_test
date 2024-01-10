@@ -1,5 +1,5 @@
 <template>
-  <cg-navbar title="完整报告" />
+  <cg-navbar2 title="完整报告" />
   <view class="detail_report" :style="getStyle" :catch-move="forbidden">
     <nut-overlay v-model:visible="forbidden">
       <div class="overlay-body">
@@ -19,7 +19,7 @@
             <view class="taro_html" v-html="getRenderDataToHtml"></view>
           </div>
         </nut-tab-pane>
-        <nut-tab-pane title="特质分析" pane-key="1" class="tab-warper-pane">
+        <nut-tab-pane title="特质分析" pane-key="1" class="tab-warper-pane-analyze">
           <nut-swipe>
             <div class="flexCon tab-warper">
               <div
@@ -65,10 +65,63 @@
             </div>
           </div>
         </nut-tab-pane>
-        <!-- <nut-tab-pane title="基本信息" pane-key="2">Tab 3</nut-tab-pane> -->
+        <!-- <nut-tab-pane title="基本信息" pane-key="2" class="tab-warper-pane-base">
+          <div class="baseInfo-group tab2">
+            <div class="base_info_group">
+              <div class="base_group_title">
+                <div class="base_info_title_text">
+                  <div class="base_info_title_txt"></div>
+                  <span class="base_text_base_span">基本信息</span>
+                </div>
+              </div>
+              <div class="base_text_wrapper_gender">
+                <span class="base_text_label">你的汪星人性别：</span>
+                <span class="base_text_txt">&nbsp;男生</span>
+              </div>
+              <img class="base_mage" referrerpolicy="no-referrer" :src="require('../../assets/images/pic276.png')" />
+              <div class="base_text_wrapper_age">
+                <span class="base_text_age">你的汪星人年龄：</span>
+                <span class="base_age_txt">&nbsp;8岁</span>
+              </div>
+            </div>
+            <span class="base_text_explanation">阅读说明</span>
+            <div class="base_label_notice">
+              <span class="base_text_notice_title">感谢您的参与，阅读本报告时，请注意以下事项：</span>
+              <div>
+                <div class="base_info_title_text">
+                  <div class="base_reader_sub"></div>
+                  <span class="text_base_reader_sub">本报告为专业测评结果，建议你在分享时务必谨慎。</span>
+                </div>
+                <div class="base_info_title_text">
+                  <div class="base_reader_sub"></div>
+                  <span class="text_base_reader_sub">本报告为专业测评结果，建议你在分享时务必谨慎。</span>
+                </div>
+                <div class="base_info_title_text">
+                  <div class="base_reader_sub"></div>
+                  <span class="text_base_reader_sub">本报告为专业测评结果，建议你在分享时务必谨慎。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nut-tab-pane> -->
       </nut-tabs>
     </div>
   </view>
+  <div v-if="favorShowRef" class="base_favorite">
+    <span class="base_favorite_text">亲，结果准确吗？</span>
+    <img
+      v-for="(item, index) in favoritesRef"
+      :key="index"
+      :style="{ opacity: item.active ? 1 : 0.2 }"
+      class="base_favorite_img"
+      referrerpolicy="no-referrer"
+      :src="require('../../assets/images/faver.png')"
+      @click="handleFavoriteSelect(item, index)"
+    />
+    <button class="button_favorite" @click="handleSendFavorite">
+      <span class="base_text_favorite">提交</span>
+    </button>
+  </div>
 </template>
 <script setup lang="ts">
 import { it } from 'node:test';
@@ -77,11 +130,12 @@ import Taro, { getEnv, showToast, pxTransform } from '@tarojs/taro';
 import { IconFont } from '@nutui/icons-vue-taro';
 import { EChart } from 'echarts-taro3-vue';
 import { ScrollView } from '@tarojs/components';
-import { fetchSeriesReport } from '@/service';
+import { fetchSeriesReport, fetchScoreTest } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import * as echarts from '@/components/ec-canvas/echarts';
 import mock from './mock.js';
 
+const favorShowRef = ref(false);
 const tabValueRef = ref('0');
 const appStore = useAppStore();
 const productInfoStore = useProductInfoStore();
@@ -89,8 +143,30 @@ const renderData = ref('');
 const containerHeight = ref(0);
 const contents = ref([]);
 const tabIndex = ref(0);
+const favoritesRef = ref([
+  {
+    index: 0,
+    active: true
+  },
+  {
+    index: 1,
+    active: true
+  },
+  {
+    index: 2,
+    active: true
+  },
+  {
+    index: 3,
+    active: true
+  },
+  {
+    index: 4,
+    active: true
+  }
+]);
 
-const info = computed(() => productInfoStore.reportIds);
+const info = computed(() => productInfoStore.report);
 
 const ecRef = ref(false);
 
@@ -106,7 +182,7 @@ const getItemSelectStyle = (item: any, index: number) => {
 const getStyle = computed(() => {
   console.log('tabIndex:::', tabIndex.value);
   const val = {
-    overflow: tabIndex.value == 0 ? 'hidden' : 'unset',
+    overflow: tabIndex.value == 0 || tabIndex.value == 2 ? 'hidden' : 'unset',
     marginTop: `${pxTransform(appStore.getNavHeight)}`,
     height: containerHeight.value > 0 ? `${containerHeight.value}px` : 'auto'
     // maxHeight: '3000px'
@@ -140,7 +216,7 @@ const getRenderDataToTezhi = computed(() => {
 const getReport = async () => {
   forbidden.value = true;
   const report_id = info.value.report_id;
-  console.log('productInfoStore.reportIds=111==', productInfoStore.reportIds);
+  console.log('productInfoStore.getReport==', report_id, productInfoStore.report);
   let res = {};
   if (getEnv() == 'WEB') {
     res = mock; // 测试
@@ -190,6 +266,46 @@ const HandleSelectTezhi = (item: any, index: number) => {
   });
 };
 
+const handleFavoriteSelect = (item: any) => {
+  console.log('handleFavoriteSelect:::', item);
+  const bol = !item.active;
+  favoritesRef.value.map((it: any) => {
+    if (bol) {
+      if (it.index <= item.index) {
+        it.active = true;
+      } else {
+        it.active = false;
+      }
+    } else if (!bol) {
+      if (it.index >= item.index) {
+        it.active = false;
+      } else {
+        it.active = true;
+      }
+    }
+  });
+};
+
+const handleSendFavorite = async () => {
+  console.log('handleFavorite:::', info.value.report_id, favoritesRef.value?.filter((it: any) => it.active)?.length);
+  const res = await fetchScoreTest({
+    rids: info.value.report_id,
+    score: favoritesRef.value?.filter((it: any) => it.active)?.length || 5
+  });
+  if (res?.code == 1) {
+    showToast({
+      title: '提交成功',
+      icon: 'none'
+    });
+    favorShowRef.value = false;
+  } else {
+    showToast({
+      title: '提交失败',
+      icon: 'none'
+    });
+  }
+};
+
 const handleChange = (arg: any) => {
   console.log('handleChange:::', arg, `tab${arg.paneKey}`);
   tabIndex.value = arg.paneKey;
@@ -211,6 +327,7 @@ const handleChange = (arg: any) => {
 
 onMounted(async () => {
   getReport();
+  favorShowRef.value = info.value.score == 0;
 });
 
 function initChart(canvas, width, height) {
@@ -320,8 +437,10 @@ function initChart(canvas, width, height) {
 const ec = {
   onInit: initChart
 };
+
+// http://localhost:10086/#/package/detail_report/index
 </script>
 
 <style src="./index.scss" lang="scss" />
 <style src="./echarts.scss" lang="scss" />
-<style src="./template.css" />
+<style src="./template.scss" lang="scss" />

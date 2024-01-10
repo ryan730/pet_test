@@ -23,7 +23,8 @@ interface UserTopicParams {
 }
 
 export const getToken = () => {
-  const token = Taro.getStorageSync('token');
+  const env = getEnv(); // env!='WEB'
+  const token = env != 'WEB' ? Taro.getStorageSync('token') : localStorage.getItem('token');
   return token;
 };
 
@@ -170,5 +171,23 @@ export async function fetchCheckpay(data: Checkpay) {
 
 export async function fetchReportList(data: Checkpay) {
   const result = await fetch(`${config.APIURL}/user/reportList`, data);
+  return result;
+}
+
+interface SetBasic {
+  info: any;
+}
+
+export async function fetchSetBasic(data: SetBasic) {
+  const result = await fetch(`${config.APIURL}/test/setBasic`, data);
+  return result;
+}
+
+interface ScoreTest {
+  rids: Array<string>;
+  score: number;
+}
+export async function fetchScoreTest(data: ScoreTest) {
+  const result = await fetch(`${config.APIURL}/test/scoreTest`, data);
   return result;
 }

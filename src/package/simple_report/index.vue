@@ -1,5 +1,5 @@
 <template>
-  <cg-navbar title="测评报告" />
+  <cg-navbar2 title="测评报告" />
   <div class="simple_report flex-col" :style="getStyle">
     <div class="group_3 flex-col">
       <span class="text_3">核心类型：</span>
@@ -54,7 +54,7 @@ const ecRef = ref(false);
 const vueref0 = ref(null);
 
 const count = computed(() => appStore.getCurrTopicProcess);
-const info = computed(() => productInfoStore.reportIds);
+const info = computed(() => productInfoStore.report);
 
 const isHeightOverFlow = ref(false);
 
