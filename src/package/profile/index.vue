@@ -52,7 +52,7 @@
             <span class="caption-4">{{ getText.category }}多大了</span>
             <nut-cell>
               <div class="game-wrapper">
-                <span class="game">{{ form.age }}</span>
+                <span class="game">{{ !form.age ? '小于1' : form.age }}岁</span>
                 <img class="icon-right" :src="require('@/assets/profile-images/img_6.png')" />
               </div>
             </nut-cell>

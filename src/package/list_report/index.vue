@@ -15,7 +15,7 @@
           <div class="right">
             <div class="content-left">
               <!-- <div class="time">时间：{{ item?.submittime }}</div>-->
-              <div class="name">性别：{{ item?.gender }}</div>
+              <div class="name">性别：{{ item?.gender == 1 ? '男' : '女' }}</div>
               <div class="age">年龄：{{ item?.age }}</div>
             </div>
             <div class="content-right">

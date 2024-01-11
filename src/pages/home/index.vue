@@ -102,7 +102,7 @@ const getPic = computed(() => {
 const getStyle = computed(() => {
   return {
     marginTop: `${pxTransform(appStore.getNavHeight)}`,
-    height: `calc(100% - ${appStore.getNavHeight}px)`
+    height: `${Taro.getSystemInfoSync().windowHeight - 51}px` // `calc(100% - ${appStore.getNavHeight}px)`
   };
 });
 

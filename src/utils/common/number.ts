@@ -82,14 +82,14 @@ export const getAnimaoPic = (num: number) => {
 import Taro from '@tarojs/taro';
 let cachePid = '';
 export const getURLParamsPID = () => {
-  if (cachePid) {
-    console.log('入口参数2', cachePid);
-    return cachePid;
-  }
+  // if (cachePid) {
+  //   console.log('入口参数2', cachePid);
+  //   return cachePid;
+  // }
   const launchInfo = {}; // Taro.getLaunchOptionsSync();
   const instance = Taro.getCurrentInstance();
   const pid = launchInfo?.query?.pid || instance?.router?.params?.pid;
-  cachePid = pid || 46;
+  cachePid = pid; // || 46;
   console.log('入口参数1', launchInfo?.query?.pid, instance?.router?.params?.pid);
   return cachePid;
 };

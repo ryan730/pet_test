@@ -69,7 +69,7 @@
           <img ref="bgRef" class="bg" :style="{ top: bgTopRef }" :src="require('@/assets/images/bg.png')" />
         </div> -->
       </div>
-      <div class="btn-next-prev">
+      <div v-if="btnHiddenRef" class="btn-next-prev">
         <nut-cell>
           <div v-show="appStore.getCurrTopicProcess > 1" class="prev" @click="handlePrev">上一题</div>
         </nut-cell>
@@ -97,7 +97,7 @@
 import { onMounted, ref, reactive, computed, watch } from 'vue';
 import Taro, { getEnv, showToast, pxTransform } from '@tarojs/taro';
 import { IconFont } from '@nutui/icons-vue-taro';
-import { fetchTestTopic, fetchUserTopic, fetchProductInfo } from '@/service';
+import { fetchTestTopic, fetchUserTopic, fetchProductInfo, fetchProductStatus } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { debounce, sleep } from '@/utils';
 import { getAnimaoType, getAnimaoPic, getURLParamsPID } from '@/utils/common';
@@ -153,6 +153,8 @@ const isHeightOverFlow = ref(false);
 
 const contentHeight = ref(0);
 
+const btnHiddenRef = ref(true);
+
 const env = getEnv();
 /// const info = Taro.getSystemInfoSync();
 
@@ -168,7 +170,7 @@ const getStyle = computed(() => {
 // 检查是否做第二套题
 const continueNextSection = async () => {
   const pid = getURLParamsPID();
-  const result = await fetchProductInfo({
+  const result = await fetchProductStatus({
     pid
   });
   productInfoStore.setInfo(result.data);
@@ -181,7 +183,7 @@ const continueNextSection = async () => {
       icon: 'none',
       duration: 2000
     });
-    ///sectionRef.value = 1;
+    /// sectionRef.value = 1;
     const process = test_info?.process == 0 ? 1 : Number(test_info?.process); // 第一次的进度0转成1
     appStore.setCurrTopicProcess(process); // 第二次的进度值
     await init();
@@ -271,6 +273,7 @@ const handleItem = debounce(async (item: any, index: number) => {
   currentAnswerNumb.value = index;
   answeRef.value = item.value;
   let send = null;
+  btnHiddenRef.value = false;
   try {
     send = await sendAnswer();
     console.log('sendAnswer--1----::', send, send?.code);
@@ -289,6 +292,7 @@ const handleItem = debounce(async (item: any, index: number) => {
   } else {
     currentAnswerNumb.value = -1;
   }
+  btnHiddenRef.value = true;
 }, 500);
 
 const init = async () => {

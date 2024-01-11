@@ -191,3 +191,11 @@ export async function fetchScoreTest(data: ScoreTest) {
   const result = await fetch(`${config.APIURL}/test/scoreTest`, data);
   return result;
 }
+
+interface ProductStatus {
+  pid: number;
+}
+export async function fetchProductStatus(data: ProductStatus) {
+  const result = await fetch(`${config.APIURL}/test/productStatus`, data);
+  return result;
+}
