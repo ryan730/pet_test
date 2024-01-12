@@ -6,7 +6,7 @@ export default defineAppConfig({
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black',
-    navigationStyle: 'custom'
+    navigationStyle: 'custom' // 给全局的导航栏隐藏
   },
   lazyCodeLoading: 'requiredComponents',
   usingComponents: {

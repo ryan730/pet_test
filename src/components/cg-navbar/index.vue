@@ -55,5 +55,9 @@ const height = statusBarHeight + navBarHeight;
 console.log('安全区高度 + navbar高度:', statusBarHeight, menuCapsule, navBarHeight, windowInfo);
 
 appStore.setNavHeight(height);
+appStore.setBottomArea({
+  ...windowInfo.safeArea,
+  bottomH: windowInfo.safeArea.bottom - windowInfo.safeArea.height
+});
 </script>
 <style src="./index.css" />

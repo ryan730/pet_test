@@ -82,7 +82,7 @@ import Taro, {
 import { Button, Text } from '@tarojs/components';
 import { fetchUserLoginApp, fetchProductInfo, getToken } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
-import { getAnimaoPic, getAnimaoType, getURLParamsPID } from '@/utils/common';
+import { getAnimaoPic, getAnimaoType, getURLParamsPID, designToRealForPX } from '@/utils/common';
 
 const instance = getCurrentInstance();
 const launchInfo = Taro.getLaunchOptionsSync();
@@ -128,10 +128,18 @@ const getPic = computed(() => {
   return getAnimaoPic(pid);
 });
 
+// const getStyle = computed(() => {
+//   return {
+//     marginTop: `${pxTransform(appStore.getNavHeight)}`,
+//     height: `calc(100% - ${appStore.getNavHeight}px)`
+//   };
+// });
+
 const getStyle = computed(() => {
+  const navHeight = designToRealForPX(appStore.getNavHeight);
   return {
-    marginTop: `${pxTransform(appStore.getNavHeight)}`,
-    height: `calc(100% - ${appStore.getNavHeight}px)`
+    paddingTop: `${pxTransform(appStore.getNavHeight)}`,
+    height: `${Taro.getSystemInfoSync().windowHeight - navHeight}px` // `calc(100% - ${appStore.getNavHeight}px)`
   };
 });
 
@@ -212,7 +220,7 @@ const entrance = async (isPay: boolean = false) => {
   if (alert) {
     if (info.value.status === 'showpay') {
       // 支付环节
-      state.isPopShow = true;
+      // state.isPopShow = true;
     } else if (info.value.status === 'showreport') {
       // 评测作完，直接去评测结果页
       Taro.redirectTo({

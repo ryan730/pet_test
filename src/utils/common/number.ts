@@ -79,7 +79,7 @@ export const getAnimaoPic = (num: number) => {
   };
 };
 
-import Taro from '@tarojs/taro';
+import Taro, { getWindowInfo } from '@tarojs/taro';
 let cachePid = '';
 export const getURLParamsPID = () => {
   // if (cachePid) {
@@ -92,4 +92,11 @@ export const getURLParamsPID = () => {
   cachePid = pid; // || 46;
   console.log('入口参数1', launchInfo?.query?.pid, instance?.router?.params?.pid);
   return cachePid;
+};
+
+export const designToRealForPX = (designNum: number) => {
+  const pageInfo = getWindowInfo();
+  const windowWidth = pageInfo.windowWidth;
+  const percent = windowWidth / 750;
+  return Math.floor(designNum * percent);
 };

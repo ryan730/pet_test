@@ -6,18 +6,23 @@ interface AuthState {
   activeTab: string;
   navHeight: number;
   currTopicProcess: number;
+  bottomArea: any;
 }
 
 export const useAppStore = defineStore('app-store', {
   state: (): AuthState => ({
     activeTab: useRoutePath(),
     navHeight: 0,
-    currTopicProcess: 0
+    currTopicProcess: 0,
+    bottomArea: {
+      bottomH: 0
+    }
   }),
   getters: {
     /** 是否登录 */
     getActiveTab: state => state.activeTab,
     getNavHeight: state => state.navHeight,
+    getBottomArea: state => state.bottomArea,
     getCurrTopicProcess: state => state.currTopicProcess
   },
   actions: {
@@ -26,6 +31,9 @@ export const useAppStore = defineStore('app-store', {
     },
     setNavHeight(val: number) {
       this.navHeight = val;
+    },
+    setBottomArea(val: any) {
+      this.bottomArea = val;
     },
     setCurrTopicProcess(val: number) {
       this.currTopicProcess = val;

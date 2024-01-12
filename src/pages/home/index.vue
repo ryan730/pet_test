@@ -1,7 +1,7 @@
 <template>
   <cg-navbar :title="titleRef" />
-  <div class="home" :style="getStyle">
-    <div class="bg">
+  <div class="home" :style="getStyle" :update="updateRef">
+    <div class="bg" :style="{ height: getStyle.height }">
       <img :src="require('@/assets/images/home_bg.png')" />
     </div>
     <div class="pet-personality">
@@ -12,7 +12,11 @@
     </div>
     <div class="go-cat" @click="onClickGoCat"></div>
     <div class="go-dog" @click="onClickGoDog"></div>
-    <div v-if="reportListRef.length" class="group_10 flex-col">
+    <div
+      v-if="reportListRef.length"
+      class="group_10 flex-col"
+      :style="{ paddingBottom: `${designToRealForPX(appStore.bottomArea.bottomH)}px` }"
+    >
       <button class="button_1 flex-col" @click="onClickGoDetail">
         <span class="text_26">查看完整解读报告</span>
       </button>
@@ -20,7 +24,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, reactive, computed } from 'vue';
+import { onMounted, ref, reactive, computed, watch } from 'vue';
 import Taro, {
   getEnv,
   navigateBack,
@@ -33,7 +37,7 @@ import Taro, {
 import { Button, Text } from '@tarojs/components';
 import { fetchUserLoginApp, fetchProductInfo, fetchReportList, getToken } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
-import { getAnimaoPic, getAnimaoType, getURLParamsPID } from '@/utils/common';
+import { getAnimaoPic, getAnimaoType, getURLParamsPID, designToRealForPX } from '@/utils/common';
 
 const instance = getCurrentInstance();
 const launchInfo = Taro.getLaunchOptionsSync();
@@ -47,6 +51,7 @@ definePageConfig({
 
 const reportListRef = ref([]);
 const titleRef = ref('宠物性格测试');
+const updateRef = ref(0);
 
 const appStore = useAppStore();
 const productInfoStore = useProductInfoStore();
@@ -100,9 +105,11 @@ const getPic = computed(() => {
 });
 
 const getStyle = computed(() => {
+  const navHeight = designToRealForPX(appStore.getNavHeight);
+  console.log('appStore.getNavHeight:1:::', appStore.getNavHeight, designToRealForPX(appStore.bottomArea.bottomH));
   return {
-    marginTop: `${pxTransform(appStore.getNavHeight)}`,
-    height: `${Taro.getSystemInfoSync().windowHeight - 51}px` // `calc(100% - ${appStore.getNavHeight}px)`
+    paddingTop: `${pxTransform(appStore.getNavHeight)}`,
+    height: `${Taro.getSystemInfoSync().windowHeight - navHeight}px` // `calc(100% - ${appStore.getNavHeight}px)`
   };
 });
 
@@ -275,6 +282,14 @@ onMounted(() => {
     }
   });
 });
+
+watch(
+  () => appStore.getNavHeight,
+  (newVal, oldVal) => {
+    console.log('watch----', newVal);
+    updateRef.value = 1;
+  }
+);
 </script>
 
 <style src="./index.scss" lang="scss" />
