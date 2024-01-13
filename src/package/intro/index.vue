@@ -46,7 +46,7 @@
           </div>
           <view class="summary" v-html="getConterInfo()" />
         </div>
-        <div v-if="info?.status == 'notdone'" class="wrapper-5" @click="handleEntryToTest">
+        <div v-if="info?.status == 'notdone' || info?.status == 'petinfo'" class="wrapper-5" @click="handleEntryToTest">
           <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
             <span class="title-4">立即测试</span>
           </div>
@@ -149,9 +149,16 @@ const state = reactive({
 
 const handleEntryToTest = () => {
   console.log('handleEntryToTest::');
-  Taro.navigateTo({
-    url: '/package/answer/index'
-  });
+  if (info.value.status === 'notdone') {
+    // 未完成，直接去测试页
+    Taro.navigateTo({
+      url: '/package/answer/index'
+    });
+  } else if (info.value.status === 'petinfo') {
+    Taro.redirectTo({
+      url: '/package/profile/index'
+    });
+  }
 };
 
 const handlePurchaseToTest = () => {
@@ -159,12 +166,12 @@ const handlePurchaseToTest = () => {
   state.isPopShow = true;
 };
 
-const handlePass = () => {
-  // Taro.switchTab({
-  Taro.redirectTo({
-    url: '/package/profile/index'
-  });
-};
+// const handlePass = () => {
+//   // Taro.switchTab({
+//   Taro.redirectTo({
+//     url: '/package/profile/index'
+//   });
+// };
 
 const handleMask = () => {
   state.isPopShow = false;
@@ -210,7 +217,7 @@ const entrance = async (isPay: boolean = false) => {
   const result = await fetchProductInfo({
     pid
   });
-  console.log('intro-result==>', result, result.data.status);
+  console.log('productInfo-result==>', result, result.data.status);
   /// result.data.status = 'showpay'; // 测试
   productInfoStore.setInfo(result.data);
   const process = Number(result.data?.test_info?.process);
@@ -233,11 +240,11 @@ const entrance = async (isPay: boolean = false) => {
         // 查看做题进度，哪一段做题未做完
         console.log('当前report', report_id);
       }
-      isPay && handlePass();
+      // isPay && handlePass();
     } else if (info.value.status === 'petinfo') {
-      Taro.redirectTo({
-        url: '/package/profile/index'
-      });
+      // Taro.redirectTo({
+      //   url: '/package/profile/index'
+      // });
     }
   }
 };

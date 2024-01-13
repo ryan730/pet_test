@@ -100,7 +100,7 @@ const judgePayResult = async (order_id: number) => {
 
   console.log('查询结果:', res, res?.code == 1);
   if (res?.code == 1) {
-    showToast('查询成功', 5000);
+    showToast('支付成功', 5000);
     emit('onClickPass', true); // entrance(ispay)
   } else {
     showToast(res?.msg || '订单查询失败!', 5000);

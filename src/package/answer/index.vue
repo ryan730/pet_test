@@ -80,10 +80,10 @@
     </div>
   </div>
   <div class="footer-container">
-    <nut-cell>
+    <nut-cell v-if="btnHiddenRef">
       <IconFont v-show="appStore.getCurrTopicProcess > 1" name="rect-left" size="24" @click="handlePrev"></IconFont>
     </nut-cell>
-    <nut-cell>
+    <nut-cell v-if="btnHiddenRef">
       <IconFont
         v-show="appStore.getCurrTopicProcess < total"
         name="rect-right"
@@ -100,7 +100,7 @@ import { IconFont } from '@nutui/icons-vue-taro';
 import { fetchTestTopic, fetchUserTopic, fetchProductInfo, fetchProductStatus } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { debounce, sleep } from '@/utils';
-import { getAnimaoType, getAnimaoPic, getURLParamsPID } from '@/utils/common';
+import { getAnimaoType, getAnimaoPic, getURLParamsPID, designToRealForPX } from '@/utils/common';
 import mock from './mock.js';
 
 const topics = ref([]);
@@ -158,13 +158,21 @@ const btnHiddenRef = ref(true);
 const env = getEnv();
 /// const info = Taro.getSystemInfoSync();
 
+// const getStyle = computed(() => {
+//   const val = {
+//     marginTop: `${pxTransform(appStore.getNavHeight)}`,
+//     height: isHeightOverFlow.value ? `${contentHeight.value + appStore.getNavHeight}px` : `100%` // `calc(100% - ${appStore.getNavHeight}px)`
+//   };
+//   console.log('getStyle:::', isHeightOverFlow.value, contentHeight.value, val);
+//   return val;
+// });
+
 const getStyle = computed(() => {
-  const val = {
-    marginTop: `${pxTransform(appStore.getNavHeight)}`,
-    height: isHeightOverFlow.value ? `${contentHeight.value + appStore.getNavHeight}px` : `100%` // `calc(100% - ${appStore.getNavHeight}px)`
+  const navHeight = designToRealForPX(appStore.getNavHeight);
+  return {
+    paddingTop: `${pxTransform(appStore.getNavHeight)}`,
+    height: `${Taro.getSystemInfoSync().windowHeight - navHeight}px` // `calc(100% - ${appStore.getNavHeight}px)`
   };
-  console.log('getStyle:::', isHeightOverFlow.value, contentHeight.value, val);
-  return val;
 });
 
 // 检查是否做第二套题
@@ -192,6 +200,10 @@ const continueNextSection = async () => {
       title: '答题完成,正在去往结果页...',
       icon: 'none',
       duration: 1000
+    });
+    productInfoStore.setReport({
+      report_id: test_info.report_id, // ['600', '601']
+      score: 0
     });
     setTimeout(() => {
       Taro.redirectTo({
@@ -363,7 +375,6 @@ watch(
 );
 
 onMounted(async () => {
-  /// await init();
   if (!isNaN(appStore.getCurrTopicProcess)) {
     let frist = Number(appStore.getCurrTopicProcess) + 1;
     const total = info.value?.test_info?.total;

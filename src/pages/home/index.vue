@@ -78,8 +78,13 @@ const getPetInfo = () => {
 };
 
 const onClickGoCat = () => {
-  Taro.navigateTo({
-    url: '/package/intro/index?pid=47'
+  // Taro.navigateTo({
+  //   url: '/package/intro/index?pid=47'
+  // });
+  showToast({
+    title: '敬请期待~',
+    icon: 'none',
+    duration: 1000
   });
 };
 const onClickGoDog = () => {

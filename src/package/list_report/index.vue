@@ -4,7 +4,7 @@
     <!-- <nut-tabs v-model="value"> -->
     <!-- <nut-tab-pane v-for="(item, index) in ['宠物报告']" :title="item" :pane-key="index1"> -->
     <nut-cell>
-      <nut-list :height="201" :list-data="state.reportList" @scroll-bottom="handleScroll">
+      <nut-list :list-data="state.reportList" @scroll-bottom="handleScroll">
         <template #default="{ item, index }">
           <div class="left-pic">
             <img
@@ -44,6 +44,7 @@ import Taro, {
   showToast
 } from '@tarojs/taro';
 import { useAppStore, useProductInfoStore } from '@/store';
+import { designToRealForPX } from '@/utils/common';
 
 const productInfoStore = useProductInfoStore();
 
@@ -52,10 +53,18 @@ const titleRef = ref('宠物报告');
 
 const appStore = useAppStore();
 
+// const getStyle = computed(() => {
+//   return {
+//     marginTop: `${pxTransform(appStore.getNavHeight)}`,
+//     height: `calc(100% - ${appStore.getNavHeight}px)`
+//   };
+// });
+
 const getStyle = computed(() => {
+  const navHeight = designToRealForPX(appStore.getNavHeight);
   return {
-    marginTop: `${pxTransform(appStore.getNavHeight)}`,
-    height: `calc(100% - ${appStore.getNavHeight}px)`
+    paddingTop: `${pxTransform(appStore.getNavHeight)}`,
+    height: `${Taro.getSystemInfoSync().windowHeight - navHeight}px` // `calc(100% - ${appStore.getNavHeight}px)`
   };
 });
 
@@ -129,6 +138,7 @@ const handleGoDatil = item => {
 
   .nut-cell {
     height: 100%;
+    background: #f4f6f9;
   }
 
   .nut-list-item {

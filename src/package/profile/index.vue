@@ -52,7 +52,7 @@
             <span class="caption-4">{{ getText.category }}多大了</span>
             <nut-cell>
               <div class="game-wrapper">
-                <span class="game">{{ !form.age ? '小于1' : form.age }}岁</span>
+                <span class="game">{{ !form.age || form.age == 0 ? '小于1' : form.age }}岁</span>
                 <img class="icon-right" :src="require('@/assets/profile-images/img_6.png')" />
               </div>
             </nut-cell>
@@ -77,9 +77,9 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive, computed } from 'vue';
 import Taro, { pxTransform } from '@tarojs/taro';
-import { fetchSetBasic } from '@/service';
-import { useAppStore } from '@/store';
-import { getAnimaoType, getURLParamsPID } from '@/utils/common';
+import { fetchSetBasic, fetchProductStatus } from '@/service';
+import { useAppStore, useProductInfoStore } from '@/store';
+import { getAnimaoType, getURLParamsPID, designToRealForPX } from '@/utils/common';
 
 const appStore = useAppStore();
 const navHeight = computed(() => appStore.getNavHeight);
@@ -100,16 +100,25 @@ const getText = computed(() => {
   };
 });
 
+// const getStyle = computed(() => {
+//   return {
+//     marginTop: `${pxTransform(appStore.getNavHeight)}`,
+//     height: `calc(100% - ${appStore.getNavHeight}px)`
+//   };
+// });
+
 const getStyle = computed(() => {
+  const navHeight = designToRealForPX(appStore.getNavHeight);
   return {
-    marginTop: `${pxTransform(appStore.getNavHeight)}`,
-    height: `calc(100% - ${appStore.getNavHeight}px)`
+    paddingTop: `${pxTransform(appStore.getNavHeight)}`,
+    height: `${Taro.getSystemInfoSync().windowHeight - navHeight}px` // `calc(100% - ${appStore.getNavHeight}px)`
   };
 });
+
 const timeShow = ref(false);
 const form = reactive({
   gender: '1',
-  age: ''
+  age: '0'
 });
 const currentDate = new Array(36).fill({}).map((it, index) => {
   return {
@@ -120,6 +129,19 @@ const currentDate = new Array(36).fill({}).map((it, index) => {
 const popupConfirm = ({ selectedValue, selectedOptions }) => {
   form.age = selectedOptions.map(val => val.value).join('');
   timeShow.value = false;
+};
+
+const productInfoStore = useProductInfoStore();
+// 从宠物提交路径，预先请求一次productInfo.testInfo
+const prevloadAnswer = async () => {
+  const pid = getURLParamsPID();
+  const result = await fetchProductStatus({
+    pid
+  });
+  productInfoStore.setInfo(result.data);
+  const process = Number(result.data?.test_info?.process);
+  appStore.setCurrTopicProcess(process); // 第一次的进度值
+  console.log('fristSection-result:', result);
 };
 
 // http://192.168.3.200:10086/#/package/profile/index
@@ -140,6 +162,7 @@ const handleEntryAnswer = async () => {
     })
   });
   if (res?.code == 1) {
+    await prevloadAnswer(); // 预请求 answer
     Taro.redirectTo({
       url: '/package/answer/index'
     });

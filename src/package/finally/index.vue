@@ -48,7 +48,7 @@ import { IconFont } from '@nutui/icons-vue-taro';
 import { fetchTestTopic } from '@/service';
 import { useAppStore } from '@/store';
 import { debounce } from '@/utils';
-import { getAnimaoType, getAnimaoPic, getURLParamsPID } from '@/utils/common';
+import { getAnimaoType, getAnimaoPic, getURLParamsPID, designToRealForPX } from '@/utils/common';
 import mock from './mock.js';
 
 const topics = ref([]);
@@ -81,13 +81,21 @@ const theme = computed(() => {
   };
 });
 
+// const getStyle = computed(() => {
+//   const val = {
+//     marginTop: `${pxTransform(appStore.getNavHeight)}`,
+//     height: `${contentHeight.value}px` // isHeightOverFlow.value ? `${contentHeight.value + appStore.getNavHeight}px` : `100%` // `calc(100% - ${appStore.getNavHeight}px)`
+//   };
+//   console.log('getStyle:::', isHeightOverFlow.value, contentHeight.value, val);
+//   return val;
+// });
+
 const getStyle = computed(() => {
-  const val = {
-    marginTop: `${pxTransform(appStore.getNavHeight)}`,
-    height: `${contentHeight.value}px` // isHeightOverFlow.value ? `${contentHeight.value + appStore.getNavHeight}px` : `100%` // `calc(100% - ${appStore.getNavHeight}px)`
+  const navHeight = designToRealForPX(appStore.getNavHeight);
+  return {
+    paddingTop: `${pxTransform(appStore.getNavHeight)}`,
+    height: `${Taro.getSystemInfoSync().windowHeight - navHeight}px` // `calc(100% - ${appStore.getNavHeight}px)`
   };
-  console.log('getStyle:::', isHeightOverFlow.value, contentHeight.value, val);
-  return val;
 });
 
 const resized = () => {
@@ -104,6 +112,10 @@ const resized = () => {
 };
 
 const handleClickToRepot = () => {
+  // productInfoStore.setReport({
+  //   report_id: item.reportids, // ['600', '601']
+  //   score: item.score
+  // });
   Taro.navigateTo({
     url: '/package/simple_report/index'
   });
