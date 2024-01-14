@@ -96,9 +96,11 @@ const onClickGoDetail = () => {
 const resized = () => {};
 
 const getReport = async () => {
+  console.log('simple_report=report:', info.value);
   const report_id = info.value.report_id;
   const res = await fetchSeriesReport({
-    reportid: report_id
+    reportid: report_id,
+    detail: '0'
   });
   // const content = res.data?.[0]?.tab?.[0];
   // renderData.value = content?.content?.[0]?.data;

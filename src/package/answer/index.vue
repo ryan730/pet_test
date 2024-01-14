@@ -126,11 +126,15 @@ const number = computed(() => {
 
   if (answerId == 47) {
     sectionRef.value = 1;
-  } else {
+  } else if (answerId == 46) {
     sectionRef.value = 0;
   }
+  let percent = Number(appStore.getCurrTopicProcess) + Number(sbase);
+  if (percent >= Number(stotal)) {
+    percent = Number(stotal);
+  }
 
-  return `${Number(appStore.getCurrTopicProcess) + Number(sbase)}/${Number(stotal)}`;
+  return `${percent}/${Number(stotal)}`;
 });
 const currentAnswerNumb = ref(-1); // 当前答题选项,-1表示未选择
 const getPic = computed(() => {
@@ -184,6 +188,7 @@ const continueNextSection = async () => {
   productInfoStore.setInfo(result.data);
   const test_info = result.data?.test_info;
   const status = result.data?.status;
+  const report_id = result.data?.report_id;
   if (status == 'notdone' && test_info) {
     console.log('continueNextSection::', result.data);
     Taro.showToast({
@@ -202,9 +207,10 @@ const continueNextSection = async () => {
       duration: 1000
     });
     productInfoStore.setReport({
-      report_id: test_info.report_id, // ['600', '601']
+      report_id, // ['600', '601']
       score: 0
     });
+    console.log('test_info:', report_id, test_info);
     setTimeout(() => {
       Taro.redirectTo({
         url: '/package/finally/index'
@@ -224,7 +230,7 @@ const handlePrev = () => {
   console.log('handlePrev:', currTopicProcess, appStore.getCurrTopicProcess);
 };
 
-const handleNext = () => {
+const handleNext = async () => {
   if (currentAnswerNumb.value === -1) {
     Taro.showToast({
       title: '必须选择一项！',
@@ -319,12 +325,19 @@ const init = async () => {
     console.log(e);
   }
   /// res = mock;
-  console.log('data=======>>>', res?.data);
+
+  const process = res?.data?.process; // 如果是0,强制跳到1
+  const ntotal = res?.data?.total; // 如果是0,强制跳到1
+  console.log('data=======>>>', res?.data, process, ntotal);
+  if (process > ntotal) {
+    console.log('超出合法范围!');
+    /// /return;
+  }
+
   topics.value = res?.data?.topics; // mock?.data?.topics;
   total.value = res?.data?.total; // 3; // mock?.data?.total;
   topic.value = topics.value[0]; // topics.value[parseInt(Math.random() * 3)];
 
-  const process = res?.data?.process; // 如果是0,强制跳到1
   const content = topic?.value?.content;
   const checkElm = content.find((item, index) => {
     item.index = index;
@@ -398,9 +411,12 @@ onMounted(async () => {
 
   /// /自动答题测试用
   // setInterval(() => {
+  //   if (appStore.getCurrTopicProcess > 70) {
+  //     return;
+  //   }
   //   currentAnswerNumb.value = 0;
   //   //
-  //   console.log('currentAnswerNumb.value:', currentAnswerNumb.value);
+  //   console.log('currentAnswerNumb.value:', appStore.getCurrTopicProcess, currentAnswerNumb.value);
   //   handleItem({ value: '1' }, 1);
   // }, 2000);
 });

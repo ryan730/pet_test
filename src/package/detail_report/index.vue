@@ -107,20 +107,26 @@
       </nut-tabs>
     </div>
   </view>
-  <div v-if="favorShowRef" class="base_favorite">
-    <span class="base_favorite_text">亲，结果准确吗？</span>
-    <img
-      v-for="(item, index) in favoritesRef"
-      :key="index"
-      :style="{ opacity: item.active ? 1 : 0.2 }"
-      class="base_favorite_img"
-      referrerpolicy="no-referrer"
-      :src="require('../../assets/images/faver.png')"
-      @click="handleFavoriteSelect(item, index)"
-    />
-    <button class="button_favorite" @click="handleSendFavorite">
-      <span class="base_text_favorite">提交</span>
-    </button>
+  <div
+    v-if="favorShowRef"
+    class="base_favorite"
+    :style="{ paddingBottom: `${designToRealForPX(appStore.bottomArea.bottomH)}px` }"
+  >
+    <div class="con_favorite">
+      <span class="base_favorite_text">亲，结果准确吗？</span>
+      <img
+        v-for="(item, index) in favoritesRef"
+        :key="index"
+        :style="{ opacity: item.active ? 1 : 0.2 }"
+        class="base_favorite_img"
+        referrerpolicy="no-referrer"
+        :src="require('../../assets/images/faver.png')"
+        @click="handleFavoriteSelect(item, index)"
+      />
+      <button class="button_favorite" @click="handleSendFavorite">
+        <span class="base_text_favorite">提交</span>
+      </button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -133,6 +139,7 @@ import { ScrollView } from '@tarojs/components';
 import { fetchSeriesReport, fetchScoreTest } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import * as echarts from '@/components/ec-canvas/echarts';
+import { designToRealForPX } from '@/utils/common';
 import mock from './mock.js';
 
 const favorShowRef = ref(false);
