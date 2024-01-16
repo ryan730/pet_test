@@ -69,7 +69,7 @@
           <img ref="bgRef" class="bg" :style="{ top: bgTopRef }" :src="require('@/assets/images/bg.png')" />
         </div> -->
       </div>
-      <div v-if="btnHiddenRef" class="btn-next-prev">
+      <div :style="{ pointerEvents: btnHiddenRef ? 'auto' : 'none' }" class="btn-next-prev">
         <nut-cell>
           <div v-show="appStore.getCurrTopicProcess > 1" class="prev" @click="handlePrev">上一题</div>
         </nut-cell>
@@ -79,11 +79,11 @@
       </div>
     </div>
   </div>
-  <div class="footer-container">
-    <nut-cell v-if="btnHiddenRef">
+  <div class="footer-container" :style="{ pointerEvents: btnHiddenRef ? 'auto' : 'none' }">
+    <nut-cell>
       <IconFont v-show="appStore.getCurrTopicProcess > 1" name="rect-left" size="24" @click="handlePrev"></IconFont>
     </nut-cell>
-    <nut-cell v-if="btnHiddenRef">
+    <nut-cell>
       <IconFont
         v-show="appStore.getCurrTopicProcess < total"
         name="rect-right"
