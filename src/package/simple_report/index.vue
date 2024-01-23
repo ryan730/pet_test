@@ -75,6 +75,7 @@ const getRenderDataToScore = computed(() => {
 });
 
 const getRenderDataToPic = computed(() => {
+  /// return 'https://storage.360buyimg.com/mtd/home/111543234387022.jpg';
   return renderData.value?.[0]?.image || '';
 });
 

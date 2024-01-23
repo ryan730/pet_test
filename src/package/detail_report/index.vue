@@ -10,7 +10,9 @@
       <nut-tabs v-model="tabValueRef" swipeable @change="handleChange">
         <nut-tab-pane title="核心类型" pane-key="0">
           <div class="group flex tab0">
-            <div class="single-avatar flex"></div>
+            <div class="single-avatar flex">
+              <img class="image_1" :src="getRenderDataToPic" />
+            </div>
             <div class="section flex">
               <img class="image_lr" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-left.png')" />
               <span class="text_assistant">{{ getRenderDataToTitle }}</span>
@@ -130,7 +132,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { it } from 'node:test';
 import { onMounted, ref, reactive, computed, watch } from 'vue';
 import Taro, { getEnv, showToast, pxTransform } from '@tarojs/taro';
 import { IconFont } from '@nutui/icons-vue-taro';
@@ -209,6 +210,19 @@ const getStyle2 = computed(() => {
 });
 
 const getRenderDataToHtml = computed(() => {
+  //   return `
+  // 	<div class="repo-box flex-col"><div class="repo-text-container"><span class="repo-title">猫咪性格特征：</span></div>
+  // <span class="repo-content">你的猫咪属于胆小鬼型，TA性格比较谨小慎微，当你把TA带回家后，TA可能很长一段时间都会躲在暗处偷偷观察你。在面对新环境和陌生人时，这类猫咪通常会表现出警惕和谨慎的态度，不轻易展现自己。它们可能会选择躲藏或者保持距离，尽量避免冒险和接触陌生环境。这样的猫咪可能需要更长的时间来适应新的家庭和主人，因此在刚开始的阶段，你可能很难发现它们的存在。</span>
+  // <span class="repo-content">尽管胆小鬼型的猫咪在短时间内不容易与人建立亲密关系，甚至可能会受到惊吓或者受伤，但在与你熟悉后，它们会变得更加依赖人。由于它们性格上的胆小和敏感，一旦建立了信任关系，它们可能会成为非常黏人的猫咪，时刻在你身边寻求安全感和保护。</span></div>
+  // <div class="repo-box flex-col"><div class="repo-text-container"><span class="repo-title">与猫咪相处之道：</span></div>
+  // <span class="repo-content">要与胆小鬼型的猫咪相处愉快，首先需要给予它们足够的宁静和安全感。新环境对这类猫咪来说可能是一个巨大的挑战，因此需要在熟悉和接纳他们的过程中给予更多的耐心和理解。你需要为猫咪提供一个温暖、安静的空间，让它们可以自由地探索和适应新的环境，同时也要避免嘈杂或激动的场景，以免让它们感到惊恐和紧张。</span>
+  // <span class="repo-content">在初期的相处时期，你可以选择坐在离猫咪稍远的地方，避免直接朝着它们，试图主动接触或者引导，让它们有足够的时间来逐渐接触和接受你的存在。适当的主动互动和沟通可以让猫咪感受到你的关爱和温暖，建立起对你的信任和依赖。</span>
+  // <span class="repo-content">另外，家里的环境设计也非常重要，需要为猫咪提供足够的藏身之地，比如箱子、窝和高处等，让它们有安全感和自由的空间，以便适应新的生活环境。同时，给予它们一定的自由，让它们逐渐去适应并消除对新环境的紧张感。</span></div>
+  // <div class="repo-text-info flex-col"><span class="repo-text-head">训练建议：</span></div>
+  // <div class="repo-text-info-con flex-col">
+  // <span class="repo-text-black">对于胆小鬼型的猫咪，训练需要更多的耐心和细心，切忌强行操作或者过度刺激。首先需要尊重猫咪的个体差异和行为习性，不要过于强求亲密关系，要给予猫咪足够的时间和空间去适应新环境和主人。逐步培养猫咪对你的信任和依赖，通过与猫咪互动和接触来增进你们之间的感情。</span>
+  // <span class="repo-text-black">在与胆小鬼型猫咪的训练过程中，需要使用正面的强化方式，比如给予食物奖励、赞美和安抚的方式来进行引导和反馈。避免使用惩罚的方式来训练，以免造成猫咪的逆反心理和伤害。因为这类猫咪对于外部刺激和情绪波动都比较敏感，需要在训练过程中特别小心和细致。</span></div>
+  // 	`;
   return renderData.value?.[0]?.content || '';
 });
 
@@ -218,6 +232,11 @@ const getRenderDataToTitle = computed(() => {
 
 const getRenderDataToTezhi = computed(() => {
   return renderData.value?.[1]?.content || [];
+});
+
+const getRenderDataToPic = computed(() => {
+  ///return 'https://storage.360buyimg.com/mtd/home/111543234387022.jpg';
+  return renderData.value?.[0]?.image || '';
 });
 
 const getReport = async () => {

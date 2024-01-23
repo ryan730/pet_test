@@ -58,7 +58,7 @@ console.log('安全区高度 + navbar高度:', statusBarHeight, menuCapsule, nav
 appStore.setNavHeight(height);
 appStore.setBottomArea({
   ...windowInfo.safeArea,
-  bottomH: windowInfo.safeArea.bottom - windowInfo.safeArea.height
+  bottomH: windowInfo.safeArea ? windowInfo.safeArea.bottom - windowInfo.safeArea.height : 0
 });
 
 const handleGoback = () => {

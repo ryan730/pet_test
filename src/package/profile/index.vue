@@ -8,22 +8,17 @@
           根据过去两周的状况，请您回答是否存在下列描述的状况及频率，请看清楚问题后选择符合您情况的选项。
         </span>
       </div>
-      <div class="body-1">
-        <div class="container-2">
-          <div class="wrapper-1">
-            <img class="icon-down" :src="require('@/assets/profile-images/img_0.png')" />
-            <span class="caption">答题时需要注意以下事项</span>
-          </div>
-          <div class="wrapper-2">
-            <img class="icon-circle" :src="require('@/assets/profile-images/img_1.png')" />
-            <span class="caption-1">凭第一反应回答，不需要考虑太多</span>
-          </div>
+      <div class="body">
+        <div class="wrapper">
+          <span class="caption-1">
+            <img class="light" :src="require('../../assets/images/light.png')" />
+            答题时需要注意以下事项
+          </span>
+          <span class="caption-2">&nbsp▪ 凭第一反应回答，不需要考虑太多</span>
+          <span class="caption-3">&nbsp▪ 题目没有好与坏，对与错之分</span>
         </div>
-      </div>
-      <div class="footer">
-        <div class="container-4">
-          <img class="icon-circle-2" :src="require('@/assets/profile-images/img_2.png')" />
-          <span class="title-1">题目没有好与坏，对与错之分</span>
+        <div class="wrapper-chart">
+          <img :src="`${getPic.char}`" />
         </div>
       </div>
     </div>
@@ -79,7 +74,7 @@ import { onMounted, ref, reactive, computed } from 'vue';
 import Taro, { pxTransform } from '@tarojs/taro';
 import { fetchSetBasic, fetchProductStatus } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
-import { getAnimaoType, getURLParamsPID, designToRealForPX } from '@/utils/common';
+import { getAnimaoType, getURLParamsPID, designToRealForPX, getAnimaoPic } from '@/utils/common';
 
 const appStore = useAppStore();
 const navHeight = computed(() => appStore.getNavHeight);
@@ -92,6 +87,12 @@ const theme = computed(() => {
     color: isDog ? '#ff7237' : '#ffa000'
   };
 });
+
+const getPic = computed(() => {
+  const pid = getURLParamsPID();
+  return getAnimaoPic(pid);
+});
+
 const getText = computed(() => {
   const pid = getURLParamsPID();
   const isDog = getAnimaoType(pid) == 'dog';
@@ -176,4 +177,4 @@ const handleEntryAnswer = async () => {
 onMounted(() => {});
 </script>
 
-<style src="./index.css" />
+<style src="./index.scss" lang="scss" />
