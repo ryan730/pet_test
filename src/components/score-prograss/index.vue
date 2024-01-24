@@ -157,7 +157,7 @@ onMounted(() => {
         z-index: 1;
         &:last-child {
           border: 0;
-          width: 20px;
+          width: 26px;
         }
       }
 

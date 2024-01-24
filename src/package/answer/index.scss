@@ -116,7 +116,7 @@
 	width: 6px;
 	height: 6px;
 	align-self: center;
-	margin: 2px 0 0 12px;
+	margin: 0px 10px 0 12px;
 }
 
 .answer .caption-4 {
@@ -483,6 +483,7 @@
   font-size: 26px;
   font-weight: 500;
   white-space: nowrap;
+	display: flex;
 }
 .answer .caption-3 {
   color: rgba(99, 103, 110, 1);

@@ -42,7 +42,12 @@
                 <div class="image_text">{{ selectSelectItem?.name }}</div>
                 <img class="image_3_line" :src="require('../../assets/images/threeliner.png')" />
               </span>
-              <score-prograss :percent="selectSelectItem?.score" />
+              <score-prograss
+                :percent="selectSelectItem?.score"
+                :min="getPgAttr.min"
+                :max="getPgAttr.max"
+                :step="getPgAttr.step"
+              />
               <view class="bar-chart">
                 <!-- <div>{{ selectIndex }}</div> -->
                 <ec-canvas
@@ -57,7 +62,10 @@
             </div>
           </div>
           <div class="group flex tab1">
-            <div v-for="(sub, index) in selectSelectItem?.sub || []" class="spec_group flex-col">
+            <div v-if="selectSelectItem?.desc">
+              <view class="taro_html" v-html="selectSelectItem.desc"></view>
+            </div>
+            <div v-for="(sub, index) in selectSelectItem?.sub || []" v-else class="spec_group flex-col">
               <div class="spec-title flex-row">
                 <div class="spec-box"></div>
                 <span class="spec-text">{{ sub.dimension }}</span>
@@ -66,6 +74,7 @@
               <view class="" v-html="sub.desc"></view>
             </div>
           </div>
+          <div style="width: 100%; height: 60px"></div>
         </nut-tab-pane>
         <!-- <nut-tab-pane title="基本信息" pane-key="2" class="tab-warper-pane-base">
           <div class="baseInfo-group tab2">
@@ -140,7 +149,7 @@ import { ScrollView } from '@tarojs/components';
 import { fetchSeriesReport, fetchScoreTest } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import * as echarts from '@/components/ec-canvas/echarts';
-import { designToRealForPX } from '@/utils/common';
+import { designToRealForPX, getURLParamsPID, getAnimaoType } from '@/utils/common';
 import mock from './mock.js';
 
 const favorShowRef = ref(false);
@@ -179,6 +188,23 @@ const info = computed(() => productInfoStore.report);
 const ecRef = ref(false);
 
 const forbidden = ref(false);
+
+const getPgAttr = computed(() => {
+  const pid = getURLParamsPID();
+  const isDog = getAnimaoType(pid) == 'dog';
+  if (isDog) {
+    return {
+      min: 5,
+      max: 35,
+      step: 5
+    };
+  }
+  return {
+    min: 10,
+    max: 100,
+    step: 15
+  };
+});
 
 const getItemSelectStyle = (item: any, index: number) => {
   /// /console.log('item:::', item, index, selectIndex.value);
@@ -235,8 +261,8 @@ const getRenderDataToTezhi = computed(() => {
 });
 
 const getRenderDataToPic = computed(() => {
-  ///return 'https://storage.360buyimg.com/mtd/home/111543234387022.jpg';
-  return renderData.value?.[0]?.image || '';
+  /// return 'https://storage.360buyimg.com/mtd/home/111543234387022.jpg';
+  return renderData.value?.[0]?.image || renderData.value?.[0]?.img || '';
 });
 
 const getReport = async () => {
