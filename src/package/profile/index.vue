@@ -160,7 +160,8 @@ const handleEntryAnswer = async () => {
     info: JSON.stringify({
       gender: form.gender,
       age: form.age
-    })
+    }),
+    prodid: getURLParamsPID()
   });
   if (res?.code == 1) {
     await prevloadAnswer(); // 预请求 answer

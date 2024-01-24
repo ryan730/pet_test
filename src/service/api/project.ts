@@ -176,6 +176,7 @@ export async function fetchReportList(data: Checkpay) {
 
 interface SetBasic {
   info: any;
+  prodid: number;
 }
 
 export async function fetchSetBasic(data: SetBasic) {

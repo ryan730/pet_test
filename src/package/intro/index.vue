@@ -148,6 +148,10 @@ const state = reactive({
 });
 
 const handleEntryToTest = () => {
+  // Taro.redirectTo({
+  //   url: '/package/profile/index'
+  // });
+  // return;
   console.log('handleEntryToTest::');
   if (info.value.status === 'notdone') {
     // 未完成，直接去测试页
