@@ -44,6 +44,7 @@ import { EChart } from 'echarts-taro3-vue';
 import { fetchSeriesReport } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import * as echarts from '@/components/ec-canvas/echarts';
+import { designToRealForPX, getURLParamsPID, getAnimaoType } from '@/utils/common';
 import mock from './mock.js';
 
 const renderData = ref('');
@@ -126,6 +127,23 @@ onMounted(async () => {
   resized();
 });
 
+const getPgAttr = computed(() => {
+  const pid = getURLParamsPID();
+  const isDog = getAnimaoType(pid) == 'dog';
+  if (isDog) {
+    return {
+      min: '5',
+      max: '35',
+      step: '5'
+    };
+  }
+  return {
+    min: '10',
+    max: '100',
+    step: '15'
+  };
+});
+
 function initChart(canvas, width, height) {
   const chart = echarts.init(canvas, null, {
     width,
@@ -139,7 +157,8 @@ function initChart(canvas, width, height) {
     ? Object.keys(getRenderDataToScore.value).map((item: any, index: number) => {
         const ind = getRenderDataToScore.value[item];
         ind?.score && dataData.push(ind?.score);
-        const val = { name: ind.name, max: 35, min: 5 };
+        /// console.log('-=-=-=-=-=-=-=-=-=-=-=', ind.name, getPgAttr.value.max, getPgAttr.value.min);
+        const val = { name: ind.name, max: getPgAttr.value.max, min: getPgAttr.value.min };
         if (index === 0) {
           val.axisLabel = { show: true };
         }

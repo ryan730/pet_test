@@ -100,9 +100,9 @@ const handleGoDatil = item => {
     report_id: item.reportids, // ['600', '601']
     score: item.score
   });
-  console.log('productInfoStore.reportIds===', productInfoStore.report);
+  console.log('productInfoStore.reportIds===', item.type, productInfoStore.report);
   Taro.navigateTo({
-    url: '/package/simple_report/index'
+    url: `/package/simple_report/index` + `?pid=${item.type}`
   });
 };
 </script>
