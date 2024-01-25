@@ -1,4 +1,7 @@
 # Logs
+.history/
+.lh/
+.vscode
 logs
 *.log
 npm-debug.log*
@@ -33,3 +36,4 @@ stats.html
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+.history/src/components/score-prograss/index_20240125104130.vue

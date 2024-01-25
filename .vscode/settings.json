@@ -70,5 +70,6 @@
   },
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar"
-  }
+  },
+  "local-history.browser.descending": false
 }

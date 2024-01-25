@@ -44,7 +44,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const width = computed(() => {
-  return (props.percent / parseInt(props.max + props.min)) * progressTotal.value;
+  return ((props.percent - props.min) / parseInt(props.max - props.min)) * progressTotal.value;
+  // return (props.percent / parseInt(props.max + props.min)) * progressTotal.value;
 });
 
 const currentPercent = computed(() => {
@@ -55,10 +56,10 @@ onMounted(() => {
   Taro.nextTick(() => {
     const query = Taro.createSelectorQuery();
     query
-      .select('.rect-container')
+      .select('.rect-bg')
       .boundingClientRect(res => {
         console.log('res=======', res);
-        progressTotal.value = res.width - 10;
+        progressTotal.value = res.width;
       })
       .exec();
   });
