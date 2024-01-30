@@ -107,7 +107,17 @@ import { fetchTestTopic, fetchUserTopic, fetchProductInfo, fetchProductStatus } 
 import { useAppStore, useProductInfoStore } from '@/store';
 import { debounce, sleep } from '@/utils';
 import { getAnimaoType, getAnimaoPic, getURLParamsPID, designToRealForPX } from '@/utils/common';
-import mock from './mock.js';
+import useShare from '@/hooks/useShare'; //
+// import mock from './mock.js';
+
+const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
+
+// /** 设置页面属性 */
+definePageConfig({
+  navigationBarTitleText: '宠物性格测试',
+  enableShareAppMessage: true, // 分享好友
+  enableShareTimeline: true // 分享朋友圈
+});
 
 const topics = ref([]);
 const total = ref(0);
@@ -311,7 +321,7 @@ const handleItem = debounce(async (item: any, index: number) => {
   }
 
   if (send?.code == 1) {
-    await sleep(1500);
+    await sleep(300);
     handleNext();
   } else {
     currentAnswerNumb.value = -1;

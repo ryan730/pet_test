@@ -49,7 +49,17 @@ import { fetchTestTopic } from '@/service';
 import { useAppStore } from '@/store';
 import { debounce } from '@/utils';
 import { getAnimaoType, getAnimaoPic, getURLParamsPID, designToRealForPX } from '@/utils/common';
-import mock from './mock.js';
+import useShare from '@/hooks/useShare';
+//import mock from './mock.js';
+
+const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
+
+// /** 设置页面属性 */
+definePageConfig({
+  navigationBarTitleText: '宠物性格测试',
+  enableShareAppMessage: true, // 分享好友
+  enableShareTimeline: true // 分享朋友圈
+});
 
 const topics = ref([]);
 const number = ref(0);

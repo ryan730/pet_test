@@ -12,15 +12,17 @@
     </div>
     <div class="go-cat" @click="onClickGoCat"></div>
     <div class="go-dog" @click="onClickGoDog"></div>
-    <div
-      v-if="reportListRef.length"
-      class="group_10 flex-col"
-      :style="{ paddingBottom: `${designToRealForPX(appStore.bottomArea.bottomH)}px` }"
-    >
-      <button class="button_1 flex-col" @click="onClickGoDetail">
-        <span class="text_26">查看完整解读报告</span>
-      </button>
-    </div>
+    <nut-action-sheet v-model:visible="reportListRef.length" title="">
+      <div
+        v-if="reportListRef.length"
+        class="group_10 flex-col"
+        :style="{ paddingBottom: `${designToRealForPX(appStore.bottomArea.bottomH) || 10}px` }"
+      >
+        <button class="button_1 flex-col" @click="onClickGoDetail">
+          <span class="text_26">查看完整解读报告</span>
+        </button>
+      </div>
+    </nut-action-sheet>
   </div>
 </template>
 <script setup lang="ts">
@@ -33,22 +35,39 @@ import Taro, {
   getSystemInfoSync,
   getCurrentInstance,
   showToast
+  // useShareAppMessage
 } from '@tarojs/taro';
 import { Button, Text } from '@tarojs/components';
 import { fetchUserLoginApp, fetchProductInfo, fetchReportList, getToken } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { getAnimaoPic, getAnimaoType, getURLParamsPID, designToRealForPX } from '@/utils/common';
+import useShare from '@/hooks/useShare';
+
+const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
+
+// /** 设置页面属性 */
+definePageConfig({
+  navigationBarTitleText: '宠物性格测试',
+  enableShareAppMessage: true, // 分享好友
+  enableShareTimeline: true // 分享朋友圈
+});
 
 const instance = getCurrentInstance();
 const launchInfo = Taro.getLaunchOptionsSync();
 // 输出当前页面的 URL 参数对象
-console.log('instance.router.params:', launchInfo, launchInfo?.query?.pid, instance.router);
+console.log('instance.router.params:', shareConfig, instance, launchInfo, launchInfo?.query?.pid, instance.router);
 
-/** 设置页面属性 */
-definePageConfig({
-  navigationBarTitleText: '首页'
-});
-
+// useShareAppMessage(res => {
+//   if (res.from === 'button') {
+//     // 来自页面内转发按钮
+//     console.log(res.target);
+//   }
+//   return {
+//     title: '自定义转发标题',
+//     path: '/page/user?id=123'
+//   };
+// });
+const sheetShowRef = ref(false);
 const reportListRef = ref([]);
 const titleRef = ref('宠物性格测试');
 const updateRef = ref(0);
@@ -272,8 +291,20 @@ const getUserProfile = () => {
   });
 };
 
+const isPass = () => {
+  const launchInfo = Taro.getLaunchOptionsSync();
+  console.log('launchInfo=======', launchInfo);
+  if (launchInfo?.scene == 1154 || launchInfo?.scene == 1155) {
+    // 单页模式
+    return false;
+  }
+  return true;
+};
+
 onMounted(() => {
-  console.log('onMounted');
+  // if (!isPass()) {
+  //   return;
+  // }
   Taro.getSetting({
     success: res => {
       console.log('onMounted----', res);

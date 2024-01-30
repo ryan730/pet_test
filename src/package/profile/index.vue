@@ -44,8 +44,8 @@
             <span class="title-3">{{ getText.category }}性别</span>
             <nut-cell>
               <nut-radio-group v-model="form.gender" direction="horizontal">
-                <nut-radio label="1">男</nut-radio>
-                <nut-radio label="2">女</nut-radio>
+                <nut-radio label="1">公</nut-radio>
+                <nut-radio label="2">母</nut-radio>
               </nut-radio-group>
             </nut-cell>
           </div>
@@ -81,6 +81,16 @@ import Taro, { pxTransform } from '@tarojs/taro';
 import { fetchSetBasic, fetchProductStatus } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { getAnimaoType, getURLParamsPID, designToRealForPX, getAnimaoPic } from '@/utils/common';
+import useShare from '@/hooks/useShare';
+
+const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
+
+// /** 设置页面属性 */
+definePageConfig({
+  navigationBarTitleText: '宠物性格测试',
+  enableShareAppMessage: true, // 分享好友
+  enableShareTimeline: true // 分享朋友圈
+});
 
 const appStore = useAppStore();
 const navHeight = computed(() => appStore.getNavHeight);

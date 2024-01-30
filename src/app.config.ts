@@ -4,7 +4,7 @@ export default defineAppConfig({
     backgroundColor: '#fff',
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
+    navigationBarTitleText: '宠物性格测试',
     navigationBarTextStyle: 'black',
     navigationStyle: 'custom' // 给全局的导航栏隐藏
   },
@@ -15,7 +15,6 @@ export default defineAppConfig({
   subPackages: [
     {
       root: 'package',
-      // pages: ['package-a/index', 'package-b/index', 'package-c/index', 'icon/index']
       pages: [
         'profile/index',
         'answer/index',
@@ -27,23 +26,4 @@ export default defineAppConfig({
       ]
     }
   ]
-  // tabBar: {
-  // 	custom: false,
-  // 	color: "#000000",
-  // 	selectedColor: "#FF0000",
-  // 	list: [
-  // {
-  // 	pagePath: "pages/index/index",
-  // 	text: "首页",
-  // },
-  // {
-  // 	pagePath: "pages/my/index",
-  // 	text: "个人中心",
-  // },
-  // {
-  // 	pagePath: "pages/home/index",
-  // 	text: "主页",
-  // },
-  // 	],
-  // },
 });

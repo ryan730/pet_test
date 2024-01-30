@@ -149,7 +149,17 @@ import { fetchSeriesReport, fetchScoreTest } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import * as echarts from '@/components/ec-canvas/echarts';
 import { designToRealForPX, getURLParamsPID, getAnimaoType } from '@/utils/common';
+import useShare from '@/hooks/useShare';
 import mock from './mock.js';
+
+const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
+
+// /** 设置页面属性 */
+definePageConfig({
+  navigationBarTitleText: '宠物性格测试',
+  enableShareAppMessage: true, // 分享好友
+  enableShareTimeline: true // 分享朋友圈
+});
 
 const favorShowRef = ref(false);
 const tabValueRef = ref('0');

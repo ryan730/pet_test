@@ -13,7 +13,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { getEnv, navigateBack, getWindowInfo, pxTransform } from '@tarojs/taro';
+import Taro, { getEnv, navigateBack, getWindowInfo, pxTransform } from '@tarojs/taro';
 import { useAppStore } from '@/store';
 
 const appStore = useAppStore();
@@ -42,10 +42,14 @@ const getMenuCapsule = (isweb: boolean) => {
   };
 };
 
+const getWindowInfo_ = () => {
+  return Taro.getSystemInfoSync();
+};
+
 const env = getEnv();
 const menuCapsule = getMenuCapsule(env === 'WEB');
 
-const windowInfo = env === 'WEB' ? { statusBarHeight: 0 } : getWindowInfo();
+const windowInfo = env === 'WEB' ? { statusBarHeight: 0 } : getWindowInfo_();
 
 const statusBarHeight = windowInfo.statusBarHeight * 2 || 0;
 

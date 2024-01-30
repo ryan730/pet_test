@@ -14,10 +14,14 @@
 </template>
 
 <script setup lang="ts">
-import { getEnv, navigateBack, getWindowInfo, pxTransform } from '@tarojs/taro';
+import Taro, { getEnv, navigateBack, getWindowInfo, pxTransform } from '@tarojs/taro';
+
+const getWindowInfo_ = () => {
+  return Taro.getSystemInfoSync();
+};
 
 const env = getEnv();
-const windowInfo = env === 'WEB' ? { statusBarHeight: 0 } : getWindowInfo();
+const windowInfo = env === 'WEB' ? { statusBarHeight: 0 } : getWindowInfo_();
 
 const statusBarHeight = windowInfo.statusBarHeight || 0;
 

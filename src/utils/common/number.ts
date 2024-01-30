@@ -95,7 +95,8 @@ export const getURLParamsPID = () => {
 };
 
 export const designToRealForPX = (designNum: number) => {
-  const pageInfo = getWindowInfo();
+  const pageInfo = Taro.getSystemInfoSync();
+  console.log('designToRealForPX', pageInfo);
   const windowWidth = pageInfo.windowWidth;
   const percent = windowWidth / 750;
   return Math.floor(designNum * percent);

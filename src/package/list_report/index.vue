@@ -15,7 +15,7 @@
           <div class="right">
             <div class="content-left">
               <!-- <div class="time">时间：{{ item?.submittime }}</div>-->
-              <div class="name">性别：{{ item?.gender == 1 ? '男' : '女' }}</div>
+              <div class="name">性别：{{ item?.gender == 1 ? '公' : '母' }}</div>
               <div class="age">年龄：{{ item?.age }}</div>
             </div>
             <div class="content-right">
@@ -44,6 +44,16 @@ import Taro, {
 } from '@tarojs/taro';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { designToRealForPX } from '@/utils/common';
+import useShare from '@/hooks/useShare';
+
+const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
+
+// /** 设置页面属性 */
+definePageConfig({
+  navigationBarTitleText: '宠物性格测试',
+  enableShareAppMessage: true, // 分享好友
+  enableShareTimeline: true // 分享朋友圈
+});
 
 const productInfoStore = useProductInfoStore();
 

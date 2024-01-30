@@ -19,7 +19,7 @@
           <div class="group-3">
             <div class="view-1">
               <img class="icon-text" :src="require('@/assets/images/img_23.png')" />
-              <span class="label">共88题</span>
+              <span class="label">共{{ resultRef.stotal }}题</span>
             </div>
             <div class="view-2">
               <img class="icon-time" :src="require('@/assets/images/img_24.png')" />
@@ -46,13 +46,19 @@
           </div>
           <view class="summary" v-html="getConterInfo()" />
         </div>
-        <div v-if="info?.status == 'notdone' || info?.status == 'petinfo'" class="wrapper-5" @click="handleEntryToTest">
+        <div v-if="info?.status == 'notdone'" class="wrapper-5" @click="handleEntryToTest">
+          <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
+            <span class="title-4">继续测试</span>
+          </div>
+          <img class="picture" :src="`${getPic.foot}`" />
+        </div>
+        <div v-else-if="info?.status == 'petinfo'" class="wrapper-5" @click="handleEntryToTest">
           <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
             <span class="title-4">立即测试</span>
           </div>
           <img class="picture" :src="`${getPic.foot}`" />
         </div>
-        <div v-if="info?.status == 'showpay'" class="wrapper-5" @click="handlePurchaseToTest">
+        <div v-else-if="info?.status == 'showpay'" class="wrapper-5" @click="handlePurchaseToTest">
           <div class="title-wrapper" :style="{ backgroundColor: theme.color }">
             <span class="title-4">立即购买</span>
           </div>
@@ -83,16 +89,22 @@ import { Button, Text } from '@tarojs/components';
 import { fetchUserLoginApp, fetchProductInfo, getToken } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import { getAnimaoPic, getAnimaoType, getURLParamsPID, designToRealForPX } from '@/utils/common';
+import useShare from '@/hooks/useShare';
 
+const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
+
+// /** 设置页面属性 */
+definePageConfig({
+  navigationBarTitleText: '宠物性格测试',
+  enableShareAppMessage: true, // 分享好友
+  enableShareTimeline: true // 分享朋友圈
+});
+
+const resultRef = ref(0);
 const instance = getCurrentInstance();
 const launchInfo = Taro.getLaunchOptionsSync();
 // 输出当前页面的 URL 参数对象
 console.log('instance.router.params:', launchInfo, launchInfo?.query?.pid, instance.router);
-
-/** 设置页面属性 */
-definePageConfig({
-  navigationBarTitleText: '首页'
-});
 
 const appStore = useAppStore();
 const productInfoStore = useProductInfoStore();
@@ -221,6 +233,7 @@ const entrance = async (isPay: boolean = false) => {
   const result = await fetchProductInfo({
     pid
   });
+  resultRef.value = result.data;
   console.log('productInfo-result==>', result, result.data.status);
   /// result.data.status = 'showpay'; // 测试
   productInfoStore.setInfo(result.data);

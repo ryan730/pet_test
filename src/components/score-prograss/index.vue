@@ -10,7 +10,7 @@ import { log } from 'console'; import { onMounted } from 'vue';
             <div class="rect-unit-text">{{ item }}</div>
           </div>
         </div>
-        <div class="score-red" :progressTotal="progressTotal" :style="{ width: width + 'px' }">
+        <div class="score-red" :progressTotal="progressTotal" :style="{ width: width }">
           <div class="score-red-text">{{ currentPercent }}</div>
         </div>
       </div>
@@ -44,7 +44,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const width = computed(() => {
-  return ((props.percent - props.min) / parseInt(props.max - props.min)) * progressTotal.value;
+  // const realcur = props.percent - props.min;
+  // const mutil = parseInt(realcur / props.step);
+  // const remainder = realcur - mutil * props.step;
+  // const total = 82 * mutil + (remainder / props.step) * 82;
+  // console.log('width=====', Taro.pxTransform(total));
+  // return Taro.pxTransform(total);
+  const total = ((props.percent - props.min) / (props.max - props.min)) * progressTotal.value;
+  return `${total}px`;
   // return (props.percent / parseInt(props.max + props.min)) * progressTotal.value;
 });
 
@@ -58,7 +65,7 @@ onMounted(() => {
     query
       .select('.rect-bg')
       .boundingClientRect(res => {
-        console.log('res=======', res);
+        console.log('res=======', res, res.width);
         progressTotal.value = res.width;
       })
       .exec();

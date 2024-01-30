@@ -45,7 +45,17 @@ import { fetchSeriesReport } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
 import * as echarts from '@/components/ec-canvas/echarts';
 import { designToRealForPX, getURLParamsPID, getAnimaoType } from '@/utils/common';
-import mock from './mock.js';
+import useShare from '@/hooks/useShare';
+// import mock from './mock.js';
+
+const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
+
+// /** 设置页面属性 */
+definePageConfig({
+  navigationBarTitleText: '宠物性格测试',
+  enableShareAppMessage: true, // 分享好友
+  enableShareTimeline: true // 分享朋友圈
+});
 
 const renderData = ref('');
 const appStore = useAppStore();
@@ -118,7 +128,7 @@ const getReport = async () => {
   renderData.value = res.data;
   ecRef.value = true;
 
-  console.log('getReport-mock:::', mock);
+  // console.log('getReport-mock:::', mock);
   console.log('getReport:::', info, res, renderData);
 };
 
