@@ -116,6 +116,11 @@ const handleToPayment = async (req: any) => {
   const js_params = res?.data?.js_params;
   const order_id = res?.data?.order_id;
   console.log('支付请求:', res, launchInfo?.query?.pid, js_params.appId);
+  if (res?.code == 1 && js_params?.length === 0) {
+    emit('onClickMask');
+    judgePayResult(order_id);
+    return;
+  }
   if (res?.code == 1) {
     pauseRef.value = true;
     Taro.requestPayment({
