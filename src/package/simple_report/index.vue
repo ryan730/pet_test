@@ -3,16 +3,19 @@
   <div class="simple_report flex-col" :style="getStyle">
     <div class="group_3 flex-col">
       <span class="text_3">核心类型：</span>
-      <div class="single-avatar_1 flex-col">
+      <!-- <div class="single-avatar_1 flex-col">
         <img class="image_1" :src="getRenderDataToPic" />
       </div>
       <div class="section_1 flex-row">
         <img class="image_3" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-left.png')" />
         <span class="text_4">{{ getRenderDataToTitle }}</span>
         <img class="image_4" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-right.png')" />
-      </div>
+      </div> -->
       <div class="section_2 flex-col">
-        <view class="taro_html" v-html="getRenderDataToHtml"></view>
+        <img class="image" :src="getRenderDataToPic" :src_test="require('@/assets/images/p2@2x.png')" />
+        <div class="text-cons">
+          <view class="taro_html" v-html="getRenderDataToHtml"></view>
+        </div>
       </div>
       <div class="chart_1 flex-col">
         <div class="text-wrapper_1">
