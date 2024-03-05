@@ -53,7 +53,7 @@
 import { computed, defineEmits, ref } from 'vue';
 import Taro from '@tarojs/taro';
 import { fetchUserXorder, fetchCheckpay } from '@/service';
-import { sleep } from '@/utils';
+import { sleep, debounce } from '@/utils';
 import { getURLParamsPID } from '@/utils/common';
 
 const emit = defineEmits(['onClickMask', 'onClickPass']);
@@ -108,8 +108,9 @@ const judgePayResult = async (order_id: number) => {
 };
 
 const launchInfo = Taro.getLaunchOptionsSync();
-const handleToPayment = async (req: any) => {
+const handleToPayment = debounce(async function done(req: any) {
   const pid = getURLParamsPID();
+  console.log('支付请求111:', pid);
   const res = await fetchUserXorder({
     product_id: pid
   });
@@ -148,7 +149,7 @@ const handleToPayment = async (req: any) => {
       }
     });
   }
-};
+}, 500);
 </script>
 
 <style src="./index.css" />

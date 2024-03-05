@@ -33,7 +33,7 @@ export function getRandomInterger(end: number, start = 0) {
   return random;
 }
 
-export function debounce(fn: Function, wait: number) {
+export function debounce2(fn: Function, wait: number) {
   const callback = fn;
   let timerId = null;
   // 是否是第一次执行
@@ -60,6 +60,21 @@ export function debounce(fn: Function, wait: number) {
 
   // 返回一个闭包
   return debounced;
+}
+
+export function debounce(func: Function, wait: number = 500, immediate: boolean = true) {
+  let timeout: any;
+  return function (this: any, ...args: any[]) {
+    const context = this;
+    const later = function () {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
 }
 
 export const sleep = (delaytime = 1000) => {
