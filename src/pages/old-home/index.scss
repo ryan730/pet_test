@@ -3,34 +3,12 @@
 	// justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	background-color: white;
 	.bg{
 		position: absolute;
 		width: 100%;
 		height: 100%;
 		z-index: -1;
 		overflow: hidden;
-	}
-	.new-home-title{
-		width: 100%;
-		height:185px;
-	}
-	.new-home-bg{
-		width: 100%;
-		height:851px;
-		overflow: hidden;
-		margin-top: -10px;
-	}
-	.new-home-text{
-		padding: 18px 72px;
-		font-family: PingFang-SC, PingFang-SC;
-		font-weight: 500;
-		font-size: 24px;
-		color: #222222;
-		// line-height: 38px;
-		letter-spacing: 1px;
-		text-align: justify;
-		font-style: normal;
 	}
 	img{
 		width: 100%;
@@ -89,21 +67,21 @@
 	}
 
 	.go-cat {
-		background-color: rgba(255, 66, 23, 0);
-		width: 255px;
+		//background-color: red;
+		width: 215px;
 		height:182px;
 		position: absolute;
-		top: 1200px;
-		left: 400px;
+		top:510px;
+		left: 390px;
 	}
 
 	.go-dog {
-		background-color: rgba(255, 66, 23, 0);
-		width: 255px;
+		//background-color: red;
+		width: 215px;
 		height:182px;
 		position: absolute;
-		top: 1200px;
-		left: 70px;
+		top:880px;
+		left: 130px;
 	}
 
 	.nut-overlay {
@@ -113,8 +91,4 @@
 	.nut-popup--bottom.round {
 		border-radius: 0;
 	}
-}
-
-.home-container {
-
 }

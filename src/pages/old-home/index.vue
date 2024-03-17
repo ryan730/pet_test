@@ -1,28 +1,17 @@
 <template>
   <cg-navbar :title="titleRef" />
   <div class="home" :style="getStyle" :update="updateRef">
-    <div class="new-home-title">
-      <img :src="require('@/assets/images/new-home-title.png')" />
+    <div class="bg" :style="{ height: getStyle.height }">
+      <img :src="require('@/assets/images/home_bg.png')" />
     </div>
-    <div class="new-home-text">
-      乐嘟宠物性格测评系统结合美国动物救援组织
-      ASPCA的研究成果，以及美国阿曼达·琼斯博士对于猫狗的性格研究模型及成果设计而成。通过主人填写问卷，实现对宠物格性格的专业系统评估。
-    </div>
-    <div class="new-home-bg">
-      <img :src="require('@/assets/images/new-home-bg.png')" />
-    </div>
-    <!-- <div class="bg" :style="{ height: getStyle.height }">
-      <img :src="require('@/assets/images/new-bg.jpg')" />
-    </div> -->
-    <!--  <div class="pet-personality">
+    <div class="pet-personality">
       <img :src="require('@/assets/images/pet-personality.png')" />
     </div>
     <div class="home-select">
       <img :src="require('@/assets/images/home-select.png')" />
-    </div> -->
+    </div>
     <div class="go-cat" @click="onClickGoCat"></div>
     <div class="go-dog" @click="onClickGoDog"></div>
-    <div style="height: 40px"></div>
     <nut-action-sheet v-model:visible="reportListRef.length" title="">
       <div
         v-if="reportListRef.length"
