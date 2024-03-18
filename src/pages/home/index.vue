@@ -30,7 +30,7 @@
         :style="{ paddingBottom: `${designToRealForPX(appStore.bottomArea.bottomH) || 10}px` }"
       >
         <button class="button_1 flex-col" @click="onClickGoDetail">
-          <span class="text_26">查看完整解读报告</span>
+          <span class="text_26">查看往期报告</span>
         </button>
       </div>
     </nut-action-sheet>
