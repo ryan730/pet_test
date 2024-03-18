@@ -10,15 +10,18 @@
       <nut-tabs v-model="tabValueRef" swipeable @change="handleChange">
         <nut-tab-pane title="核心类型" pane-key="0">
           <div class="group flex tab0">
-            <div class="single-avatar flex">
+            <!-- <div class="single-avatar flex">
               <img class="image_1" :src="getRenderDataToPic" />
             </div>
             <div class="section flex">
               <img class="image_lr" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-left.png')" />
               <span class="text_assistant">{{ getRenderDataToTitle }}</span>
               <img class="image_lr" referrerpolicy="no-referrer" :src="require('@/assets/images/ver-right.png')" />
+            </div> -->
+            <img class="image" :src="getRenderDataToPic" :src_test="require('@/assets/images/p2@2x.png')" />
+            <div class="text-cons">
+              <view class="taro_html" v-html="getRenderDataToHtml"></view>
             </div>
-            <view class="taro_html" v-html="getRenderDataToHtml"></view>
           </div>
         </nut-tab-pane>
         <nut-tab-pane title="特质分析" pane-key="1" class="tab-warper-pane-analyze">

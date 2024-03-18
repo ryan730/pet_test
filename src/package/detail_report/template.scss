@@ -75,9 +75,13 @@
   border-radius: 16px;
   width: 700px;
   align-self: center;
-  margin-top: 25px;
+  // margin-top: 25px;
   padding: 36px 36px 28px 36px;
 	box-sizing: border-box;
+	margin-bottom: 25px;
+	&:first-child {
+		border-radius: 0 0 16px 16px;
+	}
 }
 
 .repo-text-info-con {
@@ -92,7 +96,7 @@
 }
 
 .repo-text-info {
-  padding: 20px;
+  padding: 0 20px 20px 20px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
