@@ -51,7 +51,7 @@ import Taro, {
 import { Button, Text } from '@tarojs/components';
 import { fetchUserLoginApp, fetchProductInfo, fetchReportList, getToken } from '@/service';
 import { useAppStore, useProductInfoStore } from '@/store';
-import { getAnimaoPic, getAnimaoType, getURLParamsPID, designToRealForPX } from '@/utils/common';
+import { getAnimaoPic, getAnimaoType, getURLParamsPID, designToRealForPX, getCurrentPageUrl } from '@/utils/common';
 import useShare from '@/hooks/useShare';
 
 const { onShareAppMessage, onShareTimeline, shareConfig } = useShare();
@@ -66,7 +66,15 @@ definePageConfig({
 const instance = getCurrentInstance();
 const launchInfo = Taro.getLaunchOptionsSync();
 // 输出当前页面的 URL 参数对象
-console.log('instance.router.params:', shareConfig, instance, launchInfo, launchInfo?.query?.pid, instance.router);
+console.log(
+  'instance.router.params:',
+  shareConfig,
+  instance,
+  launchInfo,
+  launchInfo?.query?.pid,
+  instance.router,
+  getCurrentPageUrl()
+);
 
 // useShareAppMessage(res => {
 //   if (res.from === 'button') {

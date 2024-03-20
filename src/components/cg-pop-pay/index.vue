@@ -110,9 +110,10 @@ const judgePayResult = async (order_id: number) => {
 const launchInfo = Taro.getLaunchOptionsSync();
 const handleToPayment = debounce(async function done(req: any) {
   const pid = getURLParamsPID();
-  console.log('支付请求111:', pid);
+  console.log('支付请求-fetchUserXorder:', launchInfo?.query, pid);
   const res = await fetchUserXorder({
-    product_id: pid
+    product_id: pid,
+    psid: launchInfo?.query?.cq || Taro.getStorageSync('cq')
   });
   const js_params = res?.data?.js_params;
   const order_id = res?.data?.order_id;

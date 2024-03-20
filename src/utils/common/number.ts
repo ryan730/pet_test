@@ -116,3 +116,18 @@ export const designToRealForPX = (designNum: number) => {
   const percent = windowWidth / 750;
   return Math.floor(designNum * percent);
 };
+
+/* 获取当前页url */
+export const getCurrentPageUrl = () => {
+  const pages = Taro.getCurrentPages(); // 获取加载的页面
+  const currentPage = pages[pages.length - 1]; // 获取当前页面的对象
+  const url = currentPage.route; // 当前页面url
+  return url;
+};
+/* 获取当前页参数 */
+export const getCurrentPageParam = () => {
+  const pages = Taro.getCurrentPages(); // 获取加载的页面
+  const currentPage = pages[pages.length - 1]; // 获取当前页面的对象
+  const options = currentPage.options; // 如果要获取url中所带的参数可以查看options
+  return options;
+};

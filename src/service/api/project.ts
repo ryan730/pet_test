@@ -104,6 +104,10 @@ export async function fetchUserLoginApp(data: UserLoginParams) {
     result = await fetch(`${config.APIURL}/user/userLoginApp`, data);
     setLocalStorage(result?.data);
   }
+  const launchInfo = Taro.getLaunchOptionsSync();
+  if (launchInfo?.query?.cq) {
+    Taro.setStorageSync('cq', launchInfo?.query?.cq);
+  }
 }
 
 interface ProductInfoParams {
@@ -155,6 +159,7 @@ export async function fetchSeriesReport(data: SeriesReport) {
 
 interface UserXorder {
   product_id: number;
+  psid: string;
 }
 export async function fetchUserXorder(data: UserXorder) {
   const result = await fetch(`${config.APIURL}/user/xorder`, data);
