@@ -2,6 +2,12 @@ import { ref, onMounted, onBeforeMount } from 'vue';
 import Taro from '@tarojs/taro';
 
 export default function useShare(initialShareInfo = {}) {
+  const getpsid = () => {
+    const launchInfo = Taro.getLaunchOptionsSync();
+    const psid = launchInfo?.query?.cq || Taro.getStorageSync('cq');
+    return psid; // + new Date().getTime();
+  };
+
   const shareConfig = {
     enableShareAppMessage: true, // 分享好友
     enableShareTimeline: true, // 分享朋友圈
@@ -10,7 +16,7 @@ export default function useShare(initialShareInfo = {}) {
 
   const shareInfo = ref({
     title: '宠物性格测试',
-    path: '/pages/home/index',
+    path: `/pages/home/index?cq=${getpsid() || ''}`,
     ...initialShareInfo
   });
 
